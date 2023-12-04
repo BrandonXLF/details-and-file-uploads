@@ -99,13 +99,22 @@ class Tracked_Files_Tests extends \WP_UnitTestCase {
 			)
 		);
 
-		Tracked_Files::track_file( 'FAKE_KEY1', $tmp_dir . '/example-image.tmp1.png' );
+		global $wpdb;
+
+		$wpdb->query(
+			$wpdb->prepare(
+				"INSERT INTO {$wpdb->prefix}woocommerce_sessions (`session_key`, `session_value`, `session_expiry`)
+				VALUES (%s, '', %d)", WC()->session->get_customer_id(), time() + 30
+			)
+		);
+
+		Tracked_Files::track_file( WC()->session->get_customer_id(), $tmp_dir . '/example-image.tmp1.png' );
 		Tracked_Files::track_file( 'FAKE_KEY1', $tmp_dir . '/example-image.tmp2.png' );
 		Tracked_Files::track_file( 'FAKE_KEY2', $tmp_dir . '/example-image.tmp3.png' );
 
 		Tracked_Files::cleanup();
 
-		$this->assertFalse( file_exists( $tmp_dir . '/example-image.tmp1.png' ) );
+		$this->assertTrue( file_exists( $tmp_dir . '/example-image.tmp1.png' ) );
 		$this->assertFalse( file_exists( $tmp_dir . '/example-image.tmp2.png' ) );
 		$this->assertFalse( file_exists( $tmp_dir . '/example-image.tmp3.png' ) );
 
@@ -115,6 +124,6 @@ class Tracked_Files_Tests extends \WP_UnitTestCase {
 		// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 		$count = $wpdb->get_results( "SELECT count(*) FROM $table" )[0]->{'count(*)'};
 
-		$this->assertEquals( 0, $count );
+		$this->assertEquals( 1, $count );
 	}
 }
