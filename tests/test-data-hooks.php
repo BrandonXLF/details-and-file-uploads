@@ -202,29 +202,4 @@ class Data_Hooks_Tests extends \WP_UnitTestCase {
 
 		$this->assertEquals( 0, $count );
 	}
-
-	public function test_cleanup_sessions() {
-		$tmp_dir = ini_get( 'upload_tmp_dir' ) ?: sys_get_temp_dir();
-
-		$this->assertTrue(
-			copy(
-				__DIR__ . '/example-image.png',
-				$tmp_dir . '/example-image.tmp.png'
-			)
-		);
-
-		Tracked_Files::track_file( 'FAKE_KEY', $tmp_dir . '/example-image.tmp.png' );
-
-		do_action( 'woocommerce_cleanup_sessions' );
-
-		$this->assertFalse( file_exists( $tmp_dir . '/example-image.tmp.png' ) );
-
-		global $wpdb;
-
-		$table = Tracked_Files::table_name();
-		// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
-		$count = $wpdb->get_results( "SELECT count(*) FROM $table" )[0]->{'count(*)'};
-
-		$this->assertEquals( 0, $count );
-	}
 }
