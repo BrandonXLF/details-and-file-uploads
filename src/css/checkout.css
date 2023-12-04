@@ -1,0 +1,7 @@
+.input-dfu-file-upload {
+	padding: 1em;
+    border: 1px solid black;
+	background: white;
+	width: 100%;
+	box-sizing: border-box;
+}

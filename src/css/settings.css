@@ -1,0 +1,74 @@
+#wpbody-content button {
+	cursor: pointer;
+}
+
+.field {
+	display: grid;
+	grid-template-columns: min-content auto;
+    align-items: center;
+	gap: 1em;
+}
+
+.field-cnt {
+	background: rgba(0, 0, 0, .05);
+	padding: 0.5em 1em;
+	border-radius: 4px;
+}
+
+.field-cnt:not(:first-child) {
+	margin-top: 1em;
+}
+
+.field-cnt .field {
+	margin: 1em 0 0.5em;
+}
+
+.field input[type="checkbox"] {
+    margin: 0;
+}
+
+.deleted {
+    text-decoration: line-through;
+}
+
+.list-entry,
+.field-cnt > .header {
+	cursor: move;
+}
+
+.description {
+	margin: -0.8em 1px 0 1px !important;
+}
+
+.list-entry {
+	display: inline-block;
+	border: 1px solid #8c8f94;
+    background: #fafafa;
+    padding: 2px 5px;
+    border-radius: 4px;
+}
+
+.list-entry:not(:last-child) {
+	margin-right: 0.5em;
+}
+
+.list-entry:not(:first-child) {
+	margin-top: 0.65em;
+}
+
+.list-entry button {
+    padding: 0;
+    border: none;
+    background: transparent;
+}
+
+.add-cnt {
+	display: flex;
+	gap: 1em;
+	align-items: center;
+	margin-top: 0.65em;
+}
+
+.js-lists .list-help {
+	display: none;
+}
