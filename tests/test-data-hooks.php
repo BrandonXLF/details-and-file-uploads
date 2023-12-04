@@ -122,6 +122,20 @@ class Data_Hooks_Tests extends \WP_UnitTestCase {
 			$order,
 			[ 'foo' => 'Foo' ]
 		);
+
+		global $wpdb;
+
+		$table = Tracked_Files::table_name();
+
+		$count = $wpdb->get_results(
+			$wpdb->prepare(
+				// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+				"SELECT count(*) FROM $table WHERE session_id = %d",
+				WC()->session->get_customer_id()
+			)
+		)[0]->{'count(*)'};
+
+		$this->assertEquals( 0, $count );
 	}
 
 	public function test_populate_mixed_types() {
