@@ -11,6 +11,24 @@ namespace DetailsAndFileUploadPlugin;
  * Tests for the Data_Hooks class.
  */
 class Data_Hooks_Tests extends \WP_UnitTestCase {
+	/**
+	 * @beforeClass
+	 */
+	public static function add_database() {
+		Tracked_Files::setup();
+	}
+
+	/**
+	 * @afterClass
+	 */
+	public static function remove_database() {
+		global $wpdb;
+
+		$table_name = Tracked_Files::table_name();
+		// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+		$wpdb->query( "DROP TABLE IF EXISTS $table_name" );
+	}
+
 	public function test_populate_text() {
 		update_option(
 			'details_and_file_uploads_fields',

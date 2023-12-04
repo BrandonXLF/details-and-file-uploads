@@ -42,8 +42,6 @@ function _manually_load_plugin() {
 
 	require "{$_tests_dir}/src/wp-content/plugins/woocommerce/woocommerce.php";
 	require dirname( __DIR__ ) . '/details-and-file-upload.php';
-
-	do_action( 'activate_' . plugin_basename( realpath( dirname( __DIR__ ) . '/details-and-file-upload.php' ) ) );
 }
 
 tests_add_filter( 'muplugins_loaded', __NAMESPACE__ . '\\_manually_load_plugin' );
