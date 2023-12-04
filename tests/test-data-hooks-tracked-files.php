@@ -22,4 +22,11 @@ class Data_Hooks_Tracked_Files_Tests extends \WP_UnitTestCase {
 
 		do_action( 'woocommerce_cleanup_sessions' );
 	}
+
+	public function test_activate() {
+		$mock = \Mockery::mock('overload:' . Tracked_Files::class);
+		$mock->expects('setup')->once();
+
+		do_action( 'activate_' . plugin_basename( realpath( dirname( __DIR__ ) . '/details-and-file-upload.php' ) ) );
+	}
 }
