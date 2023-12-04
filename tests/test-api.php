@@ -29,6 +29,28 @@ class API_Tests extends \WP_UnitTestCase {
 		$wpdb->query( "DROP TABLE IF EXISTS $table_name" );
 	}
 
+	/**
+	 * @after
+	 */
+	public static function remove_uploads() {
+		$dfu_uploads_path = ABSPATH . '/wp-content/uploads/dfu_file_uploads';
+
+		if ( is_dir( $dfu_uploads_path ) ) {
+			$it = new \RecursiveDirectoryIterator( $dfu_uploads_path, \FilesystemIterator::SKIP_DOTS );
+			$it = new \RecursiveIteratorIterator( $it, \RecursiveIteratorIterator::CHILD_FIRST );
+
+			foreach ( $it as $file ) {
+				if ( $file->isDir() ) {
+					rmdir( $file->getPathname() );
+				} else {
+					unlink( $file->getPathname() );
+				}
+			}
+
+			rmdir( $dfu_uploads_path );
+		}
+	}
+
 	public function test_no_nonce() {
 		$_POST = [
 			'name' => 'foo',
@@ -179,27 +201,5 @@ class API_Tests extends \WP_UnitTestCase {
 		)[0]->{'count(*)'};
 
 		$this->assertEquals( 2, $count );
-	}
-
-	// phpcs:ignore PHPCompatibility.FunctionDeclarations.NewReturnTypeDeclarations.voidFound
-	public function tearDown(): void {
-		parent::tearDown();
-
-		$dfu_uploads_path = ABSPATH . '/wp-content/uploads/dfu_file_uploads';
-
-		if ( is_dir( $dfu_uploads_path ) ) {
-			$it = new \RecursiveDirectoryIterator( $dfu_uploads_path, \FilesystemIterator::SKIP_DOTS );
-			$it = new \RecursiveIteratorIterator( $it, \RecursiveIteratorIterator::CHILD_FIRST );
-
-			foreach ( $it as $file ) {
-				if ( $file->isDir() ) {
-					rmdir( $file->getPathname() );
-				} else {
-					unlink( $file->getPathname() );
-				}
-			}
-
-			rmdir( $dfu_uploads_path );
-		}
 	}
 }
