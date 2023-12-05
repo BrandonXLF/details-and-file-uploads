@@ -68,6 +68,10 @@ Requires WP version 4.6 and PHP version 7.0.
 
 ## Changelog
 
+### 1.0.2
+
+Corrected version numbers.
+
 ### 1.0.1
 
 Cleanup plugin data during uninstall.
