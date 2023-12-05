@@ -60,16 +60,6 @@ def generate_md():
             print(section['text'], file = file)
 
         print(file = file)
-        print('## Changelog', file = file)
-        print(file = file)
-
-        for entry in template['changelog']:
-            print('### ' + entry['version'], file = file)
-            print(file = file)
-            print(entry['desc'], file = file)
-            print(file = file)
-
-
         print('## Compatibility', file = file)
         print(file = file)
 
@@ -80,6 +70,15 @@ def generate_md():
             end = '',
             file = file
         )
+
+        print(file = file)
+        print('## Changelog', file = file)
+
+        for entry in template['changelog']:
+            print(file = file)
+            print('### ' + entry['version'], file = file)
+            print(file = file)
+            print(entry['desc'], file = file)
 
 def generate_txt():
     with open(bin + '/../readme.txt', 'w+') as file:
