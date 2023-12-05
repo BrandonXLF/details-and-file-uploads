@@ -42,6 +42,10 @@ PHP 7.0 or greater is required (PHP 8.0 or greater is recommended)
 
 == Changelog ==
 
+= 1.0.1 =
+
+Cleanup plugin data during uninstall.
+
 = 1.0.0 =
 
 Initial release.
