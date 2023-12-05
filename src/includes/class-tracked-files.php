@@ -102,4 +102,24 @@ class Tracked_Files {
             WHERE wc.session_key IS NULL"
 		);
 	}
+
+
+	/**
+	 * Remove the database and remove any tracked files.
+	 */
+	public static function uninstall() {
+		global $wpdb;
+
+		$table_name = self::table_name();
+
+		// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+		$results = $wpdb->get_results( "SELECT file_path FROM $table_name files" );
+
+		foreach ( $results as $result ) {
+			Uploads::delete_file( $result->file_path );
+		}
+
+		// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+		$wpdb->query( "DROP TABLE $table_name" );
+	}
 }

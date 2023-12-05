@@ -33,22 +33,7 @@ class API_Tests extends \WP_UnitTestCase {
 	 * @after
 	 */
 	public static function remove_uploads() {
-		$dfu_uploads_path = ABSPATH . '/wp-content/uploads/dfu_file_uploads';
-
-		if ( is_dir( $dfu_uploads_path ) ) {
-			$it = new \RecursiveDirectoryIterator( $dfu_uploads_path, \FilesystemIterator::SKIP_DOTS );
-			$it = new \RecursiveIteratorIterator( $it, \RecursiveIteratorIterator::CHILD_FIRST );
-
-			foreach ( $it as $file ) {
-				if ( $file->isDir() ) {
-					rmdir( $file->getPathname() );
-				} else {
-					unlink( $file->getPathname() );
-				}
-			}
-
-			rmdir( $dfu_uploads_path );
-		}
+		Uploads::uninstall();
 	}
 
 	public function test_no_nonce() {

@@ -11,22 +11,10 @@ namespace DetailsAndFileUploadPlugin;
  * Tests for the Tracked_Files class.
  */
 class Tracked_Files_Tests extends \WP_UnitTestCase {
-	/**
-	 * @beforeClass
-	 */
-	public static function add_database() {
+	public function set_up(): void {
+		parent::set_up();
+
 		Tracked_Files::setup();
-	}
-
-	/**
-	 * @afterClass
-	 */
-	public static function remove_database() {
-		global $wpdb;
-
-		$table_name = Tracked_Files::table_name();
-		// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
-		$wpdb->query( "DROP TABLE IF EXISTS $table_name" );
 	}
 
 	public function test_table_name() {
@@ -104,7 +92,9 @@ class Tracked_Files_Tests extends \WP_UnitTestCase {
 		$wpdb->query(
 			$wpdb->prepare(
 				"INSERT INTO {$wpdb->prefix}woocommerce_sessions (`session_key`, `session_value`, `session_expiry`)
-				VALUES (%s, '', %d)", WC()->session->get_customer_id(), time() + 30
+				VALUES (%s, '', %d)",
+				WC()->session->get_customer_id(),
+				time() + 30
 			)
 		);
 
@@ -125,5 +115,39 @@ class Tracked_Files_Tests extends \WP_UnitTestCase {
 		$count = $wpdb->get_results( "SELECT count(*) FROM $table" )[0]->{'count(*)'};
 
 		$this->assertEquals( 1, $count );
+	}
+
+	public function test_uninstall() {
+		$tmp_dir = ini_get( 'upload_tmp_dir' ) ?: sys_get_temp_dir();
+
+		$this->assertTrue(
+			copy(
+				__DIR__ . '/example-image.png',
+				$tmp_dir . '/example-image.tmp1.png'
+			)
+		);
+
+		$this->assertTrue(
+			copy(
+				__DIR__ . '/example-image.png',
+				$tmp_dir . '/example-image.tmp2.png'
+			)
+		);
+
+		Tracked_Files::track_file( WC()->session->get_customer_id(), $tmp_dir . '/example-image.tmp1.png' );
+		Tracked_Files::track_file( 'FAKE_KEY1', $tmp_dir . '/example-image.tmp2.png' );
+		
+		Tracked_Files::uninstall();
+
+		$this->assertFalse( file_exists( $tmp_dir . '/example-image.tmp1.png' ) );
+		$this->assertFalse( file_exists( $tmp_dir . '/example-image.tmp2.png' ) );
+		
+		global $wpdb;
+		
+		$this->assertEmpty(
+			$wpdb->get_var(
+				$wpdb->prepare( 'SHOW TABLES LIKE %s', $wpdb->esc_like( Tracked_Files::table_name() ) )
+			)
+		);
 	}
 }

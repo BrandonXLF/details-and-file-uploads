@@ -90,4 +90,26 @@ class Uploads {
 	public static function delete_file( $path ) {
 		wp_delete_file( $path );
 	}
+
+	/**
+	 * Remove the plugin upload directory and all files in it.
+	 */
+	public static function uninstall() {
+		if ( ! is_dir( self::get_upload_path() ) ) {
+			return;
+		}
+
+		$it = new \RecursiveDirectoryIterator( self::get_upload_path(), \FilesystemIterator::SKIP_DOTS );
+		$it = new \RecursiveIteratorIterator( $it, \RecursiveIteratorIterator::CHILD_FIRST );
+
+		foreach ( $it as $file ) {
+			if ( $file->isDir() ) {
+				rmdir( $file->getPathname() );
+			} else {
+				unlink( $file->getPathname() );
+			}
+		}
+
+		rmdir( self::get_upload_path() );
+	}
 }

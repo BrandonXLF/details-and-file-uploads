@@ -28,7 +28,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 define( 'DETAILS_AND_FILE_UPLOAD_PLUGIN_FILE', __FILE__ );
 
-require 'src/includes/class-autoloader.php';
+require_once 'src/includes/class-autoloader.php';
 
 Autoloader::init();
 Display::init();
