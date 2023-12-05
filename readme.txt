@@ -9,13 +9,13 @@ Stable tag: 1.0.1
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
-Add general or item-specific detail inputs and file uploads to the WooCommerce checkout page.
+Easily add general or item-specific detail inputs and file uploads to the WooCommerce checkout page.
 
 == Description ==
 
 Details and File Upload for WooCommerce allows you to easily add custom fields to the WooCommerce checkout.
 
-= Product-Specific Fields = 
+= Product-Specific Fields =
 
 These fields can be configured only to appear when specific items or categories of items are in the cart or to appear for all items. When enabled, fields are added to the to the WooCommerce checkout field above the order notes field.
 
@@ -36,7 +36,7 @@ PHP 7.0 or greater is required (PHP 8.0 or greater is recommended)
 
 == Screenshots ==
 
-1. Custom fields in the WooCommerce checkout
+1. Custom fields in the WooCommerce checkout.
 2. Custom field responses on the order confirmation page.
 3. The settings page to manage custom fields.
 
