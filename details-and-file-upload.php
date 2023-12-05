@@ -12,7 +12,7 @@
  * @wordpress-plugin
  * Plugin Name: Details and File Upload for WooCommerce
  * Plugin URI: https://www.brandonfowler.me/details-and-file-upload/
- * Description: Add general or item-specific detail inputs and file uploads to the WooCommerce checkout page.
+ * Description: Easily add general or item-specific detail inputs and file uploads to the WooCommerce checkout page.
  * Version: 1.0.2
  * Requires at least: 4.6
  * Requires PHP: 7.0

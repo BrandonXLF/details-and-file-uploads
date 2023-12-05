@@ -84,7 +84,7 @@ def generate_txt():
     with open(bin + '/../readme.txt', 'w+') as file:
         print('=== ' + template['name'] + ' ===', file = file)
         print('Contributors: brandonxlf', file = file)
-        print('Tags: woocommerce,file upload,checkout,order details', file = file)
+        print('Tags: ' + ','.join(template['tags']), file = file)
         print('Donate link: https://www.brandonfowler.me/donate/', file = file)
         print('Requires at least: ' + template['wp-min'], file = file)
         print('Tested up to: ' + template['wp-tested'], file = file)
@@ -146,8 +146,8 @@ def generate_comment():
  * @wordpress-plugin
 '''
     out += ' * Plugin Name: ' + template['name'] + '\n'
-    out += ' * Plugin URI: https://www.brandonfowler.me/details-and-file-upload/\n'
-    out += ' * Description: Add general or item-specific detail inputs and file uploads to the WooCommerce checkout page.\n'
+    out += ' * Plugin URI: ' + template['url'] + '\n'
+    out += ' * Description: ' + template['short-description'] + '\n'
     out += ' * Version: ' + template['version'] + '\n'
     out += ' * Requires at least: ' + template['wp-min'] + '\n'
     out += ' * Requires PHP: ' + template['php-min'] + '\n'
