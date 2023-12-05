@@ -5,7 +5,7 @@ import os
 bin = os.path.dirname(os.path.realpath(__file__))
 template = None
 
-with open(bin + '/readme-template.yml', 'r') as file:
+with open(bin + '/../readme-template.yml', 'r') as file:
     template = yaml.safe_load(file)
 
 def generate_md():
