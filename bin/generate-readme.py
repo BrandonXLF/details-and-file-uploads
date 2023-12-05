@@ -145,7 +145,7 @@ def generate_comment():
  * @license     GPL-2.0+
  *
  * @wordpress-plugin
- '''
+'''
     out += ' * Plugin Name: ' + template['name'] + '\n'
     out += ' * Plugin URI: https://www.brandonfowler.me/details-and-file-upload/\n'
     out += ' * Description: Add general or item-specific detail inputs and file uploads to the WooCommerce checkout page.\n'
