@@ -1,0 +1,8 @@
+*                               export-ignore
+
+src                             -export-ignore
+src/**                          -export-ignore
+LICENSE                         -export-ignore
+readme.txt                      -export-ignore
+details-and-file-upload.php     -export-ignore
+uninstall.php                   -export-ignore
