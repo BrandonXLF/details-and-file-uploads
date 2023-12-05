@@ -136,14 +136,14 @@ class Tracked_Files_Tests extends \WP_UnitTestCase {
 
 		Tracked_Files::track_file( WC()->session->get_customer_id(), $tmp_dir . '/example-image.tmp1.png' );
 		Tracked_Files::track_file( 'FAKE_KEY1', $tmp_dir . '/example-image.tmp2.png' );
-		
+
 		Tracked_Files::uninstall();
 
 		$this->assertFalse( file_exists( $tmp_dir . '/example-image.tmp1.png' ) );
 		$this->assertFalse( file_exists( $tmp_dir . '/example-image.tmp2.png' ) );
-		
+
 		global $wpdb;
-		
+
 		$this->assertEmpty(
 			$wpdb->get_var(
 				$wpdb->prepare( 'SHOW TABLES LIKE %s', $wpdb->esc_like( Tracked_Files::table_name() ) )

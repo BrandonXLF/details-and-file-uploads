@@ -11,29 +11,16 @@ namespace DetailsAndFileUploadPlugin;
  * Tests for the API class.
  */
 class API_Tests extends \WP_UnitTestCase {
-	/**
-	 * @beforeClass
-	 */
-	public static function add_database() {
+	public function set_up(): void {
+		parent::set_up();
+
 		Tracked_Files::setup();
 	}
 
-	/**
-	 * @afterClass
-	 */
-	public static function remove_database() {
-		global $wpdb;
-
-		$table_name = Tracked_Files::table_name();
-		// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
-		$wpdb->query( "DROP TABLE IF EXISTS $table_name" );
-	}
-
-	/**
-	 * @after
-	 */
-	public static function remove_uploads() {
+	public function tear_down(): void {
 		Uploads::uninstall();
+
+		parent::tear_down();
 	}
 
 	public function test_no_nonce() {

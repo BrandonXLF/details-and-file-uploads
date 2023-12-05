@@ -11,7 +11,7 @@ namespace DetailsAndFileUploadPlugin;
  * Tests for uninstall.php
  */
 class Uninstall_Tests extends \WP_UnitTestCase {
-    public function test_uninstall_script() {
+	public function test_uninstall_script() {
 		update_option(
 			'details_and_file_uploads_fields',
 			[
@@ -49,7 +49,7 @@ class Uninstall_Tests extends \WP_UnitTestCase {
 		$this->assertNull( get_option( 'details_and_file_uploads_fields', null ) );
 		$this->assertNull( get_option( 'details_and_file_uploads_hide_notes', null ) );
 
-        $this->assertEmpty(
+		$this->assertEmpty(
 			$wpdb->get_var(
 				$wpdb->prepare( 'SHOW TABLES LIKE %s', $wpdb->esc_like( Tracked_Files::table_name() ) )
 			)

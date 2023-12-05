@@ -54,4 +54,7 @@
 	<rule ref="Generic.Commenting.DocComment.MissingShort">
 		<exclude-pattern>*/tests/*</exclude-pattern>
 	</rule>
+	<rule ref="PHPCompatibility.FunctionDeclarations.NewReturnTypeDeclarations.voidFound">
+		<exclude-pattern>*/tests/*</exclude-pattern>
+	</rule>
 </ruleset>
