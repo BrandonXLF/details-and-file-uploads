@@ -66,6 +66,26 @@ class Tracked_Files {
 	}
 
 	/**
+	 * Untrack and delete a file.
+	 *
+	 * @param int | string $session The session ID.
+	 * @param string       $path The path of the file.
+	 */
+	public static function delete_file( $session, $path ) {
+		global $wpdb;
+
+		$wpdb->delete(
+			self::table_name(),
+			[
+				'session_id' => $session,
+				'file_path'  => $path,
+			]
+		);
+
+		Uploads::delete_file( $path );
+	}
+
+	/**
 	 * Untrack all files for a session.
 	 *
 	 * @param int | string $session The session ID.

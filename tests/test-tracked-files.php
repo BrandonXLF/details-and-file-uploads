@@ -42,6 +42,50 @@ class Tracked_Files_Tests extends \WP_UnitTestCase {
 		$this->assertEquals( 1, $count );
 	}
 
+	public function test_delete_file() {
+		$tmp_dir = ini_get( 'upload_tmp_dir' ) ?: sys_get_temp_dir();
+		
+		$this->assertTrue(
+			copy(
+				__DIR__ . '/example-image.png',
+				$tmp_dir . '/example-image.tmp.png'
+			)
+		);
+
+		Tracked_Files::track_file( WC()->session->get_customer_id(), $tmp_dir . '/example-image.tmp.png' );
+
+		global $wpdb;
+		$table = Tracked_Files::table_name();
+
+		$this->assertFileExists(  $tmp_dir . '/example-image.tmp.png' );
+
+		$count = $wpdb->get_results(
+			$wpdb->prepare(
+				// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+				"SELECT count(*) FROM $table WHERE session_id = %d  AND file_path = %s",
+				WC()->session->get_customer_id(),
+				$tmp_dir . '/example-image.tmp.png'
+			)
+		)[0]->{'count(*)'};
+
+		$this->assertEquals( 1, $count );
+
+		Tracked_Files::delete_file( WC()->session->get_customer_id(), $tmp_dir . '/example-image.tmp.png' );
+
+		$this->assertFileDoesNotExist(  $tmp_dir . '/example-image.tmp.png' );
+
+		$count = $wpdb->get_results(
+			$wpdb->prepare(
+				// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+				"SELECT count(*) FROM $table WHERE session_id = %d  AND file_path = %s",
+				WC()->session->get_customer_id(),
+				$tmp_dir . '/example-image.tmp.png'
+			)
+		)[0]->{'count(*)'};
+
+		$this->assertEquals( 0, $count );
+	}
+
 	public function test_untrack_session() {
 		Tracked_Files::track_file( WC()->session->get_customer_id(), '/foo/bar' );
 		Tracked_Files::track_file( WC()->session->get_customer_id(), '/bar/baz' );
