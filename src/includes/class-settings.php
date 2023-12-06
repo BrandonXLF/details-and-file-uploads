@@ -26,6 +26,7 @@ class Settings {
 			'label'    => 'ID',
 			'required' => true,
 			'unique'   => true,
+			'defining' => true,
 		],
 		'type'        => [
 			'type'     => 'select',
@@ -53,10 +54,12 @@ class Settings {
 				'week'           => 'Week',
 			],
 			'required' => true,
+			'defining' => true,
 		],
 		'label'       => [
-			'type'  => 'text',
-			'label' => 'Label',
+			'type'     => 'text',
+			'label'    => 'Label',
+			'defining' => true,
 		],
 		'options'     => [
 			'type'  => 'list',
@@ -152,7 +155,15 @@ class Settings {
 		$filtered = array_filter(
 			$values,
 			function ( $value ) {
-				return empty( $value['deleted'] ) && count( array_filter( $value ) );
+				return empty( $value['deleted'] ) && count(
+					array_filter(
+						$value,
+						function ( $val, $key ) {
+							return ( self::FIELD_SETTINGS[ $key ]['defining'] ?? false ) && ! empty( $val );
+						},
+						ARRAY_FILTER_USE_BOTH
+					)
+				);
 			}
 		);
 
