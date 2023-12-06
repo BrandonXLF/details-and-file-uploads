@@ -199,7 +199,7 @@ class Display {
 			echo '<div class="dfu-order-detail">';
 
 			if ( 'file' === $data['type'] && $show_objects ) {
-				echo '<div>' . esc_html( $label ) . '</div>';
+				echo '<div>' . esc_html( $label ) . ':</div>';
 				echo '<div class="dfu-file-field">';
 
 				foreach ( $data['data'] as $file ) {

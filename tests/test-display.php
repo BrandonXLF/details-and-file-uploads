@@ -352,7 +352,7 @@ class Display_Tests extends \WP_UnitTestCase {
 		Display::show_fields_for_order( $order );
 
 		$this->expectOutputString(
-			'<div class="dfu-order-details"><div class="dfu-order-detail"><div>{bar}</div><div class="dfu-file-field"><figure><a target="_blank" href="https://localhost/whatever/example-image.tmp.png"><object type="image/png" data="https://localhost/whatever/example-image.tmp.png"></object></a><figcaption><a target="_blank" href="https://localhost/whatever/example-image.tmp.png">example-image.png</a></figcaption></figure></div></div></div>'
+			'<div class="dfu-order-details"><div class="dfu-order-detail"><div>{bar}:</div><div class="dfu-file-field"><figure><a target="_blank" href="https://localhost/whatever/example-image.tmp.png"><object data="https://localhost/whatever/example-image.tmp.png"></object></a><figcaption><a target="_blank" href="https://localhost/whatever/example-image.tmp.png">example-image.png</a></figcaption></figure></div></div></div>'
 		);
 	}
 
@@ -391,7 +391,7 @@ class Display_Tests extends \WP_UnitTestCase {
 		Display::show_fields_for_order( $order );
 
 		$this->expectOutputString(
-			'<div class="dfu-order-details"><div class="dfu-order-detail"><div>{bar}</div><div class="dfu-file-field"><figure><a target="_blank" href="https://localhost/whatever/example-image.tmp.png"><object type="image/png" data="https://localhost/whatever/example-image.tmp.png"></object></a><figcaption><a target="_blank" href="https://localhost/whatever/example-image.tmp.png">example-image.png</a></figcaption></figure><figure><a target="_blank" href="https://localhost/whatever/example-image2.tmp.png"><object type="image/png" data="https://localhost/whatever/example-image2.tmp.png"></object></a><figcaption><a target="_blank" href="https://localhost/whatever/example-image2.tmp.png">example-image2.png</a></figcaption></figure></div></div></div>'
+			'<div class="dfu-order-details"><div class="dfu-order-detail"><div>{bar}:</div><div class="dfu-file-field"><figure><a target="_blank" href="https://localhost/whatever/example-image.tmp.png"><object data="https://localhost/whatever/example-image.tmp.png"></object></a><figcaption><a target="_blank" href="https://localhost/whatever/example-image.tmp.png">example-image.png</a></figcaption></figure><figure><a target="_blank" href="https://localhost/whatever/example-image2.tmp.png"><object data="https://localhost/whatever/example-image2.tmp.png"></object></a><figcaption><a target="_blank" href="https://localhost/whatever/example-image2.tmp.png">example-image2.png</a></figcaption></figure></div></div></div>'
 		);
 	}
 
