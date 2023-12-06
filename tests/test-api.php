@@ -75,10 +75,10 @@ class API_Tests extends \WP_UnitTestCase {
 		$this->assertArrayHasKey( 'foo', WC()->session->dfu_file_uploads );
 
 		$this->assertArrayHasKey( 0, WC()->session->dfu_file_uploads['foo'] );
-		$this->assertEquals( WC()->session->dfu_file_uploads['foo'][0]['name'], 'example-image.png' );
+		$this->assertEquals( 'example-image.png', WC()->session->dfu_file_uploads['foo'][0]['name'] );
 		$this->assertFileExists( WC()->session->dfu_file_uploads['foo'][0]['path'] );
 		$this->assertNotFalse( filter_var( WC()->session->dfu_file_uploads['foo'][0]['url'], FILTER_VALIDATE_URL ) );
-		$this->assertEquals( WC()->session->dfu_file_uploads['foo'][0]['type'], 'image/png' );
+		$this->assertEquals( 'image/png', WC()->session->dfu_file_uploads['foo'][0]['type'] );
 
 		$this->assertFileExists( ABSPATH . '/wp-content/uploads/dfu_file_uploads/index.html' );
 
@@ -147,16 +147,16 @@ class API_Tests extends \WP_UnitTestCase {
 		$this->assertArrayHasKey( 'foo', WC()->session->dfu_file_uploads );
 
 		$this->assertArrayHasKey( 0, WC()->session->dfu_file_uploads['foo'] );
-		$this->assertEquals( WC()->session->dfu_file_uploads['foo'][0]['name'], 'example-image1.png' );
+		$this->assertEquals('example-image1.png',  WC()->session->dfu_file_uploads['foo'][0]['name'] );
 		$this->assertFileExists( WC()->session->dfu_file_uploads['foo'][0]['path'] );
 		$this->assertNotFalse( filter_var( WC()->session->dfu_file_uploads['foo'][0]['url'], FILTER_VALIDATE_URL ) );
-		$this->assertEquals( WC()->session->dfu_file_uploads['foo'][0]['type'], 'image/png' );
+		$this->assertEquals( 'image/png', WC()->session->dfu_file_uploads['foo'][0]['type'] );
 
 		$this->assertArrayHasKey( 0, WC()->session->dfu_file_uploads['foo'] );
-		$this->assertEquals( WC()->session->dfu_file_uploads['foo'][1]['name'], 'example-image2.png' );
+		$this->assertEquals( 'example-image2.png', WC()->session->dfu_file_uploads['foo'][1]['name'] );
 		$this->assertFileExists( WC()->session->dfu_file_uploads['foo'][1]['path'] );
 		$this->assertNotFalse( filter_var( WC()->session->dfu_file_uploads['foo'][1]['url'], FILTER_VALIDATE_URL ) );
-		$this->assertEquals( WC()->session->dfu_file_uploads['foo'][1]['type'], 'image/png' );
+		$this->assertEquals( 'image/png', WC()->session->dfu_file_uploads['foo'][1]['type'] );
 
 		$this->assertFileExists( ABSPATH . '/wp-content/uploads/dfu_file_uploads/index.html' );
 
