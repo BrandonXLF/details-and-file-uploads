@@ -147,7 +147,7 @@ class API_Tests extends \WP_UnitTestCase {
 		$this->assertArrayHasKey( 'foo', WC()->session->dfu_file_uploads );
 
 		$this->assertArrayHasKey( 0, WC()->session->dfu_file_uploads['foo'] );
-		$this->assertEquals('example-image1.png',  WC()->session->dfu_file_uploads['foo'][0]['name'] );
+		$this->assertEquals( 'example-image1.png', WC()->session->dfu_file_uploads['foo'][0]['name'] );
 		$this->assertFileExists( WC()->session->dfu_file_uploads['foo'][0]['path'] );
 		$this->assertNotFalse( filter_var( WC()->session->dfu_file_uploads['foo'][0]['url'], FILTER_VALIDATE_URL ) );
 		$this->assertEquals( 'image/png', WC()->session->dfu_file_uploads['foo'][0]['type'] );
