@@ -472,6 +472,9 @@ class Settings {
 		<div class="wrap">
 			<h1>Details and File Upload Settings</h1>
 			<form action="options.php" method="post">
+				<p>
+					PHP max upload size is set to <?php echo esc_html( size_format( wp_max_upload_size() ) ); ?>.
+				</p>
 				<?php settings_fields( 'details_and_file_upload_settings' ); ?>
 				<?php settings_errors(); ?>
 				<?php do_settings_sections( 'details-and-file-uploads-settings' ); ?>
