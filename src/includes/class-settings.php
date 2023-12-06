@@ -71,6 +71,14 @@ class Settings {
 			'label' => 'Multi-file',
 			'shown' => [ 'file' ],
 		],
+		'types'       => [
+			'type'      => 'list',
+			'item-type' => 'string',
+			'label'     => 'File types',
+			'items'     => [ __CLASS__, 'get_types' ],
+			'initial'   => [ 'image' ],
+			'shown'     => [ 'file' ],
+		],
 		'placeholder' => [
 			'type'  => 'text',
 			'label' => 'Placeholder',
@@ -101,6 +109,27 @@ class Settings {
 	public static function init() {
 		add_action( 'admin_init', [ __CLASS__, 'register_settings' ] );
 		add_action( 'admin_menu', [ __CLASS__, 'configure_admin_menu' ] );
+	}
+
+	/**
+	 * Get a list of recognized file types.
+	 *
+	 * @return array<string, string>
+	 */
+	public static function get_types() {
+		$mime_types = wp_get_mime_types();
+
+		$out = [
+			'image' => 'Image files',
+			'video' => 'Video files',
+			'audio' => 'Audio files',
+		];
+
+		foreach ( $mime_types as $exts => $_ ) {
+			$out[ '.' . explode( '|', $exts )[0] ] = '.' . explode( '|', $exts )[0];
+		}
+
+		return $out;
 	}
 
 	/**
@@ -175,8 +204,8 @@ class Settings {
 					$id = $name . '---' . ( $value[ $name ] ?? '' );
 
 					if (
-					( $field_setting['required'] ?? false ) &&
-					empty( $value[ $name ] )
+						( $field_setting['required'] ?? false ) &&
+						empty( $value[ $name ] )
 					) {
 						add_settings_error(
 							'details_and_file_uploads_fields',
@@ -186,8 +215,8 @@ class Settings {
 					}
 
 					if (
-					( $field_setting['unique'] ?? false ) &&
-					( $seen_ids[ $id ] ?? false )
+						( $field_setting['unique'] ?? false ) &&
+						( $seen_ids[ $id ] ?? false )
 					) {
 						add_settings_error(
 							'details_and_file_uploads_fields',
@@ -281,16 +310,22 @@ class Settings {
 			// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 			echo 'id="' . $input_id . '" ';
 
-			if ( 'checkbox' === $type && isset( $field ) && ( $field[ $name ] ?? false ) ) {
-				echo 'checked ';
+			if ( 'checkbox' === $type ) {
+				echo 'value="1" ';
+			} else {
+				$value = isset( $field )
+					? ( $list ? implode( ',', $field[ $name ] ?? '' ) : $field[ $name ] ?? '' )
+					: (
+						isset( $field_setting['initial'] )
+							? ( $list ? implode( ',', $field_setting['initial'] ) : $field_setting['initial'] )
+							: ''
+					);
+
+					echo 'value="' . esc_attr( $value ) . '" ';
 			}
 
-			if ( 'checkbox' === $type || isset( $field ) ) {
-				$value = 'checkbox' === $type
-					? '1'
-					: ( $list ? implode( ',', $field[ $name ] ?? [] ) : $field[ $name ] ?? '' );
-
-				echo 'value="' . esc_attr( $value ) . '" ';
+			if ( 'checkbox' === $type && isset( $field ) && ( $field[ $name ] ?? false ) ) {
+				echo 'checked ';
 			}
 
 			if ( $list ) {
@@ -330,7 +365,7 @@ class Settings {
 			echo '<div class="header">';
 			echo '<span class="header-number">' . esc_html( $i + 1 ) . '</span>';
 			echo ' - ';
-			echo esc_html( $field['label'] ?: $field['name'] );
+			echo esc_html( $field['label'] ?: ( $field['name'] ?? 'LABEL/ID MISSING!' ) );
 			echo ' (' . esc_html( self::FIELD_SETTINGS['type']['options'][ $field['type'] ] ) . ')';
 			echo '</div>';
 

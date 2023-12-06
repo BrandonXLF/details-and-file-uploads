@@ -25,6 +25,7 @@ jQuery($ => {
             for (const uploadInput of uploadInputs) {
                 const data = new FormData();
                 
+                data.append('action', 'dfu_file_upload');
                 data.append('name', uploadInput.dataset.name);
                 data.append('nonce', dfu_checkout_params.file_upload_nonce);
 
@@ -34,7 +35,7 @@ jQuery($ => {
 
                 try {
                     await $.post({
-                        url: wc_checkout_params.wc_ajax_url.replace('%%endpoint%%', 'dfu_file_upload'),
+                        url: dfu_checkout_params.file_upload_endpoint,
                         data,
                         contentType: false,
                         processData: false

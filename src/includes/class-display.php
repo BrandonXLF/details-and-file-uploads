@@ -132,7 +132,10 @@ class Display {
 		wp_localize_script(
 			'dfu_checkout_script',
 			'dfu_checkout_params',
-			[ 'file_upload_nonce' => wp_create_nonce( 'dfu-file-upload' ) ]
+			[
+				'file_upload_endpoint' => admin_url( 'admin-ajax.php' ),
+				'file_upload_nonce'    => wp_create_nonce( 'dfu-file-upload' ),
+			]
 		);
 
 		$out = $field;
@@ -205,7 +208,7 @@ class Display {
 				foreach ( $data['data'] as $file ) {
 					echo '<figure>';
 					echo '<a target="_blank" href="' . esc_attr( $file['url'] ) . '">';
-					echo '<object type="' . esc_attr( $file['type'] ) . '" data="' . esc_attr( $file['url'] ) . '"></object>';
+					echo '<object data="' . esc_attr( $file['url'] ) . '"></object>';
 					echo '</a>';
 					echo '<figcaption>';
 					echo '<a target="_blank" href="' . esc_attr( $file['url'] ) . '">';

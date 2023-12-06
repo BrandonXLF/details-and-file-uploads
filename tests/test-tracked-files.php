@@ -44,7 +44,7 @@ class Tracked_Files_Tests extends \WP_UnitTestCase {
 
 	public function test_delete_file() {
 		$tmp_dir = ini_get( 'upload_tmp_dir' ) ?: sys_get_temp_dir();
-		
+
 		$this->assertTrue(
 			copy(
 				__DIR__ . '/example-image.png',
@@ -57,7 +57,7 @@ class Tracked_Files_Tests extends \WP_UnitTestCase {
 		global $wpdb;
 		$table = Tracked_Files::table_name();
 
-		$this->assertFileExists(  $tmp_dir . '/example-image.tmp.png' );
+		$this->assertFileExists( $tmp_dir . '/example-image.tmp.png' );
 
 		$count = $wpdb->get_results(
 			$wpdb->prepare(
@@ -72,7 +72,7 @@ class Tracked_Files_Tests extends \WP_UnitTestCase {
 
 		Tracked_Files::delete_file( WC()->session->get_customer_id(), $tmp_dir . '/example-image.tmp.png' );
 
-		$this->assertFileDoesNotExist(  $tmp_dir . '/example-image.tmp.png' );
+		$this->assertFileDoesNotExist( $tmp_dir . '/example-image.tmp.png' );
 
 		$count = $wpdb->get_results(
 			$wpdb->prepare(

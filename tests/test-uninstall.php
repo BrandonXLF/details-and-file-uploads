@@ -12,6 +12,15 @@ namespace DetailsAndFileUploadPlugin;
  */
 class Uninstall_Tests extends \WP_UnitTestCase {
 	public function test_uninstall_script() {
+		$tmp_dir = ini_get( 'upload_tmp_dir' ) ?: sys_get_temp_dir();
+
+		$this->assertTrue(
+			copy(
+				__DIR__ . '/example-image.png',
+				$tmp_dir . '/example-image.tmp.png'
+			)
+		);
+
 		update_option(
 			'details_and_file_uploads_fields',
 			[
