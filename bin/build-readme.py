@@ -157,7 +157,7 @@ def generate_comment():
     out += ' * License URI: https://www.gnu.org/licenses/gpl-2.0.html\n'
     out += ' **/'
 
-    const_out = 'define( \'DETAILS_AND_FILE_UPLOAD_PLUGIN_VERSION\', ' + template['version'] + ' );'
+    const_out = 'define( \'DETAILS_AND_FILE_UPLOAD_PLUGIN_VERSION\', \'' + template['version'] + '\' );'
 
     text = None
 
