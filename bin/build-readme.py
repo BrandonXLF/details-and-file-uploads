@@ -157,11 +157,14 @@ def generate_comment():
     out += ' * License URI: https://www.gnu.org/licenses/gpl-2.0.html\n'
     out += ' **/'
 
+    const_out = 'define( \'DETAILS_AND_FILE_UPLOAD_PLUGIN_VERSION\', ' + template['version'] + ' );'
+
     text = None
 
     with open(bin + '/../details-and-file-upload.php', 'r') as file:
         text = file.read()
         text = re.sub(r'\/\*\*(?:.|\n)+\*\*\/', out, text)
+        text = re.sub(r'define.+DETAILS_AND_FILE_UPLOAD_PLUGIN_VERSION.+', const_out, text)
 
     with open(bin + '/../details-and-file-upload.php', 'w+') as file:
         file.write(text)

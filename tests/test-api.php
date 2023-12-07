@@ -142,7 +142,10 @@ class API_Tests extends \WP_UnitTestCase {
 	}
 
 	public function test_preexisting_folder() {
-		mkdir( ABSPATH . '/wp-content/uploads/dfu_file_uploads' );
+		WP_Filesystem();
+		global $wp_filesystem;
+
+		$wp_filesystem->mkdir( ABSPATH . '/wp-content/uploads/dfu_file_uploads' );
 
 		$this->test_single_file();
 	}

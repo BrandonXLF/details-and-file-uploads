@@ -99,17 +99,20 @@ class Uploads {
 			return;
 		}
 
+		WP_Filesystem();
+		global $wp_filesystem;
+
 		$it = new \RecursiveDirectoryIterator( self::get_upload_path(), \FilesystemIterator::SKIP_DOTS );
 		$it = new \RecursiveIteratorIterator( $it, \RecursiveIteratorIterator::CHILD_FIRST );
 
 		foreach ( $it as $file ) {
 			if ( $file->isDir() ) {
-				rmdir( $file->getPathname() );
+				$wp_filesystem->rmdir( $file->getPathname() );
 			} else {
-				unlink( $file->getPathname() );
+				wp_delete_file( $file->getPathname() );
 			}
 		}
 
-		rmdir( self::get_upload_path() );
+		$wp_filesystem->rmdir( self::get_upload_path() );
 	}
 }

@@ -139,7 +139,9 @@ class Tracked_Files {
 			Uploads::delete_file( $result->file_path );
 		}
 
+		// phpcs:disable WordPress.DB.DirectDatabaseQuery.SchemaChange
 		// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 		$wpdb->query( "DROP TABLE $table_name" );
+		// phpcs:enable WordPress.DB.DirectDatabaseQuery.SchemaChange
 	}
 }

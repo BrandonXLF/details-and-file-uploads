@@ -120,13 +120,17 @@ class Display {
 	public static function create_upload_field( $field, $key, $args ) {
 		wp_enqueue_style(
 			'dfu_checkout_styles',
-			plugin_dir_url( DETAILS_AND_FILE_UPLOAD_PLUGIN_FILE ) . 'src/css/checkout.css'
+			plugin_dir_url( DETAILS_AND_FILE_UPLOAD_PLUGIN_FILE ) . 'src/css/checkout.css',
+			null,
+			DETAILS_AND_FILE_UPLOAD_PLUGIN_VERSION
 		);
 
 		wp_enqueue_script(
 			'dfu_checkout_script',
 			plugin_dir_url( DETAILS_AND_FILE_UPLOAD_PLUGIN_FILE ) . 'src/js/checkout.js',
-			[ 'jquery' ]
+			[ 'jquery' ],
+			DETAILS_AND_FILE_UPLOAD_PLUGIN_VERSION,
+			[ 'in_footer' => true ]
 		);
 
 		wp_localize_script(
@@ -185,7 +189,9 @@ class Display {
 	public static function show_fields_for_order( $order, $show_objects = true ) {
 		wp_enqueue_style(
 			'dfu_order_details_styles',
-			plugin_dir_url( DETAILS_AND_FILE_UPLOAD_PLUGIN_FILE ) . 'src/css/order.css'
+			plugin_dir_url( DETAILS_AND_FILE_UPLOAD_PLUGIN_FILE ) . 'src/css/order.css',
+			null,
+			DETAILS_AND_FILE_UPLOAD_PLUGIN_VERSION
 		);
 
 		$fields        = get_option( 'details_and_file_uploads_fields', [] );

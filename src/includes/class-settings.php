@@ -460,13 +460,17 @@ class Settings {
 	public static function settings_page() {
 		wp_enqueue_style(
 			'dfu_settings_styles',
-			plugin_dir_url( DETAILS_AND_FILE_UPLOAD_PLUGIN_FILE ) . 'src/css/settings.css'
+			plugin_dir_url( DETAILS_AND_FILE_UPLOAD_PLUGIN_FILE ) . 'src/css/settings.css',
+			null,
+			DETAILS_AND_FILE_UPLOAD_PLUGIN_VERSION
 		);
 
 		wp_enqueue_script(
 			'dfu_settings_script',
 			plugin_dir_url( DETAILS_AND_FILE_UPLOAD_PLUGIN_FILE ) . 'src/js/settings.js',
-			[ 'jquery', 'jquery-ui-sortable', 'jquery-ui-accordion' ]
+			[ 'jquery', 'jquery-ui-sortable', 'jquery-ui-accordion' ],
+			DETAILS_AND_FILE_UPLOAD_PLUGIN_VERSION,
+			[ 'in_footer' => true ]
 		);
 		?>
 		<div class="wrap">
