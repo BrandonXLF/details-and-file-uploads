@@ -1,5 +1,5 @@
 name: Details and File Upload for WooCommerce
-version: '1.1.0'
+version: '1.1.1'
 url: https://www.brandonfowler.me/details-and-file-upload/
 short-description: Easily add general or item-specific detail inputs and file uploads to the WooCommerce checkout page.
 tags: ['woocommerce', 'file upload', 'checkout', 'order details']

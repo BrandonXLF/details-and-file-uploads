@@ -314,7 +314,7 @@ class Settings {
 				echo 'value="1" ';
 			} else {
 				$value = isset( $field )
-					? ( $list ? implode( ',', $field[ $name ] ?? '' ) : $field[ $name ] ?? '' )
+					? ( $list ? implode( ',', $field[ $name ] ?? [] ) : $field[ $name ] ?? '' )
 					: (
 						isset( $field_setting['initial'] )
 							? ( $list ? implode( ',', $field_setting['initial'] ) : $field_setting['initial'] )
