@@ -86,7 +86,7 @@ jQuery($ => {
 		addBtn.addEventListener('click', () => {
 			addEntry(addInput.value);
 			
-			listInput.value += ',' + addInput.value;
+			listInput.value += (listInput.value ? ',' : '') + addInput.value;
 			updateDatalist();
 			
 			addInput.value = '';
