@@ -359,4 +359,52 @@ class API_Tests extends \WP_UnitTestCase {
 		$this->assertFalse( isset( WC()->session->dfu_file_uploads ) );
 		$this->assert_file_count( 'foo', 0, WC()->session->dfu_file_uploads );
 	}
+
+	public function test_wp_unknown_type() {
+		$tmp_dir = ini_get( 'upload_tmp_dir' ) ?: sys_get_temp_dir();
+
+		$this->assertTrue(
+			copy(
+				__DIR__ . '/example-image.png',
+				$tmp_dir . '/example-image.tmp.zzz'
+			)
+		);
+
+		$_POST = [
+			'name'  => 'foo',
+			'nonce' => wp_create_nonce( 'dfu-file-upload' ),
+		];
+
+		$_FILES = [
+			'files' => [
+				'name'     => [ 'example-image.zzz' ],
+				'type'     => [ 'application/octet-stream' ],
+				'tmp_name' => [ $tmp_dir . '/example-image.tmp.zzz' ],
+				'error'    => [ UPLOAD_ERR_OK ],
+				'size'     => [ filesize( $tmp_dir . '/example-image.tmp.zzz' ) ],
+			],
+		];
+
+		update_option(
+			'details_and_file_uploads_fields',
+			[
+				[
+					'id'         => 'foo',
+					'type'       => 'file',
+					'label'      => 'Foo',
+					'required'   => false,
+					'types'      => [ '.zzz' ],
+					'products'   => [],
+					'categories' => [],
+				],
+			]
+		);
+
+		do_action( 'wp_ajax_dfu_file_upload' );
+
+		$this->assertTrue( isset( WC()->session->dfu_file_uploads ) );
+		$this->assertFileExists( ABSPATH . '/wp-content/uploads/dfu_file_uploads/index.html' );
+		$this->assert_file_count( 'foo', 1, WC()->session->dfu_file_uploads );
+		$this->assert_tracked_file( 'foo', 'example-image.zzz', WC()->session->dfu_file_uploads );
+	}
 }

@@ -73,6 +73,7 @@ class Uploads {
 			$file,
 			[
 				'test_form' => false,
+				'test_type' => false,
 				'action'    => defined( 'DFU_TESTSUITE' ) ? 'test' : null,
 			]
 		);
