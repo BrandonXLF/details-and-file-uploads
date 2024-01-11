@@ -72,6 +72,15 @@ Requires WP version 4.6 and PHP version 7.0.
 
 ## Changelog
 
+### 1.1.2
+
+- Permit custom file types.
+- Fixed an issue with adding an item to an empty list on the settings page.
+
+### 1.1.1
+
+Default list settings to use an array.
+
 ### 1.1.0
 
 Added file type filtering for uploads.

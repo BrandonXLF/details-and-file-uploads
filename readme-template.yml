@@ -1,5 +1,5 @@
 name: Details and File Upload for WooCommerce
-version: '1.1.1'
+version: '1.1.2'
 url: https://www.brandonfowler.me/details-and-file-upload/
 short-description: Easily add general or item-specific detail inputs and file uploads to the WooCommerce checkout page.
 tags: ['woocommerce', 'file upload', 'checkout', 'order details']
@@ -33,6 +33,12 @@ screenshot-descriptions:
   - Custom field responses on the order confirmation page.
   - The settings page to manage custom fields.
 changelog:
+  - version: '1.1.2'
+    desc: |-
+      - Permit custom file types.
+      - Fixed an issue with adding an item to an empty list on the settings page.
+  - version: '1.1.1'
+    desc: Default list settings to use an array.
   - version: '1.1.0'
     desc: Added file type filtering for uploads. 
   - version: '1.0.2'
