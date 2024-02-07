@@ -395,7 +395,7 @@ class Display_Tests extends \WP_UnitTestCase {
 		);
 	}
 
-	public function test_shown_file_without_object() {
+	public function test_shown_file_for_email() {
 		$tmp_dir = ini_get( 'upload_tmp_dir' ) ?: sys_get_temp_dir();
 
 		$file = [
@@ -420,10 +420,10 @@ class Display_Tests extends \WP_UnitTestCase {
 				]
 			);
 
-		Display::show_fields_for_order( $order, false );
+		Display::show_fields_for_order( $order, true );
 
 		$this->expectOutputString(
-			'<div class="dfu-order-details"><div class="dfu-order-detail"><div><span>{bar}:</span> <a target="_blank" href="https://localhost/whatever/example-image.tmp.png">example-image.png</a></div></div></div>'
+			'<div style="margin-bottom:40px;padding:12px;color:#636363;border:1px solid #e5e5e5;"><div class="dfu-order-detail"><div><span>{bar}:</span> <a target="_blank" href="https://localhost/whatever/example-image.tmp.png">example-image.png</a></div></div></div>'
 		);
 	}
 

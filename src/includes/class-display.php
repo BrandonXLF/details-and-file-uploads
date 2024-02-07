@@ -184,9 +184,9 @@ class Display {
 	 * Echo the fields for an order.
 	 *
 	 * @param \WC_Order $order The order to show fields for.
-	 * @param bool      $show_objects Weather to show HTML objects.
+	 * @param bool      $for_email Weather the output is going to be included in an email.
 	 */
-	public static function show_fields_for_order( $order, $show_objects = true ) {
+	public static function show_fields_for_order( $order, $for_email = false ) {
 		wp_enqueue_style(
 			'dfu_order_details_styles',
 			plugin_dir_url( DETAILS_AND_FILE_UPLOAD_PLUGIN_FILE ) . 'src/css/order.css',
@@ -198,7 +198,11 @@ class Display {
 		$key_index_map = array_flip( array_column( $fields, 'id' ) );
 		$meta_data     = $order->get_meta( 'details_and_file_uploads' ) ?: [];
 
-		echo '<div class="dfu-order-details">';
+		if ( $for_email ) {
+			echo '<div style="margin-bottom:40px;padding:12px;color:#636363;border:1px solid #e5e5e5;">';
+		} else {
+			echo '<div class="dfu-order-details">';
+		}
 
 		foreach ( $meta_data as $key => $data ) {
 			$label = array_key_exists( $key, $key_index_map )
@@ -207,7 +211,7 @@ class Display {
 
 			echo '<div class="dfu-order-detail">';
 
-			if ( 'file' === $data['type'] && $show_objects ) {
+			if ( 'file' === $data['type'] && ! $for_email ) {
 				echo '<div>' . esc_html( $label ) . ':</div>';
 				echo '<div class="dfu-file-field">';
 
@@ -229,22 +233,15 @@ class Display {
 				echo '<div>';
 				echo '<span>' . esc_html( $label ) . ':</span> ';
 
-				echo implode(
-					', ',
-					// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-					array_map(
-						function ( $file ) {
-							$out = '';
+				foreach ( $data['data'] as $i => &$file ) {
+					if ( $i > 0 ) {
+						echo ', ';
+					}
 
-							$out .= '<a target="_blank" href="' . esc_attr( $file['url'] ) . '">';
-							$out .= esc_html( $file['name'] );
-							$out .= '</a>';
-
-							return $out;
-						},
-						$data['data']
-					)
-				);
+					echo '<a target="_blank" href="' . esc_attr( $file['url'] ) . '">';
+					echo esc_html( $file['name'] );
+					echo '</a>';
+				}
 
 				echo '</div>';
 			} else {
@@ -315,16 +312,6 @@ class Display {
 
 		echo '<h2>Details and files</h2>';
 
-		ob_start();
-		self::show_fields_for_order( $order, false );
-		$fields = ob_get_contents();
-		ob_end_clean();
-
-		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-		echo str_replace(
-			'class="dfu-order-details"',
-			'style="margin-bottom:40px;padding:12px;color:#636363;border:1px solid #e5e5e5;"',
-			$fields
-		);
+		self::show_fields_for_order( $order, true );
 	}
 }

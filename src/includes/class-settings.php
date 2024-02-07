@@ -252,9 +252,33 @@ class Settings {
 	}
 
 	/**
+	 * Get the name for a given index and setting.
+	 *
+	 * @param int    $i The index of the field.
+	 * @param string $name The name of the setting.
+	 */
+	private static function input_name( $i, $name ) {
+		return 'details_and_file_uploads_fields[' + $i + '][' + $name + ']';
+	}
+
+	/**
+	 * Print a data-shown-cond attribute if required.
+	 *
+	 * @param array $field_setting The field's config.
+	 */
+	private static function print_shown_attr( &$field_setting ) {
+		if ( ! ( $field_setting['shown'] ?? false ) ) {
+			return;
+		}
+
+		echo ' data-shown-cond="' . esc_attr( wp_json_encode( $field_setting['shown'] ) ) . '"';
+	}
+
+
+	/**
 	 * Show a field setting for the settings page.
 	 *
-	 * @param number $i The index of the field.
+	 * @param int    $i The index of the field.
 	 * @param array  $field The field's data.
 	 * @param string $name The name of the setting.
 	 * @param array  $field_setting The field's config.
@@ -264,26 +288,23 @@ class Settings {
 			return;
 		}
 
-		$type      = esc_attr( $field_setting['type'] );
-		$input_id  = uniqid( 'field-input-', true );
-		$full_name = 'details_and_file_uploads_fields[' . esc_attr( $i ) . '][' . esc_attr( $name ) . ']';
+		$type     = $field_setting['type'];
+		$input_id = uniqid( 'field-input-', true );
 
-		$shown_attr = ( $field_setting['shown'] ?? false )
-			? 'data-shown-cond="' . esc_attr( wp_json_encode( $field_setting['shown'] ) ) . '"'
-			: '';
-
-		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-		echo '<label for="' . $input_id . '" ' . $shown_attr . '>';
+		echo '<label for="' . esc_attr( $input_id ) . '"';
+		self::print_shown_attr( $field_setting );
+		echo '>';
 		echo esc_html( $field_setting['label'] ) . ' ';
 		echo '</label>';
-		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-		echo '<div ' . $shown_attr . '>';
+
+		echo '<div';
+		self::print_shown_attr( $field_setting );
+		echo '>';
 
 		$list = false;
 
 		if ( 'select' === $type ) {
-			// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-			echo '<select id="' . $input_id . '" name="' . $full_name . '">';
+			echo '<select id="' . esc_attr( $input_id ) . '" name="' . esc_attr( self::input_name( $i, $name ) ) . '">';
 
 			foreach ( $field_setting['options'] as $value => $text ) {
 				echo '<option value="' . esc_attr( $value ) . '" '
@@ -300,15 +321,13 @@ class Settings {
 				$list = true;
 			}
 
-			// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-			echo '<input type="' . $type . '" name="' . $full_name . '" ';
+			echo '<input type="' . esc_attr( $type ) . '" name="' . esc_attr( self::input_name( $i, $name ) ) . '" ';
 
 			if ( 'checkbox' !== $type ) {
 				echo 'class="regular-text" ';
 			}
 
-			// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-			echo 'id="' . $input_id . '" ';
+			echo 'id="' . esc_attr( $input_id ) . '" ';
 
 			if ( 'checkbox' === $type ) {
 				echo 'value="1" ';
@@ -344,10 +363,13 @@ class Settings {
 		echo '</div>';
 
 		if ( $list ) {
-			// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-			echo '<div ' . $shown_attr . ' class="description list-help"></div>';
-			// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-			echo '<p ' . $shown_attr . ' class="description list-help">Separate values with commas (,)</p>';
+			echo '<div';
+			self::print_shown_attr( $field_setting );
+			echo ' class="description list-help"></div>';
+
+			echo '<p';
+			self::print_shown_attr( $field_setting );
+			echo ' class="description list-help">Separate values with commas (,)</p>';
 		}
 	}
 
