@@ -16,34 +16,20 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 class Tracked_Files {
 	/**
-	 * Get the table name.
-	 *
-	 * @return string The table name.
-	 */
-	public static function table_name() {
-		global $wpdb;
-
-		return $wpdb->prefix . 'dfu_tracked_file_uploads';
-	}
-
-	/**
 	 * Set up tracked files database.
 	 */
 	public static function setup() {
 		global $wpdb;
 
-		$table_name      = self::table_name();
-		$charset_collate = $wpdb->get_charset_collate();
-
 		require_once ABSPATH . 'wp-admin/includes/upgrade.php';
 
 		dbDelta(
-			"CREATE TABLE $table_name (
+			"CREATE TABLE {$wpdb->prefix}dfu_tracked_file_uploads (
 				id bigint(20) NOT NULL AUTO_INCREMENT,
 				session_id char(32) NOT NULL,
 				file_path varchar(255) NOT NULL,
 				PRIMARY KEY (id)
-			) $charset_collate"
+			) {$wpdb->get_charset_collate()}"
 		);
 	}
 
@@ -57,7 +43,7 @@ class Tracked_Files {
 		global $wpdb;
 
 		$wpdb->insert(
-			self::table_name(),
+			"{$wpdb->prefix}dfu_tracked_file_uploads",
 			[
 				'session_id' => $session,
 				'file_path'  => $path,
@@ -75,7 +61,7 @@ class Tracked_Files {
 		global $wpdb;
 
 		$wpdb->delete(
-			self::table_name(),
+			"{$wpdb->prefix}dfu_tracked_file_uploads",
 			[
 				'session_id' => $session,
 				'file_path'  => $path,
@@ -93,7 +79,7 @@ class Tracked_Files {
 	public static function untrack_session( $session ) {
 		global $wpdb;
 
-		$wpdb->delete( self::table_name(), [ 'session_id' => $session ] );
+		$wpdb->delete( "{$wpdb->prefix}dfu_tracked_file_uploads", [ 'session_id' => $session ] );
 	}
 
 	/**
@@ -102,11 +88,8 @@ class Tracked_Files {
 	public static function cleanup() {
 		global $wpdb;
 
-		$table_name = self::table_name();
-
 		$results = $wpdb->get_results(
-			// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
-			"SELECT file_path FROM $table_name files
+			"SELECT file_path FROM {$wpdb->prefix}dfu_tracked_file_uploads files
             LEFT JOIN {$wpdb->prefix}woocommerce_sessions wc ON wc.session_key = files.session_id
             WHERE wc.session_key IS NULL"
 		);
@@ -116,8 +99,7 @@ class Tracked_Files {
 		}
 
 		$wpdb->query(
-			// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
-			"DELETE files FROM $table_name files
+			"DELETE files FROM {$wpdb->prefix}dfu_tracked_file_uploads files
             LEFT JOIN {$wpdb->prefix}woocommerce_sessions wc ON wc.session_key = files.session_id
             WHERE wc.session_key IS NULL"
 		);
@@ -129,19 +111,13 @@ class Tracked_Files {
 	 */
 	public static function uninstall() {
 		global $wpdb;
-
-		$table_name = self::table_name();
-
-		// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
-		$results = $wpdb->get_results( "SELECT file_path FROM $table_name files" );
+		$results = $wpdb->get_results( "SELECT file_path FROM {$wpdb->prefix}dfu_tracked_file_uploads files" );
 
 		foreach ( $results as $result ) {
 			Uploads::delete_file( $result->file_path );
 		}
 
-		// phpcs:disable WordPress.DB.DirectDatabaseQuery.SchemaChange
-		// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
-		$wpdb->query( "DROP TABLE $table_name" );
-		// phpcs:enable WordPress.DB.DirectDatabaseQuery.SchemaChange
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.SchemaChange
+		$wpdb->query( "DROP TABLE {$wpdb->prefix}dfu_tracked_file_uploads" );
 	}
 }

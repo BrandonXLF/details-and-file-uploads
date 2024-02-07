@@ -60,7 +60,7 @@ class Uninstall_Tests extends \WP_UnitTestCase {
 
 		$this->assertEmpty(
 			$wpdb->get_var(
-				$wpdb->prepare( 'SHOW TABLES LIKE %s', $wpdb->esc_like( Tracked_Files::table_name() ) )
+				$wpdb->prepare( 'SHOW TABLES LIKE %s', $wpdb->esc_like( "{$wpdb->prefix}dfu_tracked_file_uploads" ) )
 			)
 		);
 

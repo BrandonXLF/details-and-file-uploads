@@ -48,12 +48,9 @@ class API_Tests extends \WP_UnitTestCase {
 
 		global $wpdb;
 
-		$table = Tracked_Files::table_name();
-
 		$count = $wpdb->get_results(
 			$wpdb->prepare(
-				// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
-				"SELECT count(*) FROM $table WHERE session_id = %d AND file_path = %s",
+				"SELECT count(*) FROM {$wpdb->prefix}dfu_tracked_file_uploads WHERE session_id = %d AND file_path = %s",
 				WC()->session->get_customer_id(),
 				wp_unslash( $data[ $key ][ $index ]['path'] )
 			)
@@ -72,12 +69,9 @@ class API_Tests extends \WP_UnitTestCase {
 
 		global $wpdb;
 
-		$table = Tracked_Files::table_name();
-
 		$count = $wpdb->get_results(
 			$wpdb->prepare(
-				// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
-				"SELECT count(*) FROM $table WHERE session_id = %d",
+				"SELECT count(*) FROM {$wpdb->prefix}dfu_tracked_file_uploads WHERE session_id = %d",
 				WC()->session->get_customer_id()
 			)
 		)[0]->{'count(*)'};

@@ -17,23 +17,14 @@ class Tracked_Files_Tests extends \WP_UnitTestCase {
 		Tracked_Files::setup();
 	}
 
-	public function test_table_name() {
-		global $wpdb;
-
-		$this->assertEquals( $wpdb->prefix . 'dfu_tracked_file_uploads', Tracked_Files::table_name() );
-	}
-
 	public function test_track_file() {
 		Tracked_Files::track_file( WC()->session->get_customer_id(), '/foo/bar' );
 
 		global $wpdb;
 
-		$table = Tracked_Files::table_name();
-
 		$count = $wpdb->get_results(
 			$wpdb->prepare(
-				// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
-				"SELECT count(*) FROM $table WHERE session_id = %d  AND file_path = %s",
+				"SELECT count(*) FROM {$wpdb->prefix}dfu_tracked_file_uploads WHERE session_id = %d  AND file_path = %s",
 				WC()->session->get_customer_id(),
 				'/foo/bar'
 			)
@@ -55,14 +46,12 @@ class Tracked_Files_Tests extends \WP_UnitTestCase {
 		Tracked_Files::track_file( WC()->session->get_customer_id(), $tmp_dir . '/example-image.tmp.png' );
 
 		global $wpdb;
-		$table = Tracked_Files::table_name();
 
 		$this->assertFileExists( $tmp_dir . '/example-image.tmp.png' );
 
 		$count = $wpdb->get_results(
 			$wpdb->prepare(
-				// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
-				"SELECT count(*) FROM $table WHERE session_id = %d  AND file_path = %s",
+				"SELECT count(*) FROM {$wpdb->prefix}dfu_tracked_file_uploads WHERE session_id = %d  AND file_path = %s",
 				WC()->session->get_customer_id(),
 				$tmp_dir . '/example-image.tmp.png'
 			)
@@ -76,8 +65,7 @@ class Tracked_Files_Tests extends \WP_UnitTestCase {
 
 		$count = $wpdb->get_results(
 			$wpdb->prepare(
-				// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
-				"SELECT count(*) FROM $table WHERE session_id = %d  AND file_path = %s",
+				"SELECT count(*) FROM {$wpdb->prefix}dfu_tracked_file_uploads WHERE session_id = %d  AND file_path = %s",
 				WC()->session->get_customer_id(),
 				$tmp_dir . '/example-image.tmp.png'
 			)
@@ -94,12 +82,9 @@ class Tracked_Files_Tests extends \WP_UnitTestCase {
 
 		global $wpdb;
 
-		$table = Tracked_Files::table_name();
-
 		$count = $wpdb->get_results(
 			$wpdb->prepare(
-				// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
-				"SELECT count(*) FROM $table WHERE session_id = %d",
+				"SELECT count(*) FROM {$wpdb->prefix}dfu_tracked_file_uploads WHERE session_id = %d",
 				WC()->session->get_customer_id()
 			)
 		)[0]->{'count(*)'};
@@ -154,9 +139,7 @@ class Tracked_Files_Tests extends \WP_UnitTestCase {
 
 		global $wpdb;
 
-		$table = Tracked_Files::table_name();
-		// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
-		$count = $wpdb->get_results( "SELECT count(*) FROM $table" )[0]->{'count(*)'};
+		$count = $wpdb->get_results( "SELECT count(*) FROM {$wpdb->prefix}dfu_tracked_file_uploads" )[0]->{'count(*)'};
 
 		$this->assertEquals( 1, $count );
 	}
@@ -190,7 +173,7 @@ class Tracked_Files_Tests extends \WP_UnitTestCase {
 
 		$this->assertEmpty(
 			$wpdb->get_var(
-				$wpdb->prepare( 'SHOW TABLES LIKE %s', $wpdb->esc_like( Tracked_Files::table_name() ) )
+				$wpdb->prepare( 'SHOW TABLES LIKE %s', $wpdb->esc_like( "{$wpdb->prefix}dfu_tracked_file_uploads" ) )
 			)
 		);
 	}

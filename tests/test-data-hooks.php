@@ -113,12 +113,9 @@ class Data_Hooks_Tests extends \WP_UnitTestCase {
 
 		global $wpdb;
 
-		$table = Tracked_Files::table_name();
-
 		$count = $wpdb->get_results(
 			$wpdb->prepare(
-				// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
-				"SELECT count(*) FROM $table WHERE session_id = %d",
+				"SELECT count(*) FROM {$wpdb->prefix}dfu_tracked_file_uploads WHERE session_id = %d",
 				WC()->session->get_customer_id()
 			)
 		)[0]->{'count(*)'};
@@ -192,12 +189,9 @@ class Data_Hooks_Tests extends \WP_UnitTestCase {
 
 		global $wpdb;
 
-		$table = Tracked_Files::table_name();
-
 		$count = $wpdb->get_results(
 			$wpdb->prepare(
-				// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
-				"SELECT count(*) FROM $table WHERE session_id = %d",
+				"SELECT count(*) FROM {$wpdb->prefix}dfu_tracked_file_uploads WHERE session_id = %d",
 				WC()->session->get_customer_id()
 			)
 		)[0]->{'count(*)'};
