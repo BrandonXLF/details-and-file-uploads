@@ -41,7 +41,7 @@ class Display {
 			'settings' => '<a href="'
 				. admin_url( 'admin.php?page=fields-and-file-upload-settings' )
 				. '">'
-				. esc_html__( 'Settings', 'default' )
+				. esc_html__( 'Settings', 'fields-and-file-upload' )
 				. '</a>',
 		];
 
@@ -145,9 +145,9 @@ class Display {
 		$out = $field;
 
 		if ( $args['required'] ) {
-			$required = '&nbsp;<abbr class="required" title="' . esc_attr__( 'required', 'woocommerce' ) . '">*</abbr>';
+			$required = '&nbsp;<abbr class="required" title="' . esc_attr__( 'required', 'fields-and-file-upload' ) . '">*</abbr>';
 		} else {
-			$required = '&nbsp;<span class="optional">(' . esc_html__( 'optional', 'woocommerce' ) . ')</span>';
+			$required = '&nbsp;<span class="optional">(' . esc_html__( 'optional', 'fields-and-file-upload' ) . ')</span>';
 		}
 
 		$out .= '<label for="' . esc_attr( $key ) . '">' . esc_html( $args['label'] ) . $required . '</label>';

@@ -504,7 +504,7 @@ class Settings {
 				<?php settings_fields( 'cffu_settings' ); ?>
 				<?php settings_errors(); ?>
 				<?php do_settings_sections( 'fields-and-file-upload-settings' ); ?>
-				<input name="submit" class="button button-primary" type="submit" value="<?php esc_attr_e( 'Save Changes', 'default' ); ?>" />
+				<input name="submit" class="button button-primary" type="submit" value="<?php esc_attr_e( 'Save Changes', 'fields-and-file-upload' ); ?>" />
 			</form>
 		</div>
 		<?php
