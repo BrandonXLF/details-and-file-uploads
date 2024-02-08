@@ -2,10 +2,10 @@
 /**
  * Handle hooks relating to plugin data.
  *
- * @package Details and File Upload
+ * @package Checkout Fields and File Upload
  */
 
-namespace DetailsAndFileUploadPlugin;
+namespace CFFU_Plugin;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -24,7 +24,7 @@ class Data_Hooks {
 		add_action( 'woocommerce_checkout_create_order', [ __CLASS__, 'populate_order' ], 10, 2 );
 		add_action( 'before_delete_post', [ __CLASS__, 'before_order_delete' ] );
 		add_action( 'woocommerce_before_delete_order', [ __CLASS__, 'before_order_delete' ] );
-		register_activation_hook( DETAILS_AND_FILE_UPLOAD_PLUGIN_FILE, [ __CLASS__, 'install' ] );
+		register_activation_hook( CFFU_PLUGIN_FILE, [ __CLASS__, 'install' ] );
 		add_action( 'woocommerce_cleanup_sessions', [ __CLASS__, 'cleanup_sessions' ] );
 	}
 
@@ -35,18 +35,18 @@ class Data_Hooks {
 	 * @param array    $data Posted data.
 	 */
 	public static function populate_order( $order, $data ) {
-		$fields = get_option( 'details_and_file_uploads_fields', [] );
+		$fields = get_option( 'cffu_fields', [] );
 
 		foreach ( $fields as &$field ) {
 			$id = wp_unslash( $field['id'] );
 
 			if (
-				isset( WC()->session->dfu_file_uploads ) &&
-				array_key_exists( $id, WC()->session->dfu_file_uploads )
+				isset( WC()->session->cffu_file_uploads ) &&
+				array_key_exists( $id, WC()->session->cffu_file_uploads )
 			) {
 				$meta_data[ $id ] = [
 					'type' => 'file',
-					'data' => WC()->session->dfu_file_uploads[ $id ],
+					'data' => WC()->session->cffu_file_uploads[ $id ],
 				];
 
 				continue;
@@ -60,10 +60,10 @@ class Data_Hooks {
 			}
 		}
 
-		$order->add_meta_data( 'details_and_file_uploads', $meta_data, true );
+		$order->add_meta_data( 'cffu_responses', $meta_data, true );
 
 		Tracked_Files::untrack_session( WC()->session->get_customer_id() );
-		unset( WC()->session->dfu_file_uploads );
+		unset( WC()->session->cffu_file_uploads );
 	}
 
 	/**
@@ -77,7 +77,7 @@ class Data_Hooks {
 		}
 
 		$order     = wc_get_order( $post_id );
-		$meta_data = $order->get_meta( 'details_and_file_uploads' );
+		$meta_data = $order->get_meta( 'cffu_responses' );
 
 		foreach ( $meta_data as $data ) {
 			if ( 'file' !== $data['type'] ) {

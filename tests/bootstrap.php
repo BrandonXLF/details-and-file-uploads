@@ -2,10 +2,10 @@
 /**
  * PHPUnit bootstrap file.
  *
- * @package Details and File Upload
+ * @package Checkout Fields and File Upload
  */
 
-namespace DetailsAndFileUploadPlugin;
+namespace CFFU_Plugin;
 
 require dirname( __DIR__ ) . '/vendor/yoast/phpunit-polyfills/phpunitpolyfills-autoload.php';
 
@@ -41,7 +41,7 @@ function _manually_load_plugin() {
 	}
 
 	require "{$_tests_dir}/src/wp-content/plugins/woocommerce/woocommerce.php";
-	require dirname( __DIR__ ) . '/details-and-file-upload.php';
+	require dirname( __DIR__ ) . '/fields-and-file-upload.php';
 }
 
 tests_add_filter( 'muplugins_loaded', __NAMESPACE__ . '\\_manually_load_plugin' );

@@ -1,5 +1,5 @@
 jQuery($ => {
-    const uploadInputs = [...document.getElementsByClassName('input-dfu-file-upload')];
+    const uploadInputs = [...document.getElementsByClassName('input-cffu-file-upload')];
 
     for (const uploadInput of uploadInputs) {
         const hiddenInput = document.createElement('input');
@@ -25,9 +25,9 @@ jQuery($ => {
             for (const uploadInput of uploadInputs) {
                 const data = new FormData();
                 
-                data.append('action', 'dfu_file_upload');
+                data.append('action', 'cffu_file_upload');
                 data.append('name', uploadInput.dataset.name);
-                data.append('nonce', dfu_checkout_params.file_upload_nonce);
+                data.append('nonce', cffu_checkout_params.file_upload_nonce);
 
                 for (const file of uploadInput.files) {
                     data.append('files[]', file);
@@ -35,7 +35,7 @@ jQuery($ => {
 
                 try {
                     await $.post({
-                        url: dfu_checkout_params.file_upload_endpoint,
+                        url: cffu_checkout_params.file_upload_endpoint,
                         data,
                         contentType: false,
                         processData: false

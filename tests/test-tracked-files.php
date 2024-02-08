@@ -2,10 +2,10 @@
 /**
  * Tests for the Tracked_Files class.
  *
- * @package Details and File Upload
+ * @package Checkout Fields and File Upload
  */
 
-namespace DetailsAndFileUploadPlugin;
+namespace CFFU_Plugin;
 
 /**
  * Tests for the Tracked_Files class.
@@ -24,7 +24,7 @@ class Tracked_Files_Tests extends \WP_UnitTestCase {
 
 		$count = $wpdb->get_results(
 			$wpdb->prepare(
-				"SELECT count(*) FROM {$wpdb->prefix}dfu_tracked_file_uploads WHERE session_id = %d  AND file_path = %s",
+				"SELECT count(*) FROM {$wpdb->prefix}cffu_tracked_file_uploads WHERE session_id = %d  AND file_path = %s",
 				WC()->session->get_customer_id(),
 				'/foo/bar'
 			)
@@ -51,7 +51,7 @@ class Tracked_Files_Tests extends \WP_UnitTestCase {
 
 		$count = $wpdb->get_results(
 			$wpdb->prepare(
-				"SELECT count(*) FROM {$wpdb->prefix}dfu_tracked_file_uploads WHERE session_id = %d  AND file_path = %s",
+				"SELECT count(*) FROM {$wpdb->prefix}cffu_tracked_file_uploads WHERE session_id = %d  AND file_path = %s",
 				WC()->session->get_customer_id(),
 				$tmp_dir . '/example-image.tmp.png'
 			)
@@ -65,7 +65,7 @@ class Tracked_Files_Tests extends \WP_UnitTestCase {
 
 		$count = $wpdb->get_results(
 			$wpdb->prepare(
-				"SELECT count(*) FROM {$wpdb->prefix}dfu_tracked_file_uploads WHERE session_id = %d  AND file_path = %s",
+				"SELECT count(*) FROM {$wpdb->prefix}cffu_tracked_file_uploads WHERE session_id = %d  AND file_path = %s",
 				WC()->session->get_customer_id(),
 				$tmp_dir . '/example-image.tmp.png'
 			)
@@ -84,7 +84,7 @@ class Tracked_Files_Tests extends \WP_UnitTestCase {
 
 		$count = $wpdb->get_results(
 			$wpdb->prepare(
-				"SELECT count(*) FROM {$wpdb->prefix}dfu_tracked_file_uploads WHERE session_id = %d",
+				"SELECT count(*) FROM {$wpdb->prefix}cffu_tracked_file_uploads WHERE session_id = %d",
 				WC()->session->get_customer_id()
 			)
 		)[0]->{'count(*)'};
@@ -139,7 +139,7 @@ class Tracked_Files_Tests extends \WP_UnitTestCase {
 
 		global $wpdb;
 
-		$count = $wpdb->get_results( "SELECT count(*) FROM {$wpdb->prefix}dfu_tracked_file_uploads" )[0]->{'count(*)'};
+		$count = $wpdb->get_results( "SELECT count(*) FROM {$wpdb->prefix}cffu_tracked_file_uploads" )[0]->{'count(*)'};
 
 		$this->assertEquals( 1, $count );
 	}
@@ -173,7 +173,7 @@ class Tracked_Files_Tests extends \WP_UnitTestCase {
 
 		$this->assertEmpty(
 			$wpdb->get_var(
-				$wpdb->prepare( 'SHOW TABLES LIKE %s', $wpdb->esc_like( "{$wpdb->prefix}dfu_tracked_file_uploads" ) )
+				$wpdb->prepare( 'SHOW TABLES LIKE %s', $wpdb->esc_like( "{$wpdb->prefix}cffu_tracked_file_uploads" ) )
 			)
 		);
 	}

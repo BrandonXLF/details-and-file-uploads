@@ -131,14 +131,14 @@ jQuery($ => {
 
 	function setFieldCntIndex(fieldCnt, newI) {
 		const namedInputs = [
-			...fieldCnt.querySelectorAll('[name^="details_and_file_uploads_fields"]')
+			...fieldCnt.querySelectorAll('[name^="cffu_fields"]')
 		];
 
 		fieldCnt.querySelector('.header-number').textContent = newI + 1;
 
 		for (const namedInput of namedInputs) {
 			namedInput.name = namedInput.name.replace(
-				/^(details_and_file_uploads_fields)\[\d\]/,
+				/^(cffu_fields)\[\d\]/,
 				(_, name) => name + '[' + newI + ']'
 			);
 		}

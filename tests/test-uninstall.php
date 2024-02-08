@@ -2,10 +2,10 @@
 /**
  * Tests for the Data_Hooks class.
  *
- * @package Details and File Upload
+ * @package Checkout Fields and File Upload
  */
 
-namespace DetailsAndFileUploadPlugin;
+namespace CFFU_Plugin;
 
 /**
  * Tests for uninstall.php
@@ -22,7 +22,7 @@ class Uninstall_Tests extends \WP_UnitTestCase {
 		);
 
 		update_option(
-			'details_and_file_uploads_fields',
+			'cffu_fields',
 			[
 				[
 					'id'         => 'foo',
@@ -35,7 +35,7 @@ class Uninstall_Tests extends \WP_UnitTestCase {
 			]
 		);
 
-		update_option( 'details_and_file_uploads_hide_notes', false );
+		update_option( 'cffu_hide_notes', false );
 
 		Tracked_Files::setup();
 
@@ -55,12 +55,12 @@ class Uninstall_Tests extends \WP_UnitTestCase {
 		define( 'WP_UNINSTALL_PLUGIN', true );
 		require 'uninstall.php';
 
-		$this->assertNull( get_option( 'details_and_file_uploads_fields', null ) );
-		$this->assertNull( get_option( 'details_and_file_uploads_hide_notes', null ) );
+		$this->assertNull( get_option( 'cffu_fields', null ) );
+		$this->assertNull( get_option( 'cffu_hide_notes', null ) );
 
 		$this->assertEmpty(
 			$wpdb->get_var(
-				$wpdb->prepare( 'SHOW TABLES LIKE %s', $wpdb->esc_like( "{$wpdb->prefix}dfu_tracked_file_uploads" ) )
+				$wpdb->prepare( 'SHOW TABLES LIKE %s', $wpdb->esc_like( "{$wpdb->prefix}cffu_tracked_file_uploads" ) )
 			)
 		);
 

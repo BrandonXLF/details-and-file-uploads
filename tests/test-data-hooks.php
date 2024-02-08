@@ -2,10 +2,10 @@
 /**
  * Tests for the Data_Hooks class.
  *
- * @package Details and File Upload
+ * @package Checkout Fields and File Upload
  */
 
-namespace DetailsAndFileUploadPlugin;
+namespace CFFU_Plugin;
 
 /**
  * Tests for the Data_Hooks class.
@@ -19,7 +19,7 @@ class Data_Hooks_Tests extends \WP_UnitTestCase {
 
 	public function test_populate_text() {
 		update_option(
-			'details_and_file_uploads_fields',
+			'cffu_fields',
 			[
 				[
 					'id'         => 'foo',
@@ -32,7 +32,7 @@ class Data_Hooks_Tests extends \WP_UnitTestCase {
 			]
 		);
 
-		unset( WC()->session->dfu_file_uploads );
+		unset( WC()->session->cffu_file_uploads );
 
 		$order = $this->createMock( \WC_Order::class );
 
@@ -40,7 +40,7 @@ class Data_Hooks_Tests extends \WP_UnitTestCase {
 			->expects( $this->once() )
 			->method( 'add_meta_data' )
 			->with(
-				$this->equalTo( 'details_and_file_uploads' ),
+				$this->equalTo( 'cffu_responses' ),
 				$this->equalTo(
 					[
 						'foo' => [
@@ -71,10 +71,10 @@ class Data_Hooks_Tests extends \WP_UnitTestCase {
 
 		$this->assertTrue( copy( __DIR__ . '/example-image.png', $file['path'] ) );
 		Tracked_Files::track_file( WC()->session->get_customer_id(), $file['path'] );
-		WC()->session->dfu_file_uploads = [ 'bar' => [ $file ] ];
+		WC()->session->cffu_file_uploads = [ 'bar' => [ $file ] ];
 
 		update_option(
-			'details_and_file_uploads_fields',
+			'cffu_fields',
 			[
 				[
 					'id'         => 'bar',
@@ -93,7 +93,7 @@ class Data_Hooks_Tests extends \WP_UnitTestCase {
 			->expects( $this->once() )
 			->method( 'add_meta_data' )
 			->with(
-				$this->equalTo( 'details_and_file_uploads' ),
+				$this->equalTo( 'cffu_responses' ),
 				$this->equalTo(
 					[
 						'bar' => [
@@ -115,7 +115,7 @@ class Data_Hooks_Tests extends \WP_UnitTestCase {
 
 		$count = $wpdb->get_results(
 			$wpdb->prepare(
-				"SELECT count(*) FROM {$wpdb->prefix}dfu_tracked_file_uploads WHERE session_id = %d",
+				"SELECT count(*) FROM {$wpdb->prefix}cffu_tracked_file_uploads WHERE session_id = %d",
 				WC()->session->get_customer_id()
 			)
 		)[0]->{'count(*)'};
@@ -135,10 +135,10 @@ class Data_Hooks_Tests extends \WP_UnitTestCase {
 
 		$this->assertTrue( copy( __DIR__ . '/example-image.png', $file['path'] ) );
 		Tracked_Files::track_file( WC()->session->get_customer_id(), $file['path'] );
-		WC()->session->dfu_file_uploads = [ 'bar' => [ $file ] ];
+		WC()->session->cffu_file_uploads = [ 'bar' => [ $file ] ];
 
 		update_option(
-			'details_and_file_uploads_fields',
+			'cffu_fields',
 			[
 				[
 					'id'         => 'foo',
@@ -165,7 +165,7 @@ class Data_Hooks_Tests extends \WP_UnitTestCase {
 			->expects( $this->once() )
 			->method( 'add_meta_data' )
 			->with(
-				$this->equalTo( 'details_and_file_uploads' ),
+				$this->equalTo( 'cffu_responses' ),
 				$this->equalTo(
 					[
 						'foo' => [
@@ -191,7 +191,7 @@ class Data_Hooks_Tests extends \WP_UnitTestCase {
 
 		$count = $wpdb->get_results(
 			$wpdb->prepare(
-				"SELECT count(*) FROM {$wpdb->prefix}dfu_tracked_file_uploads WHERE session_id = %d",
+				"SELECT count(*) FROM {$wpdb->prefix}cffu_tracked_file_uploads WHERE session_id = %d",
 				WC()->session->get_customer_id()
 			)
 		)[0]->{'count(*)'};

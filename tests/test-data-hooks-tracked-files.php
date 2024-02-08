@@ -2,10 +2,10 @@
 /**
  * Tests for the Data_Hooks class.
  *
- * @package Details and File Upload
+ * @package Checkout Fields and File Upload
  */
 
-namespace DetailsAndFileUploadPlugin;
+namespace CFFU_Plugin;
 
 /**
  * Tests for the Data_Hooks class.
@@ -27,13 +27,13 @@ class Data_Hooks_Tracked_Files_Tests extends \WP_UnitTestCase {
 		$mock = \Mockery::mock( 'overload:' . Tracked_Files::class );
 		$mock->expects( 'setup' )->once();
 
-		do_action( 'activate_' . plugin_basename( realpath( dirname( __DIR__ ) . '/details-and-file-upload.php' ) ) );
+		do_action( 'activate_' . plugin_basename( realpath( dirname( __DIR__ ) . '/fields-and-file-upload.php' ) ) );
 	}
 
 	public function test_deactivate() {
 		$mock = \Mockery::mock( 'overload:' . Tracked_Files::class );
 		$mock->expects( 'uninstall' )->once();
 
-		do_action( 'deactivate_' . plugin_basename( realpath( dirname( __DIR__ ) . '/details-and-file-upload.php' ) ) );
+		do_action( 'deactivate_' . plugin_basename( realpath( dirname( __DIR__ ) . '/fields-and-file-upload.php' ) ) );
 	}
 }

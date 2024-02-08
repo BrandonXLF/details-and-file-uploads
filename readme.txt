@@ -1,4 +1,4 @@
-=== Details and File Upload for WooCommerce ===
+=== Checkout Fields and File Upload for WooCommerce ===
 Contributors: brandonxlf
 Tags: woocommerce,file upload,checkout,order details
 Donate link: https://www.brandonfowler.me/donate/
@@ -13,7 +13,7 @@ Easily add general or item-specific detail inputs and file uploads to the WooCom
 
 == Description ==
 
-Details and File Upload for WooCommerce allows you to easily add custom fields to the WooCommerce checkout.
+Checkout Fields and File Upload for WooCommerce allows you to easily add custom fields to the WooCommerce checkout.
 
 = Product-Specific Fields =
 
@@ -31,7 +31,7 @@ Files are uploaded to a secure directory and are given a randomly generated name
 
 PHP 7.0 or greater is required (PHP 8.0 or greater is recommended)
 
-1. Upload the `details-and-file-upload` folder to your plugin directory
+1. Upload the `fields-and-file-upload` folder to your plugin directory
 2. Activate the plugin through the \'Plugins\' menu in WordPress
 
 == Screenshots ==

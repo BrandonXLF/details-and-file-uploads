@@ -2,10 +2,10 @@
 /**
  * Settings page.
  *
- * @package Details and File Upload
+ * @package Checkout Fields and File Upload
  */
 
-namespace DetailsAndFileUploadPlugin;
+namespace CFFU_Plugin;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -208,8 +208,8 @@ class Settings {
 						empty( $value[ $name ] )
 					) {
 						add_settings_error(
-							'details_and_file_uploads_fields',
-							'dfu-field-no-' . $name . '-' . $i,
+							'cffu_fields',
+							'cffu-field-no-' . $name . '-' . $i,
 							'Item ' . ( $i + 1 ) . ' does not have a(n) "' . $field_setting['label'] . '"'
 						);
 					}
@@ -219,8 +219,8 @@ class Settings {
 						( $seen_ids[ $id ] ?? false )
 					) {
 						add_settings_error(
-							'details_and_file_uploads_fields',
-							'dfu-field-dup-' . $name . '-' . $i,
+							'cffu_fields',
+							'cffu-field-dup-' . $name . '-' . $i,
 							'Item ' . ( $i + 1 ) . ' uses a duplicate "' . $field_setting['label'] . '"'
 						);
 					}
@@ -258,7 +258,7 @@ class Settings {
 	 * @param string $name The name of the setting.
 	 */
 	private static function input_name( $i, $name ) {
-		return 'details_and_file_uploads_fields[' + $i + '][' + $name + ']';
+		return 'cffu_fields[' + $i + '][' + $name + ']';
 	}
 
 	/**
@@ -377,7 +377,7 @@ class Settings {
 	 * Show settings for field.
 	 */
 	public static function field_settings() {
-		$fields = get_option( 'details_and_file_uploads_fields', [] );
+		$fields = get_option( 'cffu_fields', [] );
 
 		echo '<div id="fields">';
 
@@ -407,7 +407,7 @@ class Settings {
 	 * Show setting to add new field.
 	 */
 	public static function new_field_setting() {
-		$fields = get_option( 'details_and_file_uploads_fields', [] );
+		$fields = get_option( 'cffu_fields', [] );
 
 		echo '<div class="field">';
 
@@ -422,9 +422,9 @@ class Settings {
 	 * Show setting to hide default WooCommerce order notes.
 	 */
 	public static function hide_notes_setting() {
-		$checked = get_option( 'details_and_file_uploads_hide_notes', false );
+		$checked = get_option( 'cffu_hide_notes', false );
 
-		echo '<input type="checkbox" name="details_and_file_uploads_hide_notes" ' . ( $checked ? 'checked' : '' ) . '>';
+		echo '<input type="checkbox" name="cffu_hide_notes" ' . ( $checked ? 'checked' : '' ) . '>';
 	}
 
 	/**
@@ -432,47 +432,47 @@ class Settings {
 	 */
 	public static function register_settings() {
 		register_setting(
-			'details_and_file_upload_settings',
-			'details_and_file_uploads_fields',
+			'cffu_settings',
+			'cffu_fields',
 			[
 				'sanitize_callback' => [ __CLASS__, 'sanitize_fields' ],
 			]
 		);
 
 		register_setting(
-			'details_and_file_upload_settings',
-			'details_and_file_uploads_hide_notes'
+			'cffu_settings',
+			'cffu_hide_notes'
 		);
 
 		add_settings_section(
-			'dfu_config_settings',
+			'cffu_config_settings',
 			null,
 			null,
-			'details-and-file-uploads-settings'
+			'fields-and-file-upload-settings'
 		);
 
 		add_settings_field(
-			'dfu_fields_setting',
+			'cffu_fields_setting',
 			'Checkout fields',
 			[ __CLASS__, 'field_settings' ],
-			'details-and-file-uploads-settings',
-			'dfu_config_settings'
+			'fields-and-file-upload-settings',
+			'cffu_config_settings'
 		);
 
 		add_settings_field(
-			'dfu_new_field_setting',
+			'cffu_new_field_setting',
 			'Add new field',
 			[ __CLASS__, 'new_field_setting' ],
-			'details-and-file-uploads-settings',
-			'dfu_config_settings'
+			'fields-and-file-upload-settings',
+			'cffu_config_settings'
 		);
 
 		add_settings_field(
-			'dfu_hide_note_setting',
+			'cffu_hide_note_setting',
 			'Hide order notes',
 			[ __CLASS__, 'hide_notes_setting' ],
-			'details-and-file-uploads-settings',
-			'dfu_config_settings'
+			'fields-and-file-upload-settings',
+			'cffu_config_settings'
 		);
 	}
 
@@ -481,29 +481,29 @@ class Settings {
 	 */
 	public static function settings_page() {
 		wp_enqueue_style(
-			'dfu_settings_styles',
-			plugin_dir_url( DETAILS_AND_FILE_UPLOAD_PLUGIN_FILE ) . 'src/css/settings.css',
+			'cffu_settings_styles',
+			plugin_dir_url( CFFU_PLUGIN_FILE ) . 'src/css/settings.css',
 			null,
-			DETAILS_AND_FILE_UPLOAD_PLUGIN_VERSION
+			CFFU_PLUGIN_VERSION
 		);
 
 		wp_enqueue_script(
-			'dfu_settings_script',
-			plugin_dir_url( DETAILS_AND_FILE_UPLOAD_PLUGIN_FILE ) . 'src/js/settings.js',
+			'cffu_settings_script',
+			plugin_dir_url( CFFU_PLUGIN_FILE ) . 'src/js/settings.js',
 			[ 'jquery', 'jquery-ui-sortable', 'jquery-ui-accordion' ],
-			DETAILS_AND_FILE_UPLOAD_PLUGIN_VERSION,
+			CFFU_PLUGIN_VERSION,
 			[ 'in_footer' => true ]
 		);
 		?>
 		<div class="wrap">
-			<h1>Details and File Upload Settings</h1>
+			<h1>Checkout Fields and File Upload Settings</h1>
 			<form action="options.php" method="post">
 				<p>
 					PHP max upload size is set to <?php echo esc_html( size_format( wp_max_upload_size() ) ); ?>.
 				</p>
-				<?php settings_fields( 'details_and_file_upload_settings' ); ?>
+				<?php settings_fields( 'cffu_settings' ); ?>
 				<?php settings_errors(); ?>
-				<?php do_settings_sections( 'details-and-file-uploads-settings' ); ?>
+				<?php do_settings_sections( 'fields-and-file-upload-settings' ); ?>
 				<input name="submit" class="button button-primary" type="submit" value="<?php esc_attr_e( 'Save Changes', 'default' ); ?>" />
 			</form>
 		</div>
@@ -517,9 +517,9 @@ class Settings {
 		add_submenu_page(
 			'woocommerce',
 			'Customer uploads',
-			'Details and Files',
+			'Checkout Fields and Files',
 			'manage_woocommerce',
-			'details-and-file-uploads-settings',
+			'fields-and-file-upload-settings',
 			[ __CLASS__, 'settings_page' ]
 		);
 	}

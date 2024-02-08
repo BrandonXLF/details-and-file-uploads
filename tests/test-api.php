@@ -2,10 +2,10 @@
 /**
  * Tests for the API class.
  *
- * @package Details and File Upload
+ * @package Checkout Fields and File Upload
  */
 
-namespace DetailsAndFileUploadPlugin;
+namespace CFFU_Plugin;
 
 /**
  * Tests for the API class.
@@ -15,7 +15,7 @@ class API_Tests extends \WP_UnitTestCase {
 		parent::set_up();
 
 		update_option(
-			'details_and_file_uploads_fields',
+			'cffu_fields',
 			[
 				[
 					'id'         => 'foo',
@@ -34,7 +34,7 @@ class API_Tests extends \WP_UnitTestCase {
 	public function tear_down(): void {
 		Uploads::uninstall();
 
-		unset( WC()->session->dfu_file_uploads );
+		unset( WC()->session->cffu_file_uploads );
 
 		parent::tear_down();
 	}
@@ -50,7 +50,7 @@ class API_Tests extends \WP_UnitTestCase {
 
 		$count = $wpdb->get_results(
 			$wpdb->prepare(
-				"SELECT count(*) FROM {$wpdb->prefix}dfu_tracked_file_uploads WHERE session_id = %d AND file_path = %s",
+				"SELECT count(*) FROM {$wpdb->prefix}cffu_tracked_file_uploads WHERE session_id = %d AND file_path = %s",
 				WC()->session->get_customer_id(),
 				wp_unslash( $data[ $key ][ $index ]['path'] )
 			)
@@ -71,7 +71,7 @@ class API_Tests extends \WP_UnitTestCase {
 
 		$count = $wpdb->get_results(
 			$wpdb->prepare(
-				"SELECT count(*) FROM {$wpdb->prefix}dfu_tracked_file_uploads WHERE session_id = %d",
+				"SELECT count(*) FROM {$wpdb->prefix}cffu_tracked_file_uploads WHERE session_id = %d",
 				WC()->session->get_customer_id()
 			)
 		)[0]->{'count(*)'};
@@ -84,10 +84,10 @@ class API_Tests extends \WP_UnitTestCase {
 			'name' => 'foo',
 		];
 
-		do_action( 'wp_ajax_dfu_file_upload' );
+		do_action( 'wp_ajax_cffu_file_upload' );
 
 		$this->expectOutputString( 'Failed to verify nonce.' );
-		$this->assertFalse( isset( WC()->session->dfu_file_uploads ) );
+		$this->assertFalse( isset( WC()->session->cffu_file_uploads ) );
 	}
 
 	public function test_invalid_nonce() {
@@ -96,10 +96,10 @@ class API_Tests extends \WP_UnitTestCase {
 			'nonce' => 'RANDOM',
 		];
 
-		do_action( 'wp_ajax_dfu_file_upload' );
+		do_action( 'wp_ajax_cffu_file_upload' );
 
 		$this->expectOutputString( 'Failed to verify nonce.' );
-		$this->assertFalse( isset( WC()->session->dfu_file_uploads ) );
+		$this->assertFalse( isset( WC()->session->cffu_file_uploads ) );
 	}
 
 	public function test_single_file() {
@@ -114,7 +114,7 @@ class API_Tests extends \WP_UnitTestCase {
 
 		$_POST = [
 			'name'  => 'foo',
-			'nonce' => wp_create_nonce( 'dfu-file-upload' ),
+			'nonce' => wp_create_nonce( 'cffu-file-upload' ),
 		];
 
 		$_FILES = [
@@ -127,19 +127,19 @@ class API_Tests extends \WP_UnitTestCase {
 			],
 		];
 
-		do_action( 'wp_ajax_dfu_file_upload' );
+		do_action( 'wp_ajax_cffu_file_upload' );
 
-		$this->assertTrue( isset( WC()->session->dfu_file_uploads ) );
-		$this->assertFileExists( ABSPATH . '/wp-content/uploads/dfu_file_uploads/index.html' );
-		$this->assert_file_count( 'foo', 1, WC()->session->dfu_file_uploads );
-		$this->assert_tracked_file( 'foo', 'example-image.png', WC()->session->dfu_file_uploads );
+		$this->assertTrue( isset( WC()->session->cffu_file_uploads ) );
+		$this->assertFileExists( ABSPATH . '/wp-content/uploads/cffu_file_uploads/index.html' );
+		$this->assert_file_count( 'foo', 1, WC()->session->cffu_file_uploads );
+		$this->assert_tracked_file( 'foo', 'example-image.png', WC()->session->cffu_file_uploads );
 	}
 
 	public function test_preexisting_folder() {
 		WP_Filesystem();
 		global $wp_filesystem;
 
-		$wp_filesystem->mkdir( ABSPATH . '/wp-content/uploads/dfu_file_uploads' );
+		$wp_filesystem->mkdir( ABSPATH . '/wp-content/uploads/cffu_file_uploads' );
 
 		$this->test_single_file();
 	}
@@ -154,14 +154,14 @@ class API_Tests extends \WP_UnitTestCase {
 
 		$_POST = [
 			'name'  => 'foo',
-			'nonce' => wp_create_nonce( 'dfu-file-upload' ),
+			'nonce' => wp_create_nonce( 'cffu-file-upload' ),
 		];
 
 		$_FILES = [];
 
-		do_action( 'wp_ajax_dfu_file_upload' );
+		do_action( 'wp_ajax_cffu_file_upload' );
 
-		$this->assert_file_count( 'foo', 0, WC()->session->dfu_file_uploads );
+		$this->assert_file_count( 'foo', 0, WC()->session->cffu_file_uploads );
 	}
 
 	public function test_multiple_files() {
@@ -183,7 +183,7 @@ class API_Tests extends \WP_UnitTestCase {
 
 		$_POST = [
 			'name'  => 'foo',
-			'nonce' => wp_create_nonce( 'dfu-file-upload' ),
+			'nonce' => wp_create_nonce( 'cffu-file-upload' ),
 		];
 
 		$_FILES = [
@@ -202,13 +202,13 @@ class API_Tests extends \WP_UnitTestCase {
 			],
 		];
 
-		do_action( 'wp_ajax_dfu_file_upload' );
+		do_action( 'wp_ajax_cffu_file_upload' );
 
-		$this->assertTrue( isset( WC()->session->dfu_file_uploads ) );
-		$this->assertFileExists( ABSPATH . '/wp-content/uploads/dfu_file_uploads/index.html' );
-		$this->assert_file_count( 'foo', 2, WC()->session->dfu_file_uploads );
-		$this->assert_tracked_file( 'foo', 'example-image1.png', WC()->session->dfu_file_uploads );
-		$this->assert_tracked_file( 'foo', 'example-image2.png', WC()->session->dfu_file_uploads, 1 );
+		$this->assertTrue( isset( WC()->session->cffu_file_uploads ) );
+		$this->assertFileExists( ABSPATH . '/wp-content/uploads/cffu_file_uploads/index.html' );
+		$this->assert_file_count( 'foo', 2, WC()->session->cffu_file_uploads );
+		$this->assert_tracked_file( 'foo', 'example-image1.png', WC()->session->cffu_file_uploads );
+		$this->assert_tracked_file( 'foo', 'example-image2.png', WC()->session->cffu_file_uploads, 1 );
 	}
 
 	public function test_allowed_file_ext() {
@@ -223,7 +223,7 @@ class API_Tests extends \WP_UnitTestCase {
 
 		$_POST = [
 			'name'  => 'foo',
-			'nonce' => wp_create_nonce( 'dfu-file-upload' ),
+			'nonce' => wp_create_nonce( 'cffu-file-upload' ),
 		];
 
 		$_FILES = [
@@ -237,7 +237,7 @@ class API_Tests extends \WP_UnitTestCase {
 		];
 
 		update_option(
-			'details_and_file_uploads_fields',
+			'cffu_fields',
 			[
 				[
 					'id'         => 'foo',
@@ -251,12 +251,12 @@ class API_Tests extends \WP_UnitTestCase {
 			]
 		);
 
-		do_action( 'wp_ajax_dfu_file_upload' );
+		do_action( 'wp_ajax_cffu_file_upload' );
 
-		$this->assertTrue( isset( WC()->session->dfu_file_uploads ) );
-		$this->assertFileExists( ABSPATH . '/wp-content/uploads/dfu_file_uploads/index.html' );
-		$this->assert_file_count( 'foo', 1, WC()->session->dfu_file_uploads );
-		$this->assert_tracked_file( 'foo', 'example-image.png', WC()->session->dfu_file_uploads );
+		$this->assertTrue( isset( WC()->session->cffu_file_uploads ) );
+		$this->assertFileExists( ABSPATH . '/wp-content/uploads/cffu_file_uploads/index.html' );
+		$this->assert_file_count( 'foo', 1, WC()->session->cffu_file_uploads );
+		$this->assert_tracked_file( 'foo', 'example-image.png', WC()->session->cffu_file_uploads );
 	}
 
 	public function test_allowed_type() {
@@ -271,7 +271,7 @@ class API_Tests extends \WP_UnitTestCase {
 
 		$_POST = [
 			'name'  => 'foo',
-			'nonce' => wp_create_nonce( 'dfu-file-upload' ),
+			'nonce' => wp_create_nonce( 'cffu-file-upload' ),
 		];
 
 		$_FILES = [
@@ -285,7 +285,7 @@ class API_Tests extends \WP_UnitTestCase {
 		];
 
 		update_option(
-			'details_and_file_uploads_fields',
+			'cffu_fields',
 			[
 				[
 					'id'         => 'foo',
@@ -299,12 +299,12 @@ class API_Tests extends \WP_UnitTestCase {
 			]
 		);
 
-		do_action( 'wp_ajax_dfu_file_upload' );
+		do_action( 'wp_ajax_cffu_file_upload' );
 
-		$this->assertTrue( isset( WC()->session->dfu_file_uploads ) );
-		$this->assertFileExists( ABSPATH . '/wp-content/uploads/dfu_file_uploads/index.html' );
-		$this->assert_file_count( 'foo', 1, WC()->session->dfu_file_uploads );
-		$this->assert_tracked_file( 'foo', 'example-image.png', WC()->session->dfu_file_uploads );
+		$this->assertTrue( isset( WC()->session->cffu_file_uploads ) );
+		$this->assertFileExists( ABSPATH . '/wp-content/uploads/cffu_file_uploads/index.html' );
+		$this->assert_file_count( 'foo', 1, WC()->session->cffu_file_uploads );
+		$this->assert_tracked_file( 'foo', 'example-image.png', WC()->session->cffu_file_uploads );
 	}
 
 	public function test_not_allowed_type() {
@@ -319,7 +319,7 @@ class API_Tests extends \WP_UnitTestCase {
 
 		$_POST = [
 			'name'  => 'foo',
-			'nonce' => wp_create_nonce( 'dfu-file-upload' ),
+			'nonce' => wp_create_nonce( 'cffu-file-upload' ),
 		];
 
 		$_FILES = [
@@ -333,7 +333,7 @@ class API_Tests extends \WP_UnitTestCase {
 		];
 
 		update_option(
-			'details_and_file_uploads_fields',
+			'cffu_fields',
 			[
 				[
 					'id'         => 'foo',
@@ -347,11 +347,11 @@ class API_Tests extends \WP_UnitTestCase {
 			]
 		);
 
-		do_action( 'wp_ajax_dfu_file_upload' );
+		do_action( 'wp_ajax_cffu_file_upload' );
 
 		$this->expectOutputString( 'File type/extension is not allowed.' );
-		$this->assertFalse( isset( WC()->session->dfu_file_uploads ) );
-		$this->assert_file_count( 'foo', 0, WC()->session->dfu_file_uploads );
+		$this->assertFalse( isset( WC()->session->cffu_file_uploads ) );
+		$this->assert_file_count( 'foo', 0, WC()->session->cffu_file_uploads );
 	}
 
 	public function test_wp_unknown_type() {
@@ -366,7 +366,7 @@ class API_Tests extends \WP_UnitTestCase {
 
 		$_POST = [
 			'name'  => 'foo',
-			'nonce' => wp_create_nonce( 'dfu-file-upload' ),
+			'nonce' => wp_create_nonce( 'cffu-file-upload' ),
 		];
 
 		$_FILES = [
@@ -380,7 +380,7 @@ class API_Tests extends \WP_UnitTestCase {
 		];
 
 		update_option(
-			'details_and_file_uploads_fields',
+			'cffu_fields',
 			[
 				[
 					'id'         => 'foo',
@@ -394,11 +394,11 @@ class API_Tests extends \WP_UnitTestCase {
 			]
 		);
 
-		do_action( 'wp_ajax_dfu_file_upload' );
+		do_action( 'wp_ajax_cffu_file_upload' );
 
-		$this->assertTrue( isset( WC()->session->dfu_file_uploads ) );
-		$this->assertFileExists( ABSPATH . '/wp-content/uploads/dfu_file_uploads/index.html' );
-		$this->assert_file_count( 'foo', 1, WC()->session->dfu_file_uploads );
-		$this->assert_tracked_file( 'foo', 'example-image.zzz', WC()->session->dfu_file_uploads );
+		$this->assertTrue( isset( WC()->session->cffu_file_uploads ) );
+		$this->assertFileExists( ABSPATH . '/wp-content/uploads/cffu_file_uploads/index.html' );
+		$this->assert_file_count( 'foo', 1, WC()->session->cffu_file_uploads );
+		$this->assert_tracked_file( 'foo', 'example-image.zzz', WC()->session->cffu_file_uploads );
 	}
 }

@@ -1,40 +1,40 @@
-.woocommerce-order-received .dfu-order-details {
+.woocommerce-order-received .cffu-order-details {
     border: 1px solid var(--wp--preset--color--black);
     width: 70%;
     box-sizing: border-box;
 }
 
-.woocommerce-order-received .dfu-order-detail {
+.woocommerce-order-received .cffu-order-detail {
     padding: 1em;
 }
 
-.woocommerce-order-received .dfu-order-detail:not(:first-child) {
+.woocommerce-order-received .cffu-order-detail:not(:first-child) {
     border-top: 1px solid var(--wp--preset--color--black);
 }
 
-.postbox .dfu-order-detail:not(:first-child) {
+.postbox .cffu-order-detail:not(:first-child) {
     border-top: 1px solid #ddd;
 }
 
-.postbox .dfu-order-detail:not(:first-child) {
+.postbox .cffu-order-detail:not(:first-child) {
     padding-top: 1em;
 }
 
-.postbox .dfu-order-detail:not(:last-child) {
+.postbox .cffu-order-detail:not(:last-child) {
     padding-bottom: 1em;
 }
 
-.dfu-file-field {
+.cffu-file-field {
     display: flex;
     column-gap: 1em;
     flex-wrap: wrap;
 }
 
-.dfu-file-field figure {
+.cffu-file-field figure {
     margin: 0;
 } 
 
-.dfu-file-field object {
+.cffu-file-field object {
     width: 10em;
     vertical-align: bottom;
     margin-top: 8px;

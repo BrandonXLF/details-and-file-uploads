@@ -2,10 +2,10 @@
 /**
  * Admin and user display hooks.
  *
- * @package Details and File Upload
+ * @package Checkout Fields and File Upload
  */
 
-namespace DetailsAndFileUploadPlugin;
+namespace CFFU_Plugin;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -20,11 +20,11 @@ class Display {
 	 */
 	public static function init() {
 		add_filter(
-			'plugin_action_links_' . plugin_basename( DETAILS_AND_FILE_UPLOAD_PLUGIN_FILE ),
+			'plugin_action_links_' . plugin_basename( CFFU_PLUGIN_FILE ),
 			[ __CLASS__, 'action_links' ]
 		);
 		add_filter( 'woocommerce_checkout_fields', [ __CLASS__, 'add_fields' ], 1 );
-		add_filter( 'woocommerce_form_field_dfu_file_upload', [ __CLASS__, 'create_upload_field' ], 10, 3 );
+		add_filter( 'woocommerce_form_field_cffu_file_upload', [ __CLASS__, 'create_upload_field' ], 10, 3 );
 		add_action( 'woocommerce_after_order_details', [ __CLASS__, 'show_order' ] );
 		add_action( 'add_meta_boxes', [ __CLASS__, 'add_edit_order_box' ] );
 		add_action( 'woocommerce_email_after_order_table', [ __CLASS__, 'email_table' ] );
@@ -39,7 +39,7 @@ class Display {
 	public static function action_links( $links ) {
 		$action_links = [
 			'settings' => '<a href="'
-				. admin_url( 'admin.php?page=details-and-file-uploads-settings' )
+				. admin_url( 'admin.php?page=fields-and-file-upload-settings' )
 				. '">'
 				. esc_html__( 'Settings', 'default' )
 				. '</a>',
@@ -55,8 +55,8 @@ class Display {
 	 * @return array[] New checkout field groups.
 	 */
 	public static function add_fields( $field_groups ) {
-		$fields     = get_option( 'details_and_file_uploads_fields', [] );
-		$hide_notes = get_option( 'details_and_file_uploads_hide_notes', false );
+		$fields     = get_option( 'cffu_fields', [] );
+		$hide_notes = get_option( 'cffu_hide_notes', false );
 
 		if ( $hide_notes ) {
 			unset( $field_groups['order']['order_comments'] );
@@ -91,7 +91,7 @@ class Display {
 				}
 
 				$processed[ $field['id'] ] = [
-					'type'        => 'file' === $field['type'] ? 'dfu_file_upload' : $field['type'],
+					'type'        => 'file' === $field['type'] ? 'cffu_file_upload' : $field['type'],
 					'label'       => $field['label'],
 					'input_class' => 'select' === $field['type'] ? [ 'input-text' ] : [],
 					'required'    => $field['required'],
@@ -119,26 +119,26 @@ class Display {
 	 */
 	public static function create_upload_field( $field, $key, $args ) {
 		wp_enqueue_style(
-			'dfu_checkout_styles',
-			plugin_dir_url( DETAILS_AND_FILE_UPLOAD_PLUGIN_FILE ) . 'src/css/checkout.css',
+			'cffu_checkout_styles',
+			plugin_dir_url( CFFU_PLUGIN_FILE ) . 'src/css/checkout.css',
 			null,
-			DETAILS_AND_FILE_UPLOAD_PLUGIN_VERSION
+			CFFU_PLUGIN_VERSION
 		);
 
 		wp_enqueue_script(
-			'dfu_checkout_script',
-			plugin_dir_url( DETAILS_AND_FILE_UPLOAD_PLUGIN_FILE ) . 'src/js/checkout.js',
+			'cffu_checkout_script',
+			plugin_dir_url( CFFU_PLUGIN_FILE ) . 'src/js/checkout.js',
 			[ 'jquery' ],
-			DETAILS_AND_FILE_UPLOAD_PLUGIN_VERSION,
+			CFFU_PLUGIN_VERSION,
 			[ 'in_footer' => true ]
 		);
 
 		wp_localize_script(
-			'dfu_checkout_script',
-			'dfu_checkout_params',
+			'cffu_checkout_script',
+			'cffu_checkout_params',
 			[
 				'file_upload_endpoint' => admin_url( 'admin-ajax.php' ),
-				'file_upload_nonce'    => wp_create_nonce( 'dfu-file-upload' ),
+				'file_upload_nonce'    => wp_create_nonce( 'cffu-file-upload' ),
 			]
 		);
 
@@ -155,7 +155,7 @@ class Display {
 		$out .= '<span class="woocommerce-input-wrapper">';
 		$out .= '<input type="file" ';
 		$out .= 'id="' . esc_attr( $key ) . '" ';
-		$out .= 'class="input-text input-dfu-file-upload" ';
+		$out .= 'class="input-text input-cffu-file-upload" ';
 		$out .= 'data-name="' . esc_attr( $key ) . '" ';
 
 		if ( $args['multiple'] ?? false ) {
@@ -175,7 +175,7 @@ class Display {
 	 * @return bool True if the order has fields.
 	 */
 	public static function order_has_fields( $order ) {
-		$meta_data = $order->get_meta( 'details_and_file_uploads' ) ?: [];
+		$meta_data = $order->get_meta( 'cffu_responses' ) ?: [];
 
 		return count( $meta_data ) > 0;
 	}
@@ -188,20 +188,20 @@ class Display {
 	 */
 	public static function show_fields_for_order( $order, $for_email = false ) {
 		wp_enqueue_style(
-			'dfu_order_details_styles',
-			plugin_dir_url( DETAILS_AND_FILE_UPLOAD_PLUGIN_FILE ) . 'src/css/order.css',
+			'cffu_order_details_styles',
+			plugin_dir_url( CFFU_PLUGIN_FILE ) . 'src/css/order.css',
 			null,
-			DETAILS_AND_FILE_UPLOAD_PLUGIN_VERSION
+			CFFU_PLUGIN_VERSION
 		);
 
-		$fields        = get_option( 'details_and_file_uploads_fields', [] );
+		$fields        = get_option( 'cffu_fields', [] );
 		$key_index_map = array_flip( array_column( $fields, 'id' ) );
-		$meta_data     = $order->get_meta( 'details_and_file_uploads' ) ?: [];
+		$meta_data     = $order->get_meta( 'cffu_responses' ) ?: [];
 
 		if ( $for_email ) {
 			echo '<div style="margin-bottom:40px;padding:12px;color:#636363;border:1px solid #e5e5e5;">';
 		} else {
-			echo '<div class="dfu-order-details">';
+			echo '<div class="cffu-order-details">';
 		}
 
 		foreach ( $meta_data as $key => $data ) {
@@ -209,11 +209,11 @@ class Display {
 				? $fields[ $key_index_map[ $key ] ]['label']
 				: '{' . $key . '}';
 
-			echo '<div class="dfu-order-detail">';
+			echo '<div class="cffu-order-detail">';
 
 			if ( 'file' === $data['type'] && ! $for_email ) {
 				echo '<div>' . esc_html( $label ) . ':</div>';
-				echo '<div class="dfu-file-field">';
+				echo '<div class="cffu-file-field">';
 
 				foreach ( $data['data'] as $file ) {
 					echo '<figure>';
@@ -255,7 +255,7 @@ class Display {
 		}
 
 		if ( ! count( $meta_data ) ) {
-			echo '<div class="dfu-order-detail">';
+			echo '<div class="cffu-order-detail">';
 			echo 'No details found.';
 			echo '</div>';
 		}
@@ -273,7 +273,7 @@ class Display {
 			return;
 		}
 
-		echo '<h2 class="woocommerce-column__title">Details and files</h2>';
+		echo '<h2 class="woocommerce-column__title">Fields and files</h2>';
 
 		self::show_fields_for_order( $order );
 	}
@@ -283,8 +283,8 @@ class Display {
 	 */
 	public static function add_edit_order_box() {
 		add_meta_box(
-			'dfu_order_meta_box',
-			'Details and files',
+			'cffu_order_meta_box',
+			'Fields and files',
 			[ __CLASS__, 'edit_order_meta_box' ],
 			'shop_order',
 			'side'
@@ -310,7 +310,7 @@ class Display {
 			return;
 		}
 
-		echo '<h2>Details and files</h2>';
+		echo '<h2>Fields and files</h2>';
 
 		self::show_fields_for_order( $order, true );
 	}

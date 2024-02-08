@@ -36,12 +36,12 @@
 	<rule ref="WordPress.NamingConventions.PrefixAllGlobals">
 		<exclude-pattern>*/tests/*</exclude-pattern>
 		<properties>
-			<property name="prefixes" type="array" value="details_and_file_upload,DetailsAndFileUpload"/>
+			<property name="prefixes" type="array" value="CFFU"/>
 		</properties>
 	</rule>
 	<rule ref="WordPress.WP.I18n">
 		<properties>
-			<property name="text_domain" type="array" value="details_and_file_upload,default,woocommerce"/>
+			<property name="text_domain" type="array" value="fields-and-file-upload"/>
 		</properties>
 	</rule>
 	<rule ref="WordPress.WP.Capabilities">

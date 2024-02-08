@@ -2,10 +2,10 @@
 /**
  * Tests for the Display class.
  *
- * @package Details and File Upload
+ * @package Checkout Fields and File Upload
  */
 
-namespace DetailsAndFileUploadPlugin;
+namespace CFFU_Plugin;
 
 /**
  * Tests for the Display class.
@@ -13,7 +13,7 @@ namespace DetailsAndFileUploadPlugin;
 class Display_Tests extends \WP_UnitTestCase {
 	public function test_text_field() {
 		update_option(
-			'details_and_file_uploads_fields',
+			'cffu_fields',
 			[
 				[
 					'id'         => 'foo',
@@ -58,7 +58,7 @@ class Display_Tests extends \WP_UnitTestCase {
 
 	public function test_file_upload_field() {
 		update_option(
-			'details_and_file_uploads_fields',
+			'cffu_fields',
 			[
 				[
 					'id'         => 'foo',
@@ -84,7 +84,7 @@ class Display_Tests extends \WP_UnitTestCase {
 			[
 				'order' => [
 					'foo'            => [
-						'type'        => 'dfu_file_upload',
+						'type'        => 'cffu_file_upload',
 						'label'       => 'Foo',
 						'input_class' => [],
 						'required'    => false,
@@ -122,7 +122,7 @@ class Display_Tests extends \WP_UnitTestCase {
 	}
 
 	public function test_hide_notes() {
-		update_option( 'details_and_file_uploads_hide_notes', true );
+		update_option( 'cffu_hide_notes', true );
 
 		$out = apply_filters(
 			'woocommerce_checkout_fields',
@@ -143,11 +143,11 @@ class Display_Tests extends \WP_UnitTestCase {
 
 	public function test_create_upload_field() {
 		$out = apply_filters(
-			'woocommerce_form_field_dfu_file_upload',
+			'woocommerce_form_field_cffu_file_upload',
 			'',
 			'foo',
 			[
-				'type'        => 'dfu_file_upload',
+				'type'        => 'cffu_file_upload',
 				'label'       => 'Foo',
 				'input_class' => [],
 				'required'    => false,
@@ -160,18 +160,18 @@ class Display_Tests extends \WP_UnitTestCase {
 		);
 
 		$this->assertEquals(
-			'<p class="form-row"><label for="foo">Foo&nbsp;<span class="optional">(optional)</span></label><span class="woocommerce-input-wrapper"><input type="file" id="foo" class="input-text input-dfu-file-upload" data-name="foo" ></span></p>',
+			'<p class="form-row"><label for="foo">Foo&nbsp;<span class="optional">(optional)</span></label><span class="woocommerce-input-wrapper"><input type="file" id="foo" class="input-text input-cffu-file-upload" data-name="foo" ></span></p>',
 			$out
 		);
 	}
 
 	public function test_required_upload_field() {
 		$out = apply_filters(
-			'woocommerce_form_field_dfu_file_upload',
+			'woocommerce_form_field_cffu_file_upload',
 			'',
 			'foo',
 			[
-				'type'        => 'dfu_file_upload',
+				'type'        => 'cffu_file_upload',
 				'label'       => 'Foo',
 				'input_class' => [],
 				'required'    => true,
@@ -184,18 +184,18 @@ class Display_Tests extends \WP_UnitTestCase {
 		);
 
 		$this->assertEquals(
-			'<p class="form-row"><label for="foo">Foo&nbsp;<abbr class="required" title="required">*</abbr></label><span class="woocommerce-input-wrapper"><input type="file" id="foo" class="input-text input-dfu-file-upload" data-name="foo" ></span></p>',
+			'<p class="form-row"><label for="foo">Foo&nbsp;<abbr class="required" title="required">*</abbr></label><span class="woocommerce-input-wrapper"><input type="file" id="foo" class="input-text input-cffu-file-upload" data-name="foo" ></span></p>',
 			$out
 		);
 	}
 
 	public function test_multiple_files() {
 		$out = apply_filters(
-			'woocommerce_form_field_dfu_file_upload',
+			'woocommerce_form_field_cffu_file_upload',
 			'',
 			'foo',
 			[
-				'type'        => 'dfu_file_upload',
+				'type'        => 'cffu_file_upload',
 				'label'       => 'Foo',
 				'input_class' => [],
 				'required'    => false,
@@ -208,7 +208,7 @@ class Display_Tests extends \WP_UnitTestCase {
 		);
 
 		$this->assertEquals(
-			'<p class="form-row"><label for="foo">Foo&nbsp;<span class="optional">(optional)</span></label><span class="woocommerce-input-wrapper"><input type="file" id="foo" class="input-text input-dfu-file-upload" data-name="foo" multiple ></span></p>',
+			'<p class="form-row"><label for="foo">Foo&nbsp;<span class="optional">(optional)</span></label><span class="woocommerce-input-wrapper"><input type="file" id="foo" class="input-text input-cffu-file-upload" data-name="foo" multiple ></span></p>',
 			$out
 		);
 	}
@@ -219,7 +219,7 @@ class Display_Tests extends \WP_UnitTestCase {
 		$order
 			->expects( $this->any() )
 			->method( 'get_meta' )
-			->with( $this->equalTo( 'details_and_file_uploads' ) )
+			->with( $this->equalTo( 'cffu_responses' ) )
 			->willReturn( [] );
 
 		$this->assertEquals( false, Display::order_has_fields( $order ) );
@@ -231,7 +231,7 @@ class Display_Tests extends \WP_UnitTestCase {
 		$order
 			->expects( $this->any() )
 			->method( 'get_meta' )
-			->with( $this->equalTo( 'details_and_file_uploads' ) )
+			->with( $this->equalTo( 'cffu_responses' ) )
 			->willReturn( [ 'foo' => [ 'data' => 'here' ] ] );
 
 		$this->assertEquals( true, Display::order_has_fields( $order ) );
@@ -241,7 +241,7 @@ class Display_Tests extends \WP_UnitTestCase {
 		$order = $this->createMock( \WC_Order::class );
 
 		update_option(
-			'details_and_file_uploads_fields',
+			'cffu_fields',
 			[
 				[
 					'id'         => 'foo',
@@ -257,7 +257,7 @@ class Display_Tests extends \WP_UnitTestCase {
 		$order
 			->expects( $this->any() )
 			->method( 'get_meta' )
-			->with( $this->equalTo( 'details_and_file_uploads' ) )
+			->with( $this->equalTo( 'cffu_responses' ) )
 			->willReturn(
 				[
 					'foo' => [
@@ -270,7 +270,7 @@ class Display_Tests extends \WP_UnitTestCase {
 		Display::show_fields_for_order( $order );
 
 		$this->expectOutputString(
-			'<div class="dfu-order-details"><div class="dfu-order-detail"><div><span>Foo:</span> <span>Foo</span></div></div></div>'
+			'<div class="cffu-order-details"><div class="cffu-order-detail"><div><span>Foo:</span> <span>Foo</span></div></div></div>'
 		);
 	}
 
@@ -280,7 +280,7 @@ class Display_Tests extends \WP_UnitTestCase {
 		$order
 			->expects( $this->any() )
 			->method( 'get_meta' )
-			->with( $this->equalTo( 'details_and_file_uploads' ) )
+			->with( $this->equalTo( 'cffu_responses' ) )
 			->willReturn(
 				[
 					'bar' => [
@@ -293,7 +293,7 @@ class Display_Tests extends \WP_UnitTestCase {
 		Display::show_fields_for_order( $order );
 
 		$this->expectOutputString(
-			'<div class="dfu-order-details"><div class="dfu-order-detail"><div><span>{bar}:</span> <span>Foo</span></div></div></div>'
+			'<div class="cffu-order-details"><div class="cffu-order-detail"><div><span>{bar}:</span> <span>Foo</span></div></div></div>'
 		);
 	}
 
@@ -303,7 +303,7 @@ class Display_Tests extends \WP_UnitTestCase {
 		$order
 			->expects( $this->any() )
 			->method( 'get_meta' )
-			->with( $this->equalTo( 'details_and_file_uploads' ) )
+			->with( $this->equalTo( 'cffu_responses' ) )
 			->willReturn(
 				[
 					'bar' => [
@@ -320,7 +320,7 @@ class Display_Tests extends \WP_UnitTestCase {
 		Display::show_fields_for_order( $order );
 
 		$this->expectOutputString(
-			'<div class="dfu-order-details"><div class="dfu-order-detail"><div><span>{bar}:</span> <span>Foo</span></div></div><div class="dfu-order-detail"><div><span>{baz}:</span> <span>Foo</span></div></div></div>'
+			'<div class="cffu-order-details"><div class="cffu-order-detail"><div><span>{bar}:</span> <span>Foo</span></div></div><div class="cffu-order-detail"><div><span>{baz}:</span> <span>Foo</span></div></div></div>'
 		);
 	}
 
@@ -339,7 +339,7 @@ class Display_Tests extends \WP_UnitTestCase {
 		$order
 			->expects( $this->any() )
 			->method( 'get_meta' )
-			->with( $this->equalTo( 'details_and_file_uploads' ) )
+			->with( $this->equalTo( 'cffu_responses' ) )
 			->willReturn(
 				[
 					'bar' => [
@@ -352,7 +352,7 @@ class Display_Tests extends \WP_UnitTestCase {
 		Display::show_fields_for_order( $order );
 
 		$this->expectOutputString(
-			'<div class="dfu-order-details"><div class="dfu-order-detail"><div>{bar}:</div><div class="dfu-file-field"><figure><a target="_blank" href="https://localhost/whatever/example-image.tmp.png"><object data="https://localhost/whatever/example-image.tmp.png"></object></a><figcaption><a target="_blank" href="https://localhost/whatever/example-image.tmp.png">example-image.png</a></figcaption></figure></div></div></div>'
+			'<div class="cffu-order-details"><div class="cffu-order-detail"><div>{bar}:</div><div class="cffu-file-field"><figure><a target="_blank" href="https://localhost/whatever/example-image.tmp.png"><object data="https://localhost/whatever/example-image.tmp.png"></object></a><figcaption><a target="_blank" href="https://localhost/whatever/example-image.tmp.png">example-image.png</a></figcaption></figure></div></div></div>'
 		);
 	}
 
@@ -378,7 +378,7 @@ class Display_Tests extends \WP_UnitTestCase {
 		$order
 			->expects( $this->any() )
 			->method( 'get_meta' )
-			->with( $this->equalTo( 'details_and_file_uploads' ) )
+			->with( $this->equalTo( 'cffu_responses' ) )
 			->willReturn(
 				[
 					'bar' => [
@@ -391,7 +391,7 @@ class Display_Tests extends \WP_UnitTestCase {
 		Display::show_fields_for_order( $order );
 
 		$this->expectOutputString(
-			'<div class="dfu-order-details"><div class="dfu-order-detail"><div>{bar}:</div><div class="dfu-file-field"><figure><a target="_blank" href="https://localhost/whatever/example-image.tmp.png"><object data="https://localhost/whatever/example-image.tmp.png"></object></a><figcaption><a target="_blank" href="https://localhost/whatever/example-image.tmp.png">example-image.png</a></figcaption></figure><figure><a target="_blank" href="https://localhost/whatever/example-image2.tmp.png"><object data="https://localhost/whatever/example-image2.tmp.png"></object></a><figcaption><a target="_blank" href="https://localhost/whatever/example-image2.tmp.png">example-image2.png</a></figcaption></figure></div></div></div>'
+			'<div class="cffu-order-details"><div class="cffu-order-detail"><div>{bar}:</div><div class="cffu-file-field"><figure><a target="_blank" href="https://localhost/whatever/example-image.tmp.png"><object data="https://localhost/whatever/example-image.tmp.png"></object></a><figcaption><a target="_blank" href="https://localhost/whatever/example-image.tmp.png">example-image.png</a></figcaption></figure><figure><a target="_blank" href="https://localhost/whatever/example-image2.tmp.png"><object data="https://localhost/whatever/example-image2.tmp.png"></object></a><figcaption><a target="_blank" href="https://localhost/whatever/example-image2.tmp.png">example-image2.png</a></figcaption></figure></div></div></div>'
 		);
 	}
 
@@ -410,7 +410,7 @@ class Display_Tests extends \WP_UnitTestCase {
 		$order
 			->expects( $this->any() )
 			->method( 'get_meta' )
-			->with( $this->equalTo( 'details_and_file_uploads' ) )
+			->with( $this->equalTo( 'cffu_responses' ) )
 			->willReturn(
 				[
 					'bar' => [
@@ -423,7 +423,7 @@ class Display_Tests extends \WP_UnitTestCase {
 		Display::show_fields_for_order( $order, true );
 
 		$this->expectOutputString(
-			'<div style="margin-bottom:40px;padding:12px;color:#636363;border:1px solid #e5e5e5;"><div class="dfu-order-detail"><div><span>{bar}:</span> <a target="_blank" href="https://localhost/whatever/example-image.tmp.png">example-image.png</a></div></div></div>'
+			'<div style="margin-bottom:40px;padding:12px;color:#636363;border:1px solid #e5e5e5;"><div class="cffu-order-detail"><div><span>{bar}:</span> <a target="_blank" href="https://localhost/whatever/example-image.tmp.png">example-image.png</a></div></div></div>'
 		);
 	}
 
@@ -433,13 +433,13 @@ class Display_Tests extends \WP_UnitTestCase {
 		$order
 			->expects( $this->any() )
 			->method( 'get_meta' )
-			->with( $this->equalTo( 'details_and_file_uploads' ) )
+			->with( $this->equalTo( 'cffu_responses' ) )
 			->willReturn( [] );
 
 		Display::show_fields_for_order( $order );
 
 		$this->expectOutputString(
-			'<div class="dfu-order-details"><div class="dfu-order-detail">No details found.</div></div>'
+			'<div class="cffu-order-details"><div class="cffu-order-detail">No details found.</div></div>'
 		);
 	}
 
@@ -449,7 +449,7 @@ class Display_Tests extends \WP_UnitTestCase {
 		$order
 			->expects( $this->any() )
 			->method( 'get_meta' )
-			->with( $this->equalTo( 'details_and_file_uploads' ) )
+			->with( $this->equalTo( 'cffu_responses' ) )
 			->willReturn(
 				[
 					'bar' => [
@@ -462,7 +462,7 @@ class Display_Tests extends \WP_UnitTestCase {
 		do_action( 'woocommerce_after_order_details', $order );
 
 		$this->expectOutputString(
-			'<h2 class="woocommerce-column__title">Details and files</h2><div class="dfu-order-details"><div class="dfu-order-detail"><div><span>{bar}:</span> <span>Foo</span></div></div></div>'
+			'<h2 class="woocommerce-column__title">Fields and files</h2><div class="cffu-order-details"><div class="cffu-order-detail"><div><span>{bar}:</span> <span>Foo</span></div></div></div>'
 		);
 	}
 
@@ -472,7 +472,7 @@ class Display_Tests extends \WP_UnitTestCase {
 		$order
 			->expects( $this->any() )
 			->method( 'get_meta' )
-			->with( $this->equalTo( 'details_and_file_uploads' ) )
+			->with( $this->equalTo( 'cffu_responses' ) )
 			->willReturn(
 				[
 					'bar' => [
@@ -485,7 +485,7 @@ class Display_Tests extends \WP_UnitTestCase {
 		do_action( 'woocommerce_email_after_order_table', $order );
 
 		$this->expectOutputString(
-			'<h2>Details and files</h2><div style="margin-bottom:40px;padding:12px;color:#636363;border:1px solid #e5e5e5;"><div class="dfu-order-detail"><div><span>{bar}:</span> <span>Foo</span></div></div></div>'
+			'<h2>Fields and files</h2><div style="margin-bottom:40px;padding:12px;color:#636363;border:1px solid #e5e5e5;"><div class="cffu-order-detail"><div><span>{bar}:</span> <span>Foo</span></div></div></div>'
 		);
 	}
 }

@@ -2,10 +2,10 @@
 /**
  * Tracker for files not attached to an order.
  *
- * @package Details and File Upload
+ * @package Checkout Fields and File Upload
  */
 
-namespace DetailsAndFileUploadPlugin;
+namespace CFFU_Plugin;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -15,7 +15,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * Manager for the plugin's upload directory.
  */
 class Uploads {
-	const UPLOAD_DIR = '/dfu_file_uploads';
+	const UPLOAD_DIR = '/cffu_file_uploads';
 
 	/**
 	 * Get the full upload path for plugin uploads.
@@ -48,8 +48,8 @@ class Uploads {
 	 * @return array The same array with values overridden.
 	 */
 	public static function override_upload_dir( $param ) {
-		$param['path'] = $param['basedir'] . '/dfu_file_uploads';
-		$param['url']  = $param['baseurl'] . '/dfu_file_uploads';
+		$param['path'] = $param['basedir'] . '/cffu_file_uploads';
+		$param['url']  = $param['baseurl'] . '/cffu_file_uploads';
 
 		return $param;
 	}
@@ -74,7 +74,7 @@ class Uploads {
 			[
 				'test_form' => false,
 				'test_type' => false,
-				'action'    => defined( 'DFU_TESTSUITE' ) ? 'test' : null,
+				'action'    => defined( 'CFFU_TESTSUITE' ) ? 'test' : null,
 			]
 		);
 

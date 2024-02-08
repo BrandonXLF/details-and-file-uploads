@@ -2,10 +2,10 @@
 /**
  * Plugin file autoloader
  *
- * @package Details and File Upload
+ * @package Checkout Fields and File Upload
  */
 
-namespace DetailsAndFileUploadPlugin;
+namespace CFFU_Plugin;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -22,7 +22,7 @@ class Autoloader {
 		spl_autoload_register(
 			function ( $class_name ) {
 				$class_name = str_replace( '\\', '/', $class_name );
-				$class_name = str_replace( 'DetailsAndFileUploadPlugin/', '', $class_name );
+				$class_name = str_replace( 'CFFU_Plugin/', '', $class_name );
 				$class_name = str_replace( '_', '-', $class_name );
 				$class_name = strtolower( $class_name );
 

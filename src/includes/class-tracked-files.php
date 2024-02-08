@@ -2,10 +2,10 @@
 /**
  * Tracker for files not attached to an order.
  *
- * @package Details and File Upload
+ * @package Checkout Fields and File Upload
  */
 
-namespace DetailsAndFileUploadPlugin;
+namespace CFFU_Plugin;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -24,7 +24,7 @@ class Tracked_Files {
 		require_once ABSPATH . 'wp-admin/includes/upgrade.php';
 
 		dbDelta(
-			"CREATE TABLE {$wpdb->prefix}dfu_tracked_file_uploads (
+			"CREATE TABLE {$wpdb->prefix}cffu_tracked_file_uploads (
 				id bigint(20) NOT NULL AUTO_INCREMENT,
 				session_id char(32) NOT NULL,
 				file_path varchar(255) NOT NULL,
@@ -43,7 +43,7 @@ class Tracked_Files {
 		global $wpdb;
 
 		$wpdb->insert(
-			"{$wpdb->prefix}dfu_tracked_file_uploads",
+			"{$wpdb->prefix}cffu_tracked_file_uploads",
 			[
 				'session_id' => $session,
 				'file_path'  => $path,
@@ -61,7 +61,7 @@ class Tracked_Files {
 		global $wpdb;
 
 		$wpdb->delete(
-			"{$wpdb->prefix}dfu_tracked_file_uploads",
+			"{$wpdb->prefix}cffu_tracked_file_uploads",
 			[
 				'session_id' => $session,
 				'file_path'  => $path,
@@ -79,7 +79,7 @@ class Tracked_Files {
 	public static function untrack_session( $session ) {
 		global $wpdb;
 
-		$wpdb->delete( "{$wpdb->prefix}dfu_tracked_file_uploads", [ 'session_id' => $session ] );
+		$wpdb->delete( "{$wpdb->prefix}cffu_tracked_file_uploads", [ 'session_id' => $session ] );
 	}
 
 	/**
@@ -89,7 +89,7 @@ class Tracked_Files {
 		global $wpdb;
 
 		$results = $wpdb->get_results(
-			"SELECT file_path FROM {$wpdb->prefix}dfu_tracked_file_uploads files
+			"SELECT file_path FROM {$wpdb->prefix}cffu_tracked_file_uploads files
             LEFT JOIN {$wpdb->prefix}woocommerce_sessions wc ON wc.session_key = files.session_id
             WHERE wc.session_key IS NULL"
 		);
@@ -99,7 +99,7 @@ class Tracked_Files {
 		}
 
 		$wpdb->query(
-			"DELETE files FROM {$wpdb->prefix}dfu_tracked_file_uploads files
+			"DELETE files FROM {$wpdb->prefix}cffu_tracked_file_uploads files
             LEFT JOIN {$wpdb->prefix}woocommerce_sessions wc ON wc.session_key = files.session_id
             WHERE wc.session_key IS NULL"
 		);
@@ -111,13 +111,13 @@ class Tracked_Files {
 	 */
 	public static function uninstall() {
 		global $wpdb;
-		$results = $wpdb->get_results( "SELECT file_path FROM {$wpdb->prefix}dfu_tracked_file_uploads files" );
+		$results = $wpdb->get_results( "SELECT file_path FROM {$wpdb->prefix}cffu_tracked_file_uploads files" );
 
 		foreach ( $results as $result ) {
 			Uploads::delete_file( $result->file_path );
 		}
 
 		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.SchemaChange
-		$wpdb->query( "DROP TABLE {$wpdb->prefix}dfu_tracked_file_uploads" );
+		$wpdb->query( "DROP TABLE {$wpdb->prefix}cffu_tracked_file_uploads" );
 	}
 }

@@ -2,10 +2,10 @@
 /**
  * Plugin AJAX APIs.
  *
- * @package Details and File Upload
+ * @package Checkout Fields and File Upload
  */
 
-namespace DetailsAndFileUploadPlugin;
+namespace CFFU_Plugin;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	return self::die();
@@ -19,15 +19,15 @@ class API {
 	 * Initialize plugin AJAX APIs.
 	 */
 	public static function init() {
-		add_action( 'wp_ajax_dfu_file_upload', [ __CLASS__, 'upload_ajax' ] );
-		add_action( 'wp_ajax_nopriv_dfu_file_upload', [ __CLASS__, 'upload_ajax' ] );
+		add_action( 'wp_ajax_cffu_file_upload', [ __CLASS__, 'upload_ajax' ] );
+		add_action( 'wp_ajax_nopriv_cffu_file_upload', [ __CLASS__, 'upload_ajax' ] );
 	}
 
 	/**
 	 * Handle end of request.
 	 */
 	private static function die() {
-		if ( ! defined( 'DFU_TESTSUITE' ) ) {
+		if ( ! defined( 'CFFU_TESTSUITE' ) ) {
 			exit;
 		}
 	}
@@ -36,7 +36,7 @@ class API {
 	 * Handle file upload.
 	 */
 	public static function upload_ajax() {
-		if ( empty( $_POST['nonce'] ) || ! wp_verify_nonce( sanitize_key( $_POST['nonce'] ), 'dfu-file-upload' ) ) {
+		if ( empty( $_POST['nonce'] ) || ! wp_verify_nonce( sanitize_key( $_POST['nonce'] ), 'cffu-file-upload' ) ) {
 			http_response_code( 401 );
 			echo 'Failed to verify nonce.';
 			return self::die();
@@ -48,7 +48,7 @@ class API {
 			return self::die();
 		}
 
-		$fields   = get_option( 'details_and_file_uploads_fields', [] );
+		$fields   = get_option( 'cffu_fields', [] );
 		$field_id = sanitize_text_field( wp_unslash( $_POST['name'] ) );
 
 		$field = array_values(
@@ -134,7 +134,7 @@ class API {
 			);
 		}
 
-		$uploads = WC()->session->dfu_file_uploads ?? [];
+		$uploads = WC()->session->cffu_file_uploads ?? [];
 
 		if ( isset( $uploads[ $field_id ] ) ) {
 			foreach ( $uploads[ $field_id ] as &$file ) {
@@ -142,8 +142,8 @@ class API {
 			}
 		}
 
-		$uploads[ $field_id ]           = $data;
-		WC()->session->dfu_file_uploads = $uploads;
+		$uploads[ $field_id ]            = $data;
+		WC()->session->cffu_file_uploads = $uploads;
 
 		return self::die();
 	}
