@@ -5,7 +5,7 @@ Donate link: https://www.brandonfowler.me/donate/
 Requires at least: 4.6
 Tested up to: 6.4.1
 Requires PHP: 7.0
-Stable tag: 1.1.2
+Stable tag: 1.1.3
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -41,6 +41,11 @@ PHP 7.0 or greater is required (PHP 8.0 or greater is recommended)
 3. The settings page to manage custom fields.
 
 == Changelog ==
+
+= 1.1.3 =
+
+- Changed name to "Checkout Fields and File Upload for WooCommerce".
+- Implemented changes recommended by the WordPress plugin review team.
 
 = 1.1.2 =
 
