@@ -10,7 +10,7 @@ namespace CFFU_Plugin;
 /**
  * Tests for the API class.
  */
-class API_Tests extends \WP_UnitTestCase {
+class Upload_API_Tests extends \WP_UnitTestCase {
 	public function set_up(): void {
 		parent::set_up();
 
@@ -349,7 +349,7 @@ class API_Tests extends \WP_UnitTestCase {
 
 		do_action( 'wp_ajax_cffu_file_upload' );
 
-		$this->expectOutputString( 'File type/extension is not allowed.' );
+		$this->expectOutputString( 'Sorry, you are not allowed to upload this file type.' );
 		$this->assertFalse( isset( WC()->session->cffu_file_uploads ) );
 		$this->assert_file_count( 'foo', 0, WC()->session->cffu_file_uploads );
 	}

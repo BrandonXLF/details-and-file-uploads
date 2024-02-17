@@ -42,48 +42,6 @@ class Uploads {
 	}
 
 	/**
-	 * Override upload directory.
-	 *
-	 * @param array $param Array of information about the upload directory.
-	 * @return array The same array with values overridden.
-	 */
-	public static function override_upload_dir( $param ) {
-		$param['path'] = $param['basedir'] . '/cffu_file_uploads';
-		$param['url']  = $param['baseurl'] . '/cffu_file_uploads';
-
-		return $param;
-	}
-
-	/**
-	 * Add an uploaded file.
-	 *
-	 * @param array $file Reference to a single element of $_FILES.
-	 * @return array See wp_handle_upload's for return value.
-	 */
-	public static function add_file( &$file ) {
-		self::ensure_directory();
-
-		if ( ! function_exists( 'wp_handle_upload' ) ) {
-			require_once ABSPATH . 'wp-admin/includes/file.php';
-		}
-
-		add_filter( 'upload_dir', [ self::class, 'override_upload_dir' ] );
-
-		$ret = wp_handle_upload(
-			$file,
-			[
-				'test_form' => false,
-				'test_type' => false,
-				'action'    => defined( 'CFFU_TESTSUITE' ) ? 'test' : null,
-			]
-		);
-
-		remove_filter( 'upload_dir', [ self::class, 'override_upload_dir' ] );
-
-		return $ret;
-	}
-
-	/**
 	 * Delete an uploaded file.
 	 *
 	 * @param string $path The file's path.

@@ -37,5 +37,5 @@ require_once 'src/includes/class-autoloader.php';
 Autoloader::init();
 Display::init();
 Data_Hooks::init();
-API::init();
+Upload_API::init();
 Settings::init();

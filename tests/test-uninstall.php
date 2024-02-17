@@ -12,15 +12,6 @@ namespace CFFU_Plugin;
  */
 class Uninstall_Tests extends \WP_UnitTestCase {
 	public function test_uninstall_script() {
-		$tmp_dir = ini_get( 'upload_tmp_dir' ) ?: sys_get_temp_dir();
-
-		$this->assertTrue(
-			copy(
-				__DIR__ . '/example-image.png',
-				$tmp_dir . '/example-image.tmp.png'
-			)
-		);
-
 		update_option(
 			'cffu_fields',
 			[
@@ -39,16 +30,14 @@ class Uninstall_Tests extends \WP_UnitTestCase {
 
 		Tracked_Files::setup();
 
-		$tmp_dir = ini_get( 'upload_tmp_dir' ) ?: sys_get_temp_dir();
-		$file    = [
-			'name'     => 'example-image.png',
-			'type'     => 'image/png',
-			'tmp_name' => $tmp_dir . '/example-image.tmp.png',
-			'error'    => UPLOAD_ERR_OK,
-			'size'     => filesize( $tmp_dir . '/example-image.tmp.png' ),
-		];
+		Uploads::ensure_directory();
 
-		Uploads::add_file( $file );
+		$this->assertTrue(
+			copy(
+				__DIR__ . '/example-image.png',
+				Uploads::get_upload_path() . '/ty345r5fdg4j6cf.png'
+			)
+		);
 
 		global $wpdb;
 
