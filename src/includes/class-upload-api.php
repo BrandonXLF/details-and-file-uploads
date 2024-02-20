@@ -16,18 +16,11 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 class Upload_API {
 	/**
-	 * The field to upload files for.
-	 *
-	 * @var array
-	 */
-	private $field;
-
-	/**
 	 * Initialize plugin AJAX APIs.
 	 */
 	public static function init() {
-		add_action( 'wp_ajax_cffu_file_upload', [ __CLASS__, 'start' ] );
-		add_action( 'wp_ajax_nopriv_cffu_file_upload', [ __CLASS__, 'start' ] );
+		add_action( 'wp_ajax_cffu_file_upload', [ __CLASS__, 'process' ] );
+		add_action( 'wp_ajax_nopriv_cffu_file_upload', [ __CLASS__, 'process' ] );
 	}
 
 	/**
@@ -40,46 +33,28 @@ class Upload_API {
 	}
 
 	/**
-	 * Handle start of request.
-	 */
-	public static function start() {
-		( new self() )->process();
-	}
-
-	/**
-	 * Override upload directory.
+	 * Get the permitted MIMES for a field.
 	 *
-	 * @param array $param Array of information about the upload directory.
-	 * @return array The same array with values overridden.
+	 * @param array $field The field.
+	 * @return array MIME map with types permitted for the current field.
 	 */
-	public function override_upload_dir( $param ) {
-		$param['path'] = $param['basedir'] . Uploads::UPLOAD_DIR;
-		$param['url']  = $param['baseurl'] . Uploads::UPLOAD_DIR;
+	public static function get_permitted_mimes( &$field ) {
+		$base_mimes = get_allowed_mime_types();
 
-		return $param;
-	}
-
-	/**
-	 * Override permitted MIME types.
-	 *
-	 * @param array $mimes Mime types keyed by the file extension regex corresponding to those types.
-	 * @return array Overridden type map with types permitted for the current field.
-	 */
-	public function override_upload_mimes( $mimes ) {
-		if ( ! count( $this->field['types'] ?? [] ) ) {
-			return $mimes;
+		if ( ! count( $field['types'] ?? [] ) ) {
+			return $base_mimes;
 		}
 
-		$overridden_mimes = [];
+		$permitted_mimes = [];
 
-		foreach ( $this->field['types'] as &$allowed_type ) {
+		foreach ( $field['types'] as &$allowed_type ) {
 			// Add permitted extension to the list.
 			if ( substr( $allowed_type, 0, 1 ) === '.' ) {
 				$ext  = substr( $allowed_type, 1 );
 				$type = false;
 
 				// Get the type of the permitted extension.
-				foreach ( $mimes as $ext_preg => $mime_match ) {
+				foreach ( $base_mimes as $ext_preg => $mime_match ) {
 					$ext_preg = '!^(' . $ext_preg . ')$!i';
 
 					if ( preg_match( $ext_preg, $ext, $ext_matches ) ) {
@@ -93,16 +68,16 @@ class Upload_API {
 					$type = 'application/cffu-custom';
 				}
 
-				$overridden_mimes[ $ext ] = $type;
+				$permitted_mimes[ $ext ] = $type;
 
 				continue;
 			}
 
 			// Add mimes starting with the allowed type to the list.
-			$overridden_mimes = array_merge(
-				$overridden_mimes,
+			$permitted_mimes = array_merge(
+				$permitted_mimes,
 				array_filter(
-					$mimes,
+					$base_mimes,
 					function ( $type ) use ( &$allowed_type ) {
 						return substr( $type, 0, strlen( $allowed_type ) ) === $allowed_type;
 					}
@@ -110,7 +85,20 @@ class Upload_API {
 			);
 		}
 
-		return $overridden_mimes;
+		return $permitted_mimes;
+	}
+
+	/**
+	 * Override upload directory.
+	 *
+	 * @param array $param Array of information about the upload directory.
+	 * @return array The same array with values overridden.
+	 */
+	public static function override_upload_dir( $param ) {
+		$param['path'] = $param['basedir'] . Uploads::UPLOAD_DIR;
+		$param['url']  = $param['baseurl'] . Uploads::UPLOAD_DIR;
+
+		return $param;
 	}
 
 	/**
@@ -121,7 +109,7 @@ class Upload_API {
 	 * @param string        $filename The name of the file.
 	 * @param string[]|null $mimes Array of mime types keyed by their file extension regex, or null if none were provided.
 	 */
-	public function override_wp_check_filetype_and_ext( $ret, $file_, $filename, $mimes ) {
+	public static function override_wp_check_filetype_and_ext( $ret, $file_, $filename, $mimes ) {
 		$wp_filetype = wp_check_filetype( $filename, $mimes );
 		$ext         = $wp_filetype['ext'];
 		$type        = $wp_filetype['type'];
@@ -142,7 +130,7 @@ class Upload_API {
 	 *
 	 * @return array Array containing elements with info about the uploaded files.
 	 */
-	public function process() {
+	public static function process() {
 		if ( empty( $_POST['nonce'] ) || ! wp_verify_nonce( sanitize_key( $_POST['nonce'] ), 'cffu-file-upload' ) ) {
 			http_response_code( 401 );
 			echo 'Failed to verify nonce.';
@@ -158,7 +146,7 @@ class Upload_API {
 		$fields   = get_option( 'cffu_fields', [] );
 		$field_id = sanitize_text_field( wp_unslash( $_POST['name'] ) );
 
-		$this->field = array_values(
+		$field = array_values(
 			array_filter(
 				$fields,
 				function ( $field ) use ( &$field_id ) {
@@ -167,11 +155,13 @@ class Upload_API {
 			)
 		)[0] ?? false;
 
-		if ( ! $this->field ) {
+		if ( ! $field ) {
 			http_response_code( 400 );
 			echo 'Invalid field "' . esc_html( $field_id ) . '" for file upload.';
 			return self::die();
 		}
+
+		$mimes = self::get_permitted_mimes( $field );
 
 		Uploads::ensure_directory();
 
@@ -182,9 +172,8 @@ class Upload_API {
 		$original_names = [];
 		$data           = [];
 
-		add_filter( 'upload_dir', [ $this, 'override_upload_dir' ], PHP_INT_MAX );
-		add_filter( 'upload_mimes', [ $this, 'override_upload_mimes' ], PHP_INT_MAX );
-		add_filter( 'wp_check_filetype_and_ext', [ $this, 'override_wp_check_filetype_and_ext' ], PHP_INT_MAX, 4 );
+		add_filter( 'upload_dir', [ __CLASS__, 'override_upload_dir' ], PHP_INT_MAX );
+		add_filter( 'wp_check_filetype_and_ext', [ __CLASS__, 'override_wp_check_filetype_and_ext' ], PHP_INT_MAX, 4 );
 
 		// Unsanitized file array has to be converted into individual files before being passed to wp_handle_upload.
         // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
@@ -210,6 +199,7 @@ class Upload_API {
 						$original_names[ $name ] = sanitize_file_name( $original_name );
 						return $name;
 					},
+					'mimes'                    => $mimes,
 				]
 			);
 
@@ -231,9 +221,8 @@ class Upload_API {
 			);
 		}
 
-		remove_filter( 'upload_dir', [ $this, 'override_upload_dir' ], PHP_INT_MAX );
-		remove_filter( 'upload_mimes', [ $this, 'override_upload_mimes' ], PHP_INT_MAX );
-		remove_filter( 'wp_check_filetype_and_ext', [ $this, 'override_wp_check_filetype_and_ext' ], PHP_INT_MAX );
+		remove_filter( 'upload_dir', [ __CLASS__, 'override_upload_dir' ], PHP_INT_MAX );
+		remove_filter( 'wp_check_filetype_and_ext', [ __CLASS__, 'override_wp_check_filetype_and_ext' ], PHP_INT_MAX );
 
 		$uploads = WC()->session->cffu_file_uploads ?? [];
 
