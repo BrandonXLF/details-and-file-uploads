@@ -258,7 +258,7 @@ class Settings {
 	 * @param string $name The name of the setting.
 	 */
 	private static function input_name( $i, $name ) {
-		return 'cffu_fields[' + $i + '][' + $name + ']';
+		return 'cffu_fields[' . $i . '][' . $name . ']';
 	}
 
 	/**

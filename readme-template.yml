@@ -1,5 +1,5 @@
 name: Checkout Fields and File Upload for WooCommerce
-version: '1.1.3'
+version: '1.1.4'
 url: https://www.brandonfowler.me/fields-and-file-upload/
 short-description: Easily add general or item-specific detail inputs and file uploads to the WooCommerce checkout page.
 tags: ['woocommerce', 'file upload', 'checkout', 'order details']
