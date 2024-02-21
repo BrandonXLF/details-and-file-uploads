@@ -105,7 +105,6 @@ class Tracked_Files {
 		);
 	}
 
-
 	/**
 	 * Remove the database and remove any tracked files.
 	 */
