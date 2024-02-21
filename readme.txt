@@ -42,6 +42,10 @@ PHP 7.0 or greater is required (PHP 8.0 or greater is recommended)
 
 == Changelog ==
 
+= 1.1.4 =
+
+Fixed an error on the settings page.
+
 = 1.1.3 =
 
 - Changed name to "Checkout Fields and File Upload for WooCommerce".

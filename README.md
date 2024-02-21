@@ -72,6 +72,10 @@ Requires WP version 4.6 and PHP version 7.0.
 
 ## Changelog
 
+### 1.1.4
+
+Fixed an error on the settings page.
+
 ### 1.1.3
 
 - Changed name to "Checkout Fields and File Upload for WooCommerce".
