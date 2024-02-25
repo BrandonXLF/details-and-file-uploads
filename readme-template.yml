@@ -7,7 +7,7 @@ tags: ['woocommerce', 'file upload', 'checkout', 'order details']
 wp-min: '4.6'
 php-min: '7.0'
 php-rec: '8.0'
-wp-tested: '6.4.1'
+wp-tested: '6.4.3'
 long-description:
   - title: ''
     text: >

@@ -3,7 +3,7 @@ Contributors: brandonxlf
 Tags: woocommerce,file upload,checkout,order details
 Donate link: https://www.brandonfowler.me/donate/
 Requires at least: 4.6
-Tested up to: 6.4.1
+Tested up to: 6.4.3
 Requires PHP: 7.0
 Stable tag: 1.1.5
 License: GPLv2 or later
