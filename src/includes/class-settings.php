@@ -516,8 +516,8 @@ class Settings {
 	public static function configure_admin_menu() {
 		add_submenu_page(
 			'woocommerce',
-			'Customer uploads',
-			'Checkout Fields and Files',
+			'Checkout Fields and File Upload Settings',
+			'Fields and File Upload',
 			'manage_woocommerce',
 			'fields-and-file-upload-settings',
 			[ __CLASS__, 'settings_page' ]

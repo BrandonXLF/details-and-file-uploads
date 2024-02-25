@@ -145,7 +145,7 @@ def generate_comment():
  *
  * @wordpress-plugin
 '''
-    out += ' * Plugin Name: ' + template['name'] + '\n'
+    out += ' * Plugin Name: ' + template['short-name'] + '\n'
     out += ' * Plugin URI: ' + template['url'] + '\n'
     out += ' * Description: ' + template['short-description'] + '\n'
     out += ' * Version: ' + template['version'] + '\n'
