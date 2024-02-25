@@ -46,7 +46,7 @@ PHP 7.0 or greater is required (PHP 8.0 or greater is recommended)
 
 ## Developing
 
-### Install dependencies
+### Installing dependencies
 
 Composer is used to install dependencies. Once it is installed run `composer install` to install them.
 
@@ -65,6 +65,10 @@ README.md, readme.txt, and the comment of fields-and-file-upload.php are all gen
 ### Creating ZIP archive
 
 Run `bin/build-zip.sh` to create a ZIP archive of the plugin that is suitable to be uploaded to a WordPress site.
+
+### Publishing to wordpress.org
+
+Run `bin/release-svn.sh` to create a release version and add it as a tag to SVN. Run `bin/update-svn-assets.sh` to update wordpress.org assets only. You can specify your SVN username with "--username USERNAME".
 
 ## Compatibility
 

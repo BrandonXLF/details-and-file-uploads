@@ -1,3 +1,5 @@
 vendor
 *.cache
 fields-and-file-upload.*.zip
+svn-repo
+build
