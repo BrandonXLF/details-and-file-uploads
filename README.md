@@ -76,6 +76,10 @@ Requires WP version 4.6 and PHP version 7.0.
 
 ## Changelog
 
+### 1.1.6
+
+Made plugin labels on the admin dashboard more concise.
+
 ### 1.1.5
 
 Only calculate allowed MIME types once.
