@@ -41,6 +41,7 @@ function migrate_v112_v113() {
 	$old_uploads = wp_upload_dir()['basedir'] . '/dfu_file_uploads';
 	$new_uploads = wp_upload_dir()['basedir'] . '/cffu_file_uploads';
 
+	define( 'FS_METHOD', 'direct' );
 	WP_Filesystem();
 
 	if ( $wp_filesystem->exists( $old_uploads ) ) {
