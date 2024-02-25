@@ -73,7 +73,7 @@ function migrate_v112_v113() {
 		$meta_data = $order->get_meta( 'details_and_file_uploads' );
 
 		if ( ! $meta_data ) {
-			return;
+			continue;
 		}
 
 		foreach ( $meta_data as &$item ) {
