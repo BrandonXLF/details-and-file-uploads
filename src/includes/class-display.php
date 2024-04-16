@@ -190,12 +190,14 @@ class Display {
 	 * @param bool      $for_email Weather the output is going to be included in an email.
 	 */
 	public static function show_fields_for_order( $order, $for_email = false ) {
-		wp_enqueue_style(
-			'cffu_order_details_styles',
-			plugin_dir_url( CFFU_PLUGIN_FILE ) . 'src/css/order.css',
-			null,
-			CFFU_PLUGIN_VERSION
-		);
+		if ( ! $for_email ) {
+			wp_enqueue_style(
+				'cffu_order_details_styles',
+				plugin_dir_url( CFFU_PLUGIN_FILE ) . 'src/css/order.css',
+				null,
+				CFFU_PLUGIN_VERSION
+			);
+		}
 
 		$fields        = get_option( 'cffu_fields', [] );
 		$key_index_map = array_flip( array_column( $fields, 'id' ) );
