@@ -62,9 +62,12 @@ class Display {
 			unset( $field_groups['order']['order_comments'] );
 		}
 
+		$cart = WC()->cart;
+		$cart = $cart ? $cart->get_cart() : [];
+
 		$processed     = [];
-		$product_ids   = array_column( WC()->cart->get_cart(), 'product_id' );
-		$variation_ids = array_column( WC()->cart->get_cart(), 'variation_id' );
+		$product_ids   = array_column( $cart, 'product_id' );
+		$variation_ids = array_column( $cart, 'variation_id' );
 		$category_ids  = array_merge(
 			...array_map(
 				function ( $product_id ) {
