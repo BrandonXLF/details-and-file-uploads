@@ -12,15 +12,19 @@
     border-top: 1px solid var(--wp--preset--color--black);
 }
 
-.postbox .cffu-order-detail:not(:first-child) {
+.cffu-order-detail:not(:first-child) {
     border-top: 1px solid #ddd;
 }
 
-.postbox .cffu-order-detail:not(:first-child) {
+.woocommerce .cffu-order-detail {
+    border-color: #bbb;
+}
+
+.cffu-order-detail:not(:first-child) {
     padding-top: 1em;
 }
 
-.postbox .cffu-order-detail:not(:last-child) {
+.cffu-order-detail:not(:last-child) {
     padding-bottom: 1em;
 }
 
