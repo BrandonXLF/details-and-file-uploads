@@ -76,6 +76,11 @@ Requires WP version 4.6 and PHP version 7.0.
 
 ## Changelog
 
+### 1.1.7
+
+- Allow fields to be displayed when the WooCommerce cart is undefined.
+- Add spacing borders to the WooCommerce details page.
+
 ### 1.1.6
 
 Made plugin labels on the admin dashboard more concise.
