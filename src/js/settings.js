@@ -84,6 +84,8 @@ jQuery($ => {
 		addBtn.textContent = 'Add';
 		
 		addBtn.addEventListener('click', () => {
+			if (!addInput.value) return;
+
 			addEntry(addInput.value);
 			
 			listInput.value += (listInput.value ? ',' : '') + addInput.value;
