@@ -294,7 +294,7 @@ class Display {
 			'cffu_order_meta_box',
 			'Fields and files',
 			[ __CLASS__, 'edit_order_meta_box' ],
-			'shop_order',
+			wc_get_page_screen_id( 'shop_order' ),
 			'side'
 		);
 	}
@@ -302,10 +302,11 @@ class Display {
 	/**
 	 * Show meta box content.
 	 *
-	 * @param \WP_Post $post The post.
+	 * @param \WC_Order|\WP_Post $post_or_order The post or the order.
 	 */
-	public static function edit_order_meta_box( $post ) {
-		self::show_fields_for_order( wc_get_order( $post->ID ) );
+	public static function edit_order_meta_box( $post_or_order ) {
+		$order = ( $post_or_order instanceof \WP_Post ) ? wc_get_order( $post_or_order->ID ) : $post_or_order;
+		self::show_fields_for_order( $order );
 	}
 
 	/**
