@@ -381,6 +381,10 @@ class Settings {
 
 		echo '<div id="fields">';
 
+		if ( !$fields ) {
+			echo 'No checkout fields found. Add one below to get started!';
+		}
+
 		foreach ( $fields as $i => $field ) {
 			echo '<div class="field-cnt">';
 
