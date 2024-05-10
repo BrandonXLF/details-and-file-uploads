@@ -462,7 +462,7 @@ class Display_Tests extends \WP_UnitTestCase {
 		do_action( 'woocommerce_after_order_details', $order );
 
 		$this->expectOutputString(
-			'<h2 class="woocommerce-column__title">Fields and files</h2><div class="cffu-order-details"><div class="cffu-order-detail"><div><span>{bar}:</span> <span>Foo</span></div></div></div>'
+			'<section class="cffu-responses"><h2 class="woocommerce-column__title">Fields and files</h2><div class="cffu-order-details"><div class="cffu-order-detail"><div><span>{bar}:</span> <span>Foo</span></div></div></div></section>'
 		);
 	}
 
