@@ -381,7 +381,7 @@ class Settings {
 
 		echo '<div id="fields">';
 
-		if ( !$fields ) {
+		if ( ! $fields ) {
 			echo 'No checkout fields found. Add one below to get started!';
 		}
 

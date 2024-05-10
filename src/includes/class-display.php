@@ -310,7 +310,7 @@ class Display {
 	}
 
 	/**
-	 * Generate details table for emails
+	 * Generate details table for emails.
 	 *
 	 * @param \WC_Order $order The order.
 	 */
