@@ -1,6 +1,5 @@
 .woocommerce-order-received .cffu-order-details {
-    border: 1px solid var(--wp--preset--color--black);
-    width: 70%;
+    border: 1px solid #bbb;
     box-sizing: border-box;
 }
 
@@ -9,7 +8,7 @@
 }
 
 .woocommerce-order-received .cffu-order-detail:not(:first-child) {
-    border-top: 1px solid var(--wp--preset--color--black);
+    border-top: 1px solid #bbb;
 }
 
 .cffu-order-detail:not(:first-child) {
