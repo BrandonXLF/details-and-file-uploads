@@ -302,7 +302,7 @@ class Display {
 	/**
 	 * Show meta box content.
 	 *
-	 * @param \WC_Order|\WP_Post $post_or_order The post or the order.
+	 * @param \WC_Order | \WP_Post $post_or_order The post or the order.
 	 */
 	public static function edit_order_meta_box( $post_or_order ) {
 		$order = ( $post_or_order instanceof \WP_Post ) ? wc_get_order( $post_or_order->ID ) : $post_or_order;
