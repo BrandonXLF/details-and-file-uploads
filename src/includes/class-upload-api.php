@@ -195,7 +195,7 @@ class Upload_API {
 					// Tests fail the is_uploaded_file test.
 					'action'                   => defined( 'CFFU_TESTSUITE' ) ? 'test' : null,
 					'unique_filename_callback' => function ( $_, $original_name, $ext ) use ( &$original_names ) {
-						$name                    = bin2hex( random_bytes( 15 ) ) . '.' . $ext;
+						$name                    = bin2hex( random_bytes( 15 ) ) . $ext;
 						$original_names[ $name ] = sanitize_file_name( $original_name );
 						return $name;
 					},
