@@ -9,9 +9,20 @@ jQuery($ => {
         uploadInput.dataset.processed = '';
         uploadInput.after(hiddenInput);
 
-        uploadInput.addEventListener('change', () => {
+        const clearFileButton = uploadInput.labels[0].querySelector('.cffu-clear-file');
+
+        function onChange() {
             hiddenInput.value = uploadInput.files.length || '';
             uploadInput.dataset.processed = '';
+            clearFileButton.classList.toggle('cffu-clear-file-active', uploadInput.files.length);
+        }
+
+        uploadInput.addEventListener('change', onChange);
+        
+        clearFileButton.addEventListener('click', e => {
+            e.preventDefault();
+            uploadInput.value = null;
+            onChange();
         });
     }
 

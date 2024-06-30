@@ -150,7 +150,7 @@ class Display {
 		if ( $args['required'] ) {
 			$required = '&nbsp;<abbr class="required" title="' . esc_attr__( 'required', 'fields-and-file-upload' ) . '">*</abbr>';
 		} else {
-			$required = '&nbsp;<span class="optional">(' . esc_html__( 'optional', 'fields-and-file-upload' ) . ')</span>';
+			$required = '&nbsp;<span class="optional">(' . esc_html__( 'optional', 'fields-and-file-upload' ) . ')</span> <button class="cffu-clear-file">Clear</button>';
 		}
 
 		$out .= '<label for="' . esc_attr( $key ) . '">' . esc_html( $args['label'] ) . $required . '</label>';

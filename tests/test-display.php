@@ -160,7 +160,7 @@ class Display_Tests extends \WP_UnitTestCase {
 		);
 
 		$this->assertEquals(
-			'<p class="form-row"><label for="foo">Foo&nbsp;<span class="optional">(optional)</span></label><span class="woocommerce-input-wrapper"><input type="file" id="foo" class="input-text input-cffu-file-upload" data-name="foo" ></span></p>',
+			'<p class="form-row"><label for="foo">Foo&nbsp;<span class="optional">(optional)</span> <button class="cffu-clear-file">Clear</button></label><span class="woocommerce-input-wrapper"><input type="file" id="foo" class="input-text input-cffu-file-upload" data-name="foo" ></span></p>',
 			$out
 		);
 	}
@@ -208,7 +208,7 @@ class Display_Tests extends \WP_UnitTestCase {
 		);
 
 		$this->assertEquals(
-			'<p class="form-row"><label for="foo">Foo&nbsp;<span class="optional">(optional)</span></label><span class="woocommerce-input-wrapper"><input type="file" id="foo" class="input-text input-cffu-file-upload" data-name="foo" multiple ></span></p>',
+			'<p class="form-row"><label for="foo">Foo&nbsp;<span class="optional">(optional)</span> <button class="cffu-clear-file">Clear</button></label><span class="woocommerce-input-wrapper"><input type="file" id="foo" class="input-text input-cffu-file-upload" data-name="foo" multiple ></span></p>',
 			$out
 		);
 	}

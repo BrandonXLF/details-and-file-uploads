@@ -5,3 +5,20 @@
 	width: 100%;
 	box-sizing: border-box;
 }
+
+.cffu-clear-file {
+	display: none;
+	cursor: pointer;
+	margin: unset;
+	padding: unset;
+	margin-left: 4px;
+	color: #d92c2c;
+	text-decoration: underline;
+	background: unset;
+	border: unset;
+	font: inherit;
+}
+
+.cffu-clear-file-active {
+	display: inline-block;
+}
