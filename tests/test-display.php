@@ -488,4 +488,45 @@ class Display_Tests extends \WP_UnitTestCase {
 			'<h2>Fields and files</h2><div style="margin-bottom:40px;padding:12px;color:#636363;border:1px solid #e5e5e5;"><div class="cffu-order-detail"><div><span>{bar}:</span> <span>Foo</span></div></div></div>'
 		);
 	}
+
+	public function test_meta_box() {
+		global $wp_meta_boxes;
+
+		do_action( 'add_meta_boxes' );
+
+		$page = convert_to_screen( wc_get_page_screen_id( 'shop_order' ) )->id;
+
+		$this->assertEquals(
+			[
+				'id' => 'cffu_order_meta_box',
+				'title' => 'Fields and files',
+				'callback' => [ Display::class, 'edit_order_meta_box' ],
+				'args' => null
+			],
+			$wp_meta_boxes[ $page ][ 'side' ][ 'default' ][ 'cffu_order_meta_box' ]
+		);
+	}
+
+	public function test_meta_box_render() {
+		$order = $this->createMock( \WC_Order::class );
+
+		$order
+			->expects( $this->any() )
+			->method( 'get_meta' )
+			->with( $this->equalTo( 'cffu_responses' ) )
+			->willReturn(
+				[
+					'bar' => [
+						'type' => 'text',
+						'data' => 'Foo',
+					],
+				]
+			);
+
+		Display::edit_order_meta_box( $order );
+
+		$this->expectOutputString(
+			'<div class="cffu-order-details"><div class="cffu-order-detail"><div><span>{bar}:</span> <span>Foo</span></div></div></div>'
+		);
+	}
 }
