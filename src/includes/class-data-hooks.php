@@ -35,7 +35,7 @@ class Data_Hooks {
 	 * @param array    $data Posted data.
 	 */
 	public static function populate_order( $order, $data ) {
-		$fields = get_option( 'cffu_fields', [] );
+		$fields = get_option( 'cffu_fields' );
 
 		foreach ( $fields as &$field ) {
 			$id = wp_unslash( $field['id'] );

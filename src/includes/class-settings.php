@@ -389,7 +389,7 @@ class Settings {
 	 * Show settings for field.
 	 */
 	public static function field_settings() {
-		$fields = get_option( 'cffu_fields', [] );
+		$fields = get_option( 'cffu_fields' );
 
 		echo '<div id="fields">';
 
@@ -423,7 +423,7 @@ class Settings {
 	 * Show setting to add new field.
 	 */
 	public static function new_field_setting() {
-		$fields = get_option( 'cffu_fields', [] );
+		$fields = get_option( 'cffu_fields' );
 
 		echo '<div class="field">';
 
@@ -447,7 +447,7 @@ class Settings {
 	 * Show setting to hide default WooCommerce order notes.
 	 */
 	public static function hide_notes_setting() {
-		$checked = get_option( 'cffu_hide_notes', false );
+		$checked = get_option( 'cffu_hide_notes' );
 
 		echo '<input type="checkbox" name="cffu_hide_notes" ' . ( $checked ? 'checked' : '' ) . '>';
 	}
@@ -460,6 +460,7 @@ class Settings {
 			'cffu_settings',
 			'cffu_fields',
 			[
+				'default'           => [],
 				'sanitize_callback' => [ __CLASS__, 'sanitize_fields' ],
 			]
 		);
@@ -475,7 +476,10 @@ class Settings {
 
 		register_setting(
 			'cffu_settings',
-			'cffu_hide_notes'
+			'cffu_hide_notes',
+			[
+				'default' => false,
+			]
 		);
 	}
 

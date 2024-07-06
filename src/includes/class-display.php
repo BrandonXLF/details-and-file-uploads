@@ -55,8 +55,8 @@ class Display {
 	 * @return array[] New checkout field groups.
 	 */
 	public static function add_fields( $field_groups ) {
-		$fields     = get_option( 'cffu_fields', [] );
-		$hide_notes = get_option( 'cffu_hide_notes', false );
+		$fields     = get_option( 'cffu_fields' );
+		$hide_notes = get_option( 'cffu_hide_notes' );
 
 		if ( $hide_notes ) {
 			unset( $field_groups['order']['order_comments'] );
@@ -199,7 +199,7 @@ class Display {
 			);
 		}
 
-		$fields        = get_option( 'cffu_fields', [] );
+		$fields        = get_option( 'cffu_fields' );
 		$key_index_map = array_flip( array_column( $fields, 'id' ) );
 		$meta_data     = $order->get_meta( 'cffu_responses' ) ?: [];
 

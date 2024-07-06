@@ -143,7 +143,7 @@ class Upload_API {
 			return self::die();
 		}
 
-		$fields   = get_option( 'cffu_fields', [] );
+		$fields   = get_option( 'cffu_fields' );
 		$field_id = sanitize_text_field( wp_unslash( $_POST['name'] ) );
 
 		$field = array_values(
