@@ -45,9 +45,9 @@ class Display_Tests extends \WP_UnitTestCase {
 						'required'    => true,
 						'clear'       => false,
 						'label_class' => '',
-						'options'     => null,
+						'options'     => [],
 						'placeholder' => null,
-						'multiple'    => null,
+						'multiple'    => false,
 					],
 					'order_comments' => [],
 				],
@@ -90,9 +90,9 @@ class Display_Tests extends \WP_UnitTestCase {
 						'required'    => false,
 						'clear'       => false,
 						'label_class' => '',
-						'options'     => null,
+						'options'     => [],
 						'placeholder' => null,
-						'multiple'    => null,
+						'multiple'    => false,
 					],
 					'order_comments' => [],
 				],
@@ -153,9 +153,9 @@ class Display_Tests extends \WP_UnitTestCase {
 				'required'    => false,
 				'clear'       => false,
 				'label_class' => '',
-				'options'     => null,
+				'options'     => [],
 				'placeholder' => null,
-				'multiple'    => null,
+				'multiple'    => false,
 			]
 		);
 
@@ -177,9 +177,9 @@ class Display_Tests extends \WP_UnitTestCase {
 				'required'    => true,
 				'clear'       => false,
 				'label_class' => '',
-				'options'     => null,
+				'options'     => [],
 				'placeholder' => null,
-				'multiple'    => null,
+				'multiple'    => false,
 			]
 		);
 
@@ -201,7 +201,7 @@ class Display_Tests extends \WP_UnitTestCase {
 				'required'    => false,
 				'clear'       => false,
 				'label_class' => '',
-				'options'     => null,
+				'options'     => [],
 				'placeholder' => null,
 				'multiple'    => true,
 			]

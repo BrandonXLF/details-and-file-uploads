@@ -107,7 +107,8 @@ class Settings {
 	 * Initialize settings page hooks.
 	 */
 	public static function init() {
-		add_action( 'admin_init', [ __CLASS__, 'register_settings' ] );
+		add_action( 'init', [ __CLASS__, 'register_settings' ] );
+		add_action( 'admin_init', [ __CLASS__, 'register_setting_fields' ] );
 		add_action( 'admin_menu', [ __CLASS__, 'configure_admin_menu' ] );
 	}
 
@@ -251,6 +252,15 @@ class Settings {
 			$filtered,
 			array_keys( $filtered )
 		);
+	}
+
+	/**
+	 * Add the default table title if required.
+	 *
+	 * @param string $title The table title.
+	 */
+	public static function sanitize_table_title( $title ) {
+		return $title ?: 'Fields and files';
 	}
 
 	/**
@@ -425,6 +435,15 @@ class Settings {
 	}
 
 	/**
+	 * Show setting to get table title for order details etc.
+	 */
+	public static function table_title_setting() {
+		$value = get_option( 'cffu_table_title' );
+
+		echo '<input type="text" name="cffu_table_title" value="' . esc_html( $value ) . '">';
+	}
+
+	/**
 	 * Show setting to hide default WooCommerce order notes.
 	 */
 	public static function hide_notes_setting() {
@@ -434,7 +453,7 @@ class Settings {
 	}
 
 	/**
-	 * Register settings.
+	 * Register settings and their defaults.
 	 */
 	public static function register_settings() {
 		register_setting(
@@ -447,9 +466,23 @@ class Settings {
 
 		register_setting(
 			'cffu_settings',
-			'cffu_hide_notes'
+			'cffu_table_title',
+			[
+				'default'           => 'Fields and files',
+				'sanitize_callback' => [ __CLASS__, 'sanitize_table_title' ],
+			]
 		);
 
+		register_setting(
+			'cffu_settings',
+			'cffu_hide_notes'
+		);
+	}
+
+	/**
+	 * Register setting fields.
+	 */
+	public static function register_setting_fields() {
 		add_settings_section(
 			'cffu_config_settings',
 			null,
@@ -469,6 +502,14 @@ class Settings {
 			'cffu_new_field_setting',
 			'Add new field',
 			[ __CLASS__, 'new_field_setting' ],
+			'fields-and-file-upload-settings',
+			'cffu_config_settings'
+		);
+
+		add_settings_field(
+			'cffu_table_title_setting',
+			'Response table title',
+			[ __CLASS__, 'table_title_setting' ],
 			'fields-and-file-upload-settings',
 			'cffu_config_settings'
 		);
