@@ -529,4 +529,13 @@ class Display_Tests extends \WP_UnitTestCase {
 			'<div class="cffu-order-details"><div class="cffu-order-detail"><div><span>{bar}:</span> <span>Foo</span></div></div></div>'
 		);
 	}
+
+	public function test_plugin_action_links() {
+		$actions = apply_filters( 'plugin_action_links_' . plugin_basename( CFFU_PLUGIN_FILE ), [] );
+
+		$this->assertContains(
+			'<a href="http://example.org/wp-admin/admin.php?page=fields-and-file-upload-settings">Settings</a>',
+			$actions
+		);
+	}
 }
