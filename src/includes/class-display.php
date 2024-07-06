@@ -279,7 +279,7 @@ class Display {
 		}
 
 		echo '<section class="cffu-responses">';
-		echo '<h2 class="woocommerce-column__title">Fields and files</h2>';
+		echo '<h2 class="cffu-table-title woocommerce-column__title">Fields and files</h2>';
 
 		self::show_fields_for_order( $order );
 
