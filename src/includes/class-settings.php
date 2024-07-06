@@ -184,7 +184,7 @@ class Settings {
 		$filtered = array_filter(
 			$values,
 			function ( $value ) {
-				return empty( $value['deleted'] ) && count(
+				return ! boolval( $value['deleted'] ?? false ) && count(
 					array_filter(
 						$value,
 						function ( $val, $key ) {
@@ -201,7 +201,8 @@ class Settings {
 		return array_map(
 			function ( $value, $i ) use ( &$seen_ids ) {
 				foreach ( self::FIELD_SETTINGS as $name => $field_setting ) {
-					$id = $name . '---' . ( $value[ $name ] ?? '' );
+					$unique = $field_setting['unique'] ?? false;
+					$id     = $unique ? $name . '---' . ( $value[ $name ] ?? '' ) : null;
 
 					if (
 						( $field_setting['required'] ?? false ) &&
@@ -214,10 +215,11 @@ class Settings {
 						);
 					}
 
-					if (
-						( $field_setting['unique'] ?? false ) &&
-						( $seen_ids[ $id ] ?? false )
-					) {
+					if ( ! $unique ) {
+						continue;
+					}
+
+					if ( $seen_ids[ $id ] ?? false ) {
 						add_settings_error(
 							'cffu_fields',
 							'cffu-field-dup-' . $name . '-' . $i,
@@ -230,17 +232,17 @@ class Settings {
 
 				foreach ( self::FIELD_SETTINGS as $name => $field_setting ) {
 					if ( 'list' === $field_setting['type'] ) {
-						if ( ! $value[ $name ] ) {
+						if ( ! array_key_exists( $name, $value ) ) {
 							$value[ $name ] = [];
 						} elseif ( ! is_array( $value[ $name ] ) ) {
-							$value[ $name ] = explode( ',', $value[ $name ] );
+							$value[ $name ] = array_filter( explode( ',', $value[ $name ] ) );
 
-							if ( 'int' === $field_settings['item-type'] ) {
-								$value[ $name ] = array_map( intval, $value[ $name ] );
+							if ( 'int' === $field_setting['item-type'] ) {
+								$value[ $name ] = array_map( 'intval', $value[ $name ] );
 							}
 						}
 					} elseif ( 'checkbox' === $field_setting['type'] ) {
-						$value[ $name ] = boolval( $value[ $name ] );
+						$value[ $name ] = boolval( $value[ $name ] ?? false );
 					}
 				}
 
