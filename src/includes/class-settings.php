@@ -478,7 +478,8 @@ class Settings {
 			'cffu_settings',
 			'cffu_hide_notes',
 			[
-				'default' => false,
+				'default'           => false,
+				'sanitize_callback' => 'boolval',
 			]
 		);
 	}
