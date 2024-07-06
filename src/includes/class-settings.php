@@ -244,6 +244,11 @@ class Settings {
 						}
 					} elseif ( 'checkbox' === $field_setting['type'] ) {
 						$value[ $name ] = boolval( $value[ $name ] ?? false );
+					} elseif (
+						'text' === $field_setting['type'] ||
+						'select' === $field_setting['type']
+					) {
+						$value[ $name ] = $value[ $name ] ?? '';
 					}
 				}
 
