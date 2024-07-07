@@ -76,6 +76,20 @@ Requires WP version 4.6 and PHP version 7.0.
 
 ## Changelog
 
+### 1.2.0
+
+- Require value when adding to list input on the settings page
+- Show message when there are no fields on the settings page
+- Wrap output in a <section> tag
+- Improve order received page styling
+- Show meta box for HPOS orders
+- Stop adding extra dot to generated file names
+- Add a clear button to the file input
+- Add "cffu-table-title" class to response table titles
+- Add option to customize response table title
+- Don't save empty response meta data and file submissions
+- Add prefix to checkout page inputs
+
 ### 1.1.7
 
 - Allow fields to be displayed when the WooCommerce cart is undefined.

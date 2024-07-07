@@ -5,7 +5,7 @@ Donate link: https://www.brandonfowler.me/donate/
 Requires at least: 4.6
 Tested up to: 6.5.2
 Requires PHP: 7.0
-Stable tag: 1.1.7
+Stable tag: 1.2.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -41,6 +41,20 @@ PHP 7.0 or greater is required (PHP 8.0 or greater is recommended)
 3. The settings page to manage custom fields.
 
 == Changelog ==
+
+= 1.2.0 =
+
+- Require value when adding to list input on the settings page
+- Show message when there are no fields on the settings page
+- Wrap output in a <section> tag
+- Improve order received page styling
+- Show meta box for HPOS orders
+- Stop adding extra dot to generated file names
+- Add a clear button to the file input
+- Add "cffu-table-title" class to response table titles
+- Add option to customize response table title
+- Don't save empty response meta data and file submissions
+- Add prefix to checkout page inputs
 
 = 1.1.7 =
 
