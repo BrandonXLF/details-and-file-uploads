@@ -10,7 +10,7 @@ namespace CFFU_Plugin;
 /**
  * Tests for the Tracked_Files class.
  */
-class Tracked_Files_Tests extends \WP_UnitTestCase {
+class Tracked_Files_Tests extends Unit_Test_Case {
 	public function set_up(): void {
 		parent::set_up();
 

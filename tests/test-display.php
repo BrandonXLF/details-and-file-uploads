@@ -10,16 +10,7 @@ namespace CFFU_Plugin;
 /**
  * Tests for the Display class.
  */
-class Display_Tests extends \WP_UnitTestCase {
-	public function create_order_with_responses( $responses = [] ) {
-		$order = wc_create_order();
-
-		$order->add_meta_data( 'cffu_responses', $responses, true );
-		$order->save();
-
-		return $order;
-	}
-
+class Display_Tests extends Unit_Test_Case {
 	public function test_text_field() {
 		update_option(
 			'cffu_fields',
@@ -267,20 +258,14 @@ class Display_Tests extends \WP_UnitTestCase {
 	}
 
 	public function test_show_unknown_field() {
-		$order = $this->createMock( \WC_Order::class );
-
-		$order
-			->expects( $this->any() )
-			->method( 'get_meta' )
-			->with( $this->equalTo( 'cffu_responses' ) )
-			->willReturn(
-				[
-					'bar' => [
-						'type' => 'text',
-						'data' => 'Foo',
-					],
-				]
-			);
+		$order = $this->create_order_with_responses(
+			[
+				'bar' => [
+					'type' => 'text',
+					'data' => 'Foo',
+				],
+			]
+		);
 
 		Display::show_fields_for_order( $order );
 

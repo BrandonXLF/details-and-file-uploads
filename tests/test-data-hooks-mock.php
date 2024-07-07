@@ -13,7 +13,7 @@ namespace CFFU_Plugin;
  * @runTestsInSeparateProcesses
  * @preserveGlobalState disabled
  */
-class Data_Hooks_Tracked_Files_Tests extends \WP_UnitTestCase {
+class Data_Hooks_Tracked_Files_Tests extends Unit_Test_Case {
 	use \Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 
 	public function test_cleanup_sessios() {

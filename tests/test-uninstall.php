@@ -10,7 +10,7 @@ namespace CFFU_Plugin;
 /**
  * Tests for uninstall.php
  */
-class Uninstall_Tests extends \WP_UnitTestCase {
+class Uninstall_Tests extends Unit_Test_Case {
 	public function test_uninstall_script() {
 		update_option(
 			'cffu_fields',

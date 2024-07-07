@@ -10,7 +10,7 @@ namespace CFFU_Plugin;
 /**
  * Tests for the API class.
  */
-class Upload_API_Tests extends \WP_UnitTestCase {
+class Upload_API_Tests extends Unit_Test_Case {
 	public function set_up(): void {
 		parent::set_up();
 

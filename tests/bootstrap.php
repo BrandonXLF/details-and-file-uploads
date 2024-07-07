@@ -7,6 +7,21 @@
 
 namespace CFFU_Plugin;
 
+spl_autoload_register(
+	function ( $class_name ) {
+		$class_name = str_replace( '\\', '/', $class_name );
+		$class_name = str_replace( 'CFFU_Plugin/', '', $class_name );
+		$class_name = str_replace( '_', '-', $class_name );
+		$class_name = strtolower( $class_name );
+
+		$file = __DIR__ . '/class-' . $class_name . '.php';
+
+		if ( file_exists( $file ) ) {
+			include $file;
+		}
+	}
+);
+
 require dirname( __DIR__ ) . '/vendor/yoast/phpunit-polyfills/phpunitpolyfills-autoload.php';
 
 $_tests_dir = getenv( 'WP_TESTS_DIR' );

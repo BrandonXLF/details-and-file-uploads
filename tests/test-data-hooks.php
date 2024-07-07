@@ -10,7 +10,7 @@ namespace CFFU_Plugin;
 /**
  * Tests for the Data_Hooks class.
  */
-class Data_Hooks_Tests extends \WP_UnitTestCase {
+class Data_Hooks_Tests extends Unit_Test_Case {
 	public function set_up() {
 		parent::set_up();
 
