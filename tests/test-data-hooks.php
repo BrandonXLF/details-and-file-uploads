@@ -198,4 +198,78 @@ class Data_Hooks_Tests extends Unit_Test_Case {
 
 		$this->assertEquals( 0, $count );
 	}
+
+	public function test_before_delete_post() {
+		$tmp_dir = ini_get( 'upload_tmp_dir' ) ?: sys_get_temp_dir();
+
+		$file1 = [
+			'name' => 'example-image.png',
+			'path' => $tmp_dir . '/example-image1.tmp.png',
+			'url'  => 'https://localhost/whatever/example-image1.tmp.png',
+			'type' => 'image/png',
+		];
+
+		$file2 = [
+			'name' => 'example-image.png',
+			'path' => $tmp_dir . '/example-image2.tmp.png',
+			'url'  => 'https://localhost/whatever/example-image2.tmp.png',
+			'type' => 'image/png',
+		];
+
+		$this->assertTrue( copy( __DIR__ . '/example-image.png', $file1['path'] ) );
+		$this->assertTrue( copy( __DIR__ . '/example-image.png', $file2['path'] ) );
+
+		$order = $this->create_order_with_responses(
+			[
+				'bar' => [
+					'type' => 'file',
+					'data' => [ $file1, $file2 ],
+				],
+			]
+		);
+
+		do_action(
+			'before_delete_post',
+			$order->get_id(),
+			get_post( $order->get_id() )
+		);
+
+		$this->assertFileDoesNotExist( $file1['path'] );
+		$this->assertFileDoesNotExist( $file2['path'] );
+	}
+
+	public function test_before_delete_hpos() {
+		$tmp_dir = ini_get( 'upload_tmp_dir' ) ?: sys_get_temp_dir();
+
+		$file1 = [
+			'name' => 'example-image.png',
+			'path' => $tmp_dir . '/example-image1.tmp.png',
+			'url'  => 'https://localhost/whatever/example-image1.tmp.png',
+			'type' => 'image/png',
+		];
+
+		$file2 = [
+			'name' => 'example-image.png',
+			'path' => $tmp_dir . '/example-image2.tmp.png',
+			'url'  => 'https://localhost/whatever/example-image2.tmp.png',
+			'type' => 'image/png',
+		];
+
+		$this->assertTrue( copy( __DIR__ . '/example-image.png', $file1['path'] ) );
+		$this->assertTrue( copy( __DIR__ . '/example-image.png', $file2['path'] ) );
+
+		$order = $this->create_order_with_responses(
+			[
+				'bar' => [
+					'type' => 'file',
+					'data' => [ $file1, $file2 ],
+				],
+			]
+		);
+
+		do_action( 'woocommerce_before_delete_order', $order->get_id(), $order );
+
+		$this->assertFileDoesNotExist( $file1['path'] );
+		$this->assertFileDoesNotExist( $file2['path'] );
+	}
 }

@@ -69,14 +69,14 @@ class Data_Hooks {
 	/**
 	 * Remove uploaded files before an order is deleted.
 	 *
-	 * @param int $post_id The post ID.
+	 * @param int $id The post or order ID.
 	 */
-	public static function before_order_delete( $post_id ) {
-		if ( ! OrderUtil::is_order( $post_id ) ) {
+	public static function before_order_delete( $id ) {
+		if ( ! OrderUtil::is_order( $id ) ) {
 			return;
 		}
 
-		$order     = wc_get_order( $post_id );
+		$order     = wc_get_order( $id );
 		$meta_data = $order->get_meta( 'cffu_responses' );
 
 		foreach ( $meta_data as $data ) {
