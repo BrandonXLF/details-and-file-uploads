@@ -11,6 +11,15 @@ namespace CFFU_Plugin;
  * Tests for the Display class.
  */
 class Display_Tests extends \WP_UnitTestCase {
+	public function create_order_with_responses( $responses = [] ) {
+		$order = wc_create_order();
+
+		$order->add_meta_data( 'cffu_responses', $responses, true );
+		$order->save();
+
+		return $order;
+	}
+
 	public function test_text_field() {
 		update_option(
 			'cffu_fields',
@@ -214,32 +223,19 @@ class Display_Tests extends \WP_UnitTestCase {
 	}
 
 	public function test_order_no_fields() {
-		$order = $this->createMock( \WC_Order::class );
-
-		$order
-			->expects( $this->any() )
-			->method( 'get_meta' )
-			->with( $this->equalTo( 'cffu_responses' ) )
-			->willReturn( [] );
-
+		$order = $this->create_order_with_responses();
 		$this->assertEquals( false, Display::order_has_fields( $order ) );
 	}
 
 	public function test_order_has_fields() {
-		$order = $this->createMock( \WC_Order::class );
-
-		$order
-			->expects( $this->any() )
-			->method( 'get_meta' )
-			->with( $this->equalTo( 'cffu_responses' ) )
-			->willReturn( [ 'foo' => [ 'data' => 'here' ] ] );
+		$order = $this->create_order_with_responses(
+			[ 'foo' => [ 'data' => 'here' ] ]
+		);
 
 		$this->assertEquals( true, Display::order_has_fields( $order ) );
 	}
 
 	public function test_show_known_field() {
-		$order = $this->createMock( \WC_Order::class );
-
 		update_option(
 			'cffu_fields',
 			[
@@ -254,18 +250,14 @@ class Display_Tests extends \WP_UnitTestCase {
 			]
 		);
 
-		$order
-			->expects( $this->any() )
-			->method( 'get_meta' )
-			->with( $this->equalTo( 'cffu_responses' ) )
-			->willReturn(
-				[
-					'foo' => [
-						'type' => 'text',
-						'data' => 'Foo',
-					],
-				]
-			);
+		$order = $this->create_order_with_responses(
+			[
+				'foo' => [
+					'type' => 'text',
+					'data' => 'Foo',
+				],
+			]
+		);
 
 		Display::show_fields_for_order( $order );
 
@@ -298,24 +290,18 @@ class Display_Tests extends \WP_UnitTestCase {
 	}
 
 	public function text_show_multiple_fields() {
-		$order = $this->createMock( \WC_Order::class );
-
-		$order
-			->expects( $this->any() )
-			->method( 'get_meta' )
-			->with( $this->equalTo( 'cffu_responses' ) )
-			->willReturn(
-				[
-					'bar' => [
-						'type' => 'text',
-						'data' => 'Foo',
-					],
-					'baz' => [
-						'type' => 'text',
-						'data' => 'Foo',
-					],
-				]
-			);
+		$order = $this->create_order_with_responses(
+			[
+				'bar' => [
+					'type' => 'text',
+					'data' => 'Foo',
+				],
+				'baz' => [
+					'type' => 'text',
+					'data' => 'Foo',
+				],
+			]
+		);
 
 		Display::show_fields_for_order( $order );
 
@@ -334,20 +320,14 @@ class Display_Tests extends \WP_UnitTestCase {
 			'type' => 'image/png',
 		];
 
-		$order = $this->createMock( \WC_Order::class );
-
-		$order
-			->expects( $this->any() )
-			->method( 'get_meta' )
-			->with( $this->equalTo( 'cffu_responses' ) )
-			->willReturn(
-				[
-					'bar' => [
-						'type' => 'file',
-						'data' => [ $file ],
-					],
-				]
-			);
+		$order = $this->create_order_with_responses(
+			[
+				'bar' => [
+					'type' => 'file',
+					'data' => [ $file ],
+				],
+			]
+		);
 
 		Display::show_fields_for_order( $order );
 
@@ -373,20 +353,14 @@ class Display_Tests extends \WP_UnitTestCase {
 			'type' => 'image/png',
 		];
 
-		$order = $this->createMock( \WC_Order::class );
-
-		$order
-			->expects( $this->any() )
-			->method( 'get_meta' )
-			->with( $this->equalTo( 'cffu_responses' ) )
-			->willReturn(
-				[
-					'bar' => [
-						'type' => 'file',
-						'data' => [ $file, $file2 ],
-					],
-				]
-			);
+		$order = $this->create_order_with_responses(
+			[
+				'bar' => [
+					'type' => 'file',
+					'data' => [ $file, $file2 ],
+				],
+			]
+		);
 
 		Display::show_fields_for_order( $order );
 
@@ -405,20 +379,14 @@ class Display_Tests extends \WP_UnitTestCase {
 			'type' => 'image/png',
 		];
 
-		$order = $this->createMock( \WC_Order::class );
-
-		$order
-			->expects( $this->any() )
-			->method( 'get_meta' )
-			->with( $this->equalTo( 'cffu_responses' ) )
-			->willReturn(
-				[
-					'bar' => [
-						'type' => 'file',
-						'data' => [ $file ],
-					],
-				]
-			);
+		$order = $this->create_order_with_responses(
+			[
+				'bar' => [
+					'type' => 'file',
+					'data' => [ $file ],
+				],
+			]
+		);
 
 		Display::show_fields_for_order( $order, true );
 
@@ -428,13 +396,7 @@ class Display_Tests extends \WP_UnitTestCase {
 	}
 
 	public function test_show_no_fields() {
-		$order = $this->createMock( \WC_Order::class );
-
-		$order
-			->expects( $this->any() )
-			->method( 'get_meta' )
-			->with( $this->equalTo( 'cffu_responses' ) )
-			->willReturn( [] );
+		$order = $this->create_order_with_responses();
 
 		Display::show_fields_for_order( $order );
 
@@ -444,20 +406,14 @@ class Display_Tests extends \WP_UnitTestCase {
 	}
 
 	public function test_show_order() {
-		$order = $this->createMock( \WC_Order::class );
-
-		$order
-			->expects( $this->any() )
-			->method( 'get_meta' )
-			->with( $this->equalTo( 'cffu_responses' ) )
-			->willReturn(
-				[
-					'bar' => [
-						'type' => 'text',
-						'data' => 'Foo',
-					],
-				]
-			);
+		$order = $this->create_order_with_responses(
+			[
+				'bar' => [
+					'type' => 'text',
+					'data' => 'Foo',
+				],
+			]
+		);
 
 		do_action( 'woocommerce_after_order_details', $order );
 
@@ -467,20 +423,14 @@ class Display_Tests extends \WP_UnitTestCase {
 	}
 
 	public function test_email_table() {
-		$order = $this->createMock( \WC_Order::class );
-
-		$order
-			->expects( $this->any() )
-			->method( 'get_meta' )
-			->with( $this->equalTo( 'cffu_responses' ) )
-			->willReturn(
-				[
-					'bar' => [
-						'type' => 'text',
-						'data' => 'Foo',
-					],
-				]
-			);
+		$order = $this->create_order_with_responses(
+			[
+				'bar' => [
+					'type' => 'text',
+					'data' => 'Foo',
+				],
+			]
+		);
 
 		do_action( 'woocommerce_email_after_order_table', $order );
 
@@ -508,20 +458,14 @@ class Display_Tests extends \WP_UnitTestCase {
 	}
 
 	public function test_meta_box_render() {
-		$order = $this->createMock( \WC_Order::class );
-
-		$order
-			->expects( $this->any() )
-			->method( 'get_meta' )
-			->with( $this->equalTo( 'cffu_responses' ) )
-			->willReturn(
-				[
-					'bar' => [
-						'type' => 'text',
-						'data' => 'Foo',
-					],
-				]
-			);
+		$order = $this->create_order_with_responses(
+			[
+				'bar' => [
+					'type' => 'text',
+					'data' => 'Foo',
+				],
+			]
+		);
 
 		Display::edit_order_meta_box( $order );
 
