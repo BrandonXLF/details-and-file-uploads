@@ -180,7 +180,7 @@ class Upload_API_Tests extends Unit_Test_Case {
 	 * @dataProvider action_provider
 	 * @param string $action The action to call.
 	 */
-	public function test_overwride_submit( $action ) {
+	public function test_overwrite_submit( $action ) {
 		$this->test_single_file( $action );
 
 		$_POST = [
