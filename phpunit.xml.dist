@@ -12,6 +12,11 @@
 			<directory prefix="test-" suffix=".php">./tests/</directory>
 		</testsuite>
 	</testsuites>
+	<coverage>
+		<include>
+			<directory suffix=".php">src</directory>
+		</include>
+	</coverage>
 	<php>
 		<const name="CFFU_TESTSUITE" value="true"/>
 	</php>

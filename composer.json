@@ -9,6 +9,7 @@
     },
     "scripts": {
         "test": "vendor/bin/phpunit",
+        "coverage": "export XDEBUG_MODE=coverage && vendor/bin/phpunit --coverage-html reports/",
         "phpcs": "vendor/bin/phpcs --report=summary",
         "phpcs:full": "vendor/bin/phpcs",
         "phpcs:fix": "vendor/bin/phpcbf"
