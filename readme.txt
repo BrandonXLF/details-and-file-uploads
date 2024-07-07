@@ -9,7 +9,7 @@ Stable tag: 1.2.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
-Easily add general or item-specific detail inputs and file uploads to the WooCommerce checkout page.
+Easily add general or item-specific detail inputs and file uploads to the WooCommerce checkout page's additional information section.
 
 == Description ==
 

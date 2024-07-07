@@ -2,7 +2,7 @@
 
 # Checkout Fields and File Upload for WooCommerce
 
-Easily add general or item-specific detail inputs and file uploads to the WooCommerce checkout page.
+Easily add general or item-specific detail inputs and file uploads to the WooCommerce checkout page's additional information section.
 
 ## Description
 

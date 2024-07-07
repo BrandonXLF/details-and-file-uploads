@@ -418,7 +418,7 @@ class Display_Tests extends Unit_Test_Case {
 		do_action( 'woocommerce_after_order_details', $order );
 
 		$this->expectOutputString(
-			'<section class="cffu-responses"><h2 class="cffu-table-title woocommerce-column__title">Fields and files</h2><div class="cffu-order-details"><div class="cffu-order-detail"><div><span>{bar}:</span> <span>Foo</span></div></div></div></section>'
+			'<section class="cffu-responses"><h2 class="cffu-table-title woocommerce-column__title">Additional details</h2><div class="cffu-order-details"><div class="cffu-order-detail"><div><span>{bar}:</span> <span>Foo</span></div></div></div></section>'
 		);
 	}
 
@@ -435,7 +435,7 @@ class Display_Tests extends Unit_Test_Case {
 		do_action( 'woocommerce_email_after_order_table', $order );
 
 		$this->expectOutputString(
-			'<h2>Fields and files</h2><div style="margin-bottom:40px;padding:12px;color:#636363;border:1px solid #e5e5e5;"><div class="cffu-order-detail"><div><span>{bar}:</span> <span>Foo</span></div></div></div>'
+			'<h2>Additional details</h2><div style="margin-bottom:40px;padding:12px;color:#636363;border:1px solid #e5e5e5;"><div class="cffu-order-detail"><div><span>{bar}:</span> <span>Foo</span></div></div></div>'
 		);
 	}
 

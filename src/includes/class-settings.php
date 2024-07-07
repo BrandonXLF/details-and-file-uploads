@@ -265,7 +265,7 @@ class Settings {
 	 * @param string $title The table title.
 	 */
 	public static function sanitize_table_title( $title ) {
-		return $title ?: 'Fields and files';
+		return $title ?: 'Additional details';
 	}
 
 	/**
@@ -474,7 +474,7 @@ class Settings {
 			'cffu_settings',
 			'cffu_table_title',
 			[
-				'default'           => 'Fields and files',
+				'default'           => 'Additional details',
 				'sanitize_callback' => [ __CLASS__, 'sanitize_table_title' ],
 			]
 		);

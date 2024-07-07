@@ -12,7 +12,7 @@
  * @wordpress-plugin
  * Plugin Name: Checkout Fields and File Upload
  * Plugin URI: https://www.brandonfowler.me/fields-and-file-upload/
- * Description: Easily add general or item-specific detail inputs and file uploads to the WooCommerce checkout page.
+ * Description: Easily add general or item-specific detail inputs and file uploads to the WooCommerce checkout page's additional information section.
  * Version: 1.2.0
  * Requires at least: 4.6
  * Requires PHP: 7.0
