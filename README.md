@@ -76,6 +76,11 @@ Requires WP version 4.6 and PHP version 7.0.
 
 ## Changelog
 
+### 1.2.1
+
+- Make woocommerce as a required plugin
+- Change default response table title to "Additional details"
+
 ### 1.2.0
 
 - Require value when adding to list input on the settings page

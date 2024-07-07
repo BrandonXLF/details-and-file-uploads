@@ -1,6 +1,6 @@
 name: Checkout Fields and File Upload for WooCommerce
 short-name: Checkout Fields and File Upload
-version: '1.2.0'
+version: '1.2.1'
 url: https://www.brandonfowler.me/fields-and-file-upload/
 short-description: Easily add general or item-specific detail inputs and file uploads to the WooCommerce checkout page's additional information section.
 tags: ['woocommerce', 'file upload', 'checkout', 'order details']
@@ -35,6 +35,10 @@ screenshot-descriptions:
   - Custom field responses on the order confirmation page.
   - The settings page to manage custom fields.
 changelog:
+  - version: '1.2.1'
+    desc: |-
+      - Make woocommerce as a required plugin
+      - Change default response table title to "Additional details"
   - version: '1.2.0'
     desc: |-
       - Require value when adding to list input on the settings page
