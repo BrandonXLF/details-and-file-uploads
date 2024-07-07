@@ -92,7 +92,7 @@ class Upload_API_Tests extends Unit_Test_Case {
 	 */
 	public function test_no_nonce( $action ) {
 		$_POST = [
-			'name' => 'foo',
+			'name' => 'cffu_input_foo',
 		];
 
 		do_action( $action );
@@ -107,7 +107,7 @@ class Upload_API_Tests extends Unit_Test_Case {
 	 */
 	public function test_invalid_nonce( $action ) {
 		$_POST = [
-			'name'  => 'foo',
+			'name'  => 'cffu_input_foo',
 			'nonce' => 'RANDOM',
 		];
 
@@ -132,7 +132,7 @@ class Upload_API_Tests extends Unit_Test_Case {
 		);
 
 		$_POST = [
-			'name'  => 'foo',
+			'name'  => 'cffu_input_foo',
 			'nonce' => wp_create_nonce( 'cffu-file-upload' ),
 		];
 
@@ -162,7 +162,7 @@ class Upload_API_Tests extends Unit_Test_Case {
 		$this->test_single_file( $action );
 
 		$_POST = [
-			'name'  => 'foo',
+			'name'  => 'cffu_input_foo',
 			'nonce' => wp_create_nonce( 'cffu-file-upload' ),
 		];
 
@@ -226,7 +226,7 @@ class Upload_API_Tests extends Unit_Test_Case {
 		);
 
 		$_POST = [
-			'name'  => 'foo',
+			'name'  => 'cffu_input_foo',
 			'nonce' => wp_create_nonce( 'cffu-file-upload' ),
 		];
 
@@ -270,7 +270,7 @@ class Upload_API_Tests extends Unit_Test_Case {
 		);
 
 		$_POST = [
-			'name'  => 'foo',
+			'name'  => 'cffu_input_foo',
 			'nonce' => wp_create_nonce( 'cffu-file-upload' ),
 		];
 
@@ -322,7 +322,7 @@ class Upload_API_Tests extends Unit_Test_Case {
 		);
 
 		$_POST = [
-			'name'  => 'foo',
+			'name'  => 'cffu_input_foo',
 			'nonce' => wp_create_nonce( 'cffu-file-upload' ),
 		];
 
@@ -374,7 +374,7 @@ class Upload_API_Tests extends Unit_Test_Case {
 		);
 
 		$_POST = [
-			'name'  => 'foo',
+			'name'  => 'cffu_input_foo',
 			'nonce' => wp_create_nonce( 'cffu-file-upload' ),
 		];
 
@@ -425,7 +425,7 @@ class Upload_API_Tests extends Unit_Test_Case {
 		);
 
 		$_POST = [
-			'name'  => 'foo',
+			'name'  => 'cffu_input_foo',
 			'nonce' => wp_create_nonce( 'cffu-file-upload' ),
 		];
 

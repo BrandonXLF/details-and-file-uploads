@@ -15,6 +15,8 @@ if ( ! defined( 'ABSPATH' ) ) {
  * Admin and user display hooks.
  */
 class Display {
+	const NAME_PREFIX = 'cffu_input_';
+
 	/**
 	 * Initialize hooks.
 	 */
@@ -93,7 +95,7 @@ class Display {
 					);
 				}
 
-				$processed[ $field['id'] ] = [
+				$processed[ self::NAME_PREFIX . $field['id'] ] = [
 					'type'        => 'file' === $field['type'] ? 'cffu_file_upload' : $field['type'],
 					'label'       => $field['label'],
 					'input_class' => 'select' === $field['type'] ? [ 'input-text' ] : [],

@@ -55,7 +55,7 @@ class Data_Hooks_Tests extends Unit_Test_Case {
 		do_action(
 			'woocommerce_checkout_create_order',
 			$order,
-			[ 'foo' => 'Foo' ]
+			[ 'cffu_input_foo' => 'Foo' ]
 		);
 	}
 
@@ -108,7 +108,7 @@ class Data_Hooks_Tests extends Unit_Test_Case {
 		do_action(
 			'woocommerce_checkout_create_order',
 			$order,
-			[ 'foo' => 'Foo' ]
+			[ 'cffu_input_foo' => 'Foo' ]
 		);
 
 		global $wpdb;
@@ -184,7 +184,7 @@ class Data_Hooks_Tests extends Unit_Test_Case {
 		do_action(
 			'woocommerce_checkout_create_order',
 			$order,
-			[ 'foo' => 'Foo' ]
+			[ 'cffu_input_foo' => 'Foo' ]
 		);
 
 		global $wpdb;
@@ -269,8 +269,8 @@ class Data_Hooks_Tests extends Unit_Test_Case {
 			'woocommerce_checkout_create_order',
 			$order,
 			[
-				'foo'   => '',
-				'fruit' => 'Mango',
+				'cffu_input_foo'   => '',
+				'cffu_input_fruit' => 'Mango',
 			]
 		);
 	}
@@ -317,7 +317,7 @@ class Data_Hooks_Tests extends Unit_Test_Case {
 		do_action(
 			'woocommerce_checkout_create_order',
 			$order,
-			[ 'foo' => '' ]
+			[ 'cffu_input_foo' => '' ]
 		);
 	}
 

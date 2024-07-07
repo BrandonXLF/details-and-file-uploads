@@ -144,20 +144,20 @@ class Upload_API {
 		}
 
 		$fields   = get_option( 'cffu_fields' );
-		$field_id = sanitize_text_field( wp_unslash( $_POST['name'] ) );
+		$input_id = sanitize_text_field( wp_unslash( $_POST['name'] ) );
 
 		$field = array_values(
 			array_filter(
 				$fields,
-				function ( $field ) use ( &$field_id ) {
-					return $field_id === $field['id'] && 'file' === $field['type'];
+				function ( $field ) use ( &$input_id ) {
+					return Display::NAME_PREFIX . $field['id'] === $input_id && 'file' === $field['type'];
 				}
 			)
 		)[0] ?? false;
 
 		if ( ! $field ) {
 			http_response_code( 400 );
-			echo 'Invalid field "' . esc_html( $field_id ) . '" for file upload.';
+			echo 'Unknown input name "' . esc_html( $input_id ) . '" for file upload.';
 			return self::die();
 		}
 
@@ -226,13 +226,13 @@ class Upload_API {
 
 		$uploads = WC()->session->cffu_file_uploads ?? [];
 
-		if ( isset( $uploads[ $field_id ] ) ) {
-			foreach ( $uploads[ $field_id ] as &$file ) {
+		if ( isset( $uploads[ $field['id'] ] ) ) {
+			foreach ( $uploads[ $field['id'] ] as &$file ) {
 				Tracked_Files::delete_file( WC()->session->get_customer_id(), wp_unslash( $file['path'] ) );
 			}
 		}
 
-		$uploads[ $field_id ]            = $data;
+		$uploads[ $field['id'] ]         = $data;
 		WC()->session->cffu_file_uploads = $uploads;
 
 		return self::die();

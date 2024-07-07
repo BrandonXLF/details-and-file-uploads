@@ -39,7 +39,8 @@ class Data_Hooks {
 		$meta_data = [];
 
 		foreach ( $fields as &$field ) {
-			$id = wp_unslash( $field['id'] );
+			$id         = wp_unslash( $field['id'] );
+			$input_name = Display::NAME_PREFIX . $id;
 
 			if (
 				isset( WC()->session->cffu_file_uploads ) &&
@@ -54,10 +55,10 @@ class Data_Hooks {
 				continue;
 			}
 
-			if ( ! empty( $data[ $id ] ) ) {
+			if ( ! empty( $data[ $input_name ] ) ) {
 				$meta_data[ $id ] = [
 					'type' => $field['type'],
-					'data' => sanitize_text_field( wp_unslash( $data[ $id ] ) ),
+					'data' => sanitize_text_field( wp_unslash( $data[ $input_name ] ) ),
 				];
 			}
 		}

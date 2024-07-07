@@ -38,7 +38,7 @@ class Display_Tests extends Unit_Test_Case {
 		$this->assertEquals(
 			[
 				'order' => [
-					'foo'            => [
+					'cffu_input_foo' => [
 						'type'        => 'text',
 						'label'       => 'Foo',
 						'input_class' => [],
@@ -83,7 +83,7 @@ class Display_Tests extends Unit_Test_Case {
 		$this->assertEquals(
 			[
 				'order' => [
-					'foo'            => [
+					'cffu_input_foo' => [
 						'type'        => 'cffu_file_upload',
 						'label'       => 'Foo',
 						'input_class' => [],
