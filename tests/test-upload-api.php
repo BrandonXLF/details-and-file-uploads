@@ -158,6 +158,25 @@ class Upload_API_Tests extends Unit_Test_Case {
 	 * @dataProvider action_provider
 	 * @param string $action The action to call.
 	 */
+	public function test_no_files( $action ) {
+		$this->test_single_file( $action );
+
+		$_POST = [
+			'name'  => 'foo',
+			'nonce' => wp_create_nonce( 'cffu-file-upload' ),
+		];
+
+		$_FILES = [];
+
+		do_action( $action );
+
+		$this->assert_file_count( 'foo', 0, WC()->session->cffu_file_uploads );
+	}
+
+	/**
+	 * @dataProvider action_provider
+	 * @param string $action The action to call.
+	 */
 	public function test_preexisting_folder( $action ) {
 		WP_Filesystem();
 		global $wp_filesystem;
@@ -182,17 +201,7 @@ class Upload_API_Tests extends Unit_Test_Case {
 	 */
 	public function test_overwrite_submit( $action ) {
 		$this->test_single_file( $action );
-
-		$_POST = [
-			'name'  => 'foo',
-			'nonce' => wp_create_nonce( 'cffu-file-upload' ),
-		];
-
-		$_FILES = [];
-
-		do_action( $action );
-
-		$this->assert_file_count( 'foo', 0, WC()->session->cffu_file_uploads );
+		$this->test_no_files( $action );
 	}
 
 	/**
