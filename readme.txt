@@ -46,7 +46,7 @@ PHP 7.0 or greater is required (PHP 8.0 or greater is recommended)
 
 - Require value when adding to list input on the settings page
 - Show message when there are no fields on the settings page
-- Wrap output in a <section> tag
+- Wrap output in a section tag
 - Improve order received page styling
 - Show meta box for HPOS orders
 - Stop adding extra dot to generated file names
