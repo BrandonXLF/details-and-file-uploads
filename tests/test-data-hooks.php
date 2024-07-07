@@ -343,9 +343,13 @@ class Data_Hooks_Tests extends Unit_Test_Case {
 
 		$order = $this->create_order_with_responses(
 			[
-				'bar' => [
+				'bar'        => [
 					'type' => 'file',
 					'data' => [ $file1, $file2 ],
+				],
+				'not-a-file' => [
+					'type' => 'text',
+					'data' => 'Foo',
 				],
 			]
 		);
@@ -382,9 +386,13 @@ class Data_Hooks_Tests extends Unit_Test_Case {
 
 		$order = $this->create_order_with_responses(
 			[
-				'bar' => [
+				'bar'        => [
 					'type' => 'file',
 					'data' => [ $file1, $file2 ],
+				],
+				'not-a-file' => [
+					'type' => 'text',
+					'data' => 'Foo',
 				],
 			]
 		);
