@@ -456,8 +456,26 @@ class Display_Tests extends \WP_UnitTestCase {
 			$wp_meta_boxes[ $page ]['side']['default']['cffu_order_meta_box']
 		);
 	}
+	public function test_meta_box_render_post() {
+		$order = $this->create_order_with_responses(
+			[
+				'bar' => [
+					'type' => 'text',
+					'data' => 'Foo',
+				],
+			]
+		);
 
-	public function test_meta_box_render() {
+		$post = get_post( $order->get_id() );
+
+		Display::edit_order_meta_box( $post );
+
+		$this->expectOutputString(
+			'<div class="cffu-order-details"><div class="cffu-order-detail"><div><span>{bar}:</span> <span>Foo</span></div></div></div>'
+		);
+	}
+
+	public function test_meta_box_render_hpos() {
 		$order = $this->create_order_with_responses(
 			[
 				'bar' => [
