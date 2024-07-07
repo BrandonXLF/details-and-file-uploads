@@ -16,7 +16,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 class Autoloader {
 	/**
-	 * Initalize the autoloader
+	 * Initialize the autoloader
 	 */
 	public static function init() {
 		spl_autoload_register(
