@@ -35,7 +35,8 @@ class Data_Hooks {
 	 * @param array    $data Posted data.
 	 */
 	public static function populate_order( $order, $data ) {
-		$fields = get_option( 'cffu_fields' );
+		$fields    = get_option( 'cffu_fields' );
+		$meta_data = [];
 
 		foreach ( $fields as &$field ) {
 			$id = wp_unslash( $field['id'] );
@@ -60,7 +61,9 @@ class Data_Hooks {
 			}
 		}
 
-		$order->add_meta_data( 'cffu_responses', $meta_data, true );
+		if ( ! empty( $meta_data ) ) {
+			$order->add_meta_data( 'cffu_responses', $meta_data, true );
+		}
 
 		Tracked_Files::untrack_session( WC()->session->get_customer_id() );
 		unset( WC()->session->cffu_file_uploads );

@@ -199,6 +199,101 @@ class Data_Hooks_Tests extends Unit_Test_Case {
 		$this->assertEquals( 0, $count );
 	}
 
+	public function test_some_empty() {
+		update_option(
+			'cffu_fields',
+			[
+				[
+					'id'         => 'foo',
+					'type'       => 'text',
+					'label'      => 'Foo',
+					'required'   => true,
+					'products'   => [],
+					'categories' => [],
+				],
+				[
+					'id'         => 'bar',
+					'type'       => 'file',
+					'label'      => 'Foo',
+					'required'   => false,
+					'products'   => [],
+					'categories' => [],
+				],
+				[
+					'id'         => 'fruit',
+					'type'       => 'text',
+					'label'      => 'Fruit',
+					'required'   => true,
+					'products'   => [],
+					'categories' => [],
+				],
+			]
+		);
+
+		$order = $this->createMock( \WC_Order::class );
+
+		$order
+			->expects( $this->once() )
+			->method( 'add_meta_data' )
+			->with(
+				$this->equalTo( 'cffu_responses' ),
+				$this->equalTo(
+					[
+						'fruit' => [
+							'type' => 'text',
+							'data' => 'Mango',
+						],
+					]
+				),
+				$this->equalTo( true )
+			);
+
+		do_action(
+			'woocommerce_checkout_create_order',
+			$order,
+			[
+				'foo'   => '',
+				'fruit' => 'Mango',
+			]
+		);
+	}
+
+	public function test_all_empty_responses() {
+		update_option(
+			'cffu_fields',
+			[
+				[
+					'id'         => 'foo',
+					'type'       => 'text',
+					'label'      => 'Foo',
+					'required'   => true,
+					'products'   => [],
+					'categories' => [],
+				],
+				[
+					'id'         => 'bar',
+					'type'       => 'file',
+					'label'      => 'Foo',
+					'required'   => false,
+					'products'   => [],
+					'categories' => [],
+				],
+			]
+		);
+
+		$order = $this->createMock( \WC_Order::class );
+
+		$order
+			->expects( $this->never() )
+			->method( 'add_meta_data' );
+
+		do_action(
+			'woocommerce_checkout_create_order',
+			$order,
+			[ 'foo' => '' ]
+		);
+	}
+
 	public function test_before_delete_post() {
 		$tmp_dir = ini_get( 'upload_tmp_dir' ) ?: sys_get_temp_dir();
 

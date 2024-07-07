@@ -218,6 +218,11 @@ class Display_Tests extends Unit_Test_Case {
 		$this->assertEquals( false, Display::order_has_fields( $order ) );
 	}
 
+	public function test_order_no_meta_data() {
+		$order = wc_create_order();
+		$this->assertEquals( false, Display::order_has_fields( $order ) );
+	}
+
 	public function test_order_has_fields() {
 		$order = $this->create_order_with_responses(
 			[ 'foo' => [ 'data' => 'here' ] ]
@@ -382,6 +387,16 @@ class Display_Tests extends Unit_Test_Case {
 
 	public function test_show_no_fields() {
 		$order = $this->create_order_with_responses();
+
+		Display::show_fields_for_order( $order );
+
+		$this->expectOutputString(
+			'<div class="cffu-order-details"><div class="cffu-order-detail">No details found.</div></div>'
+		);
+	}
+
+	public function tests_show_no_meta_data() {
+		$order = wc_create_order();
 
 		Display::show_fields_for_order( $order );
 
