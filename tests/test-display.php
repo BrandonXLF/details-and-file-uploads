@@ -498,12 +498,12 @@ class Display_Tests extends \WP_UnitTestCase {
 
 		$this->assertEquals(
 			[
-				'id' => 'cffu_order_meta_box',
-				'title' => 'Fields and files',
+				'id'       => 'cffu_order_meta_box',
+				'title'    => 'Fields and files',
 				'callback' => [ Display::class, 'edit_order_meta_box' ],
-				'args' => null
+				'args'     => null,
 			],
-			$wp_meta_boxes[ $page ][ 'side' ][ 'default' ][ 'cffu_order_meta_box' ]
+			$wp_meta_boxes[ $page ]['side']['default']['cffu_order_meta_box']
 		);
 	}
 
