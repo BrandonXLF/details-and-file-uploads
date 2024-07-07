@@ -37,7 +37,7 @@ screenshot-descriptions:
 changelog:
   - version: '1.2.1'
     desc: |-
-      - Make woocommerce as a required plugin
+      - Mark woocommerce as a required plugin
       - Change default response table title to "Additional details"
   - version: '1.2.0'
     desc: |-

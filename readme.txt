@@ -44,7 +44,7 @@ PHP 7.0 or greater is required (PHP 8.0 or greater is recommended)
 
 = 1.2.1 =
 
-- Make woocommerce as a required plugin
+- Mark woocommerce as a required plugin
 - Change default response table title to "Additional details"
 
 = 1.2.0 =
