@@ -79,30 +79,49 @@ class Upload_API_Tests extends Unit_Test_Case {
 		$this->assertEquals( $expected, $count );
 	}
 
-	public function test_no_nonce() {
+	public function action_provider() {
+		return [
+			[ 'wp_ajax_cffu_file_upload' ],
+			[ 'wp_ajax_nopriv_cffu_file_upload' ],
+		];
+	}
+
+	/**
+	 * @dataProvider action_provider
+	 * @param string $action The action to call.
+	 */
+	public function test_no_nonce( $action ) {
 		$_POST = [
 			'name' => 'foo',
 		];
 
-		do_action( 'wp_ajax_cffu_file_upload' );
+		do_action( $action );
 
 		$this->expectOutputString( 'Failed to verify nonce.' );
 		$this->assertFalse( isset( WC()->session->cffu_file_uploads ) );
 	}
 
-	public function test_invalid_nonce() {
+	/**
+	 * @dataProvider action_provider
+	 * @param string $action The action to call.
+	 */
+	public function test_invalid_nonce( $action ) {
 		$_POST = [
 			'name'  => 'foo',
 			'nonce' => 'RANDOM',
 		];
 
-		do_action( 'wp_ajax_cffu_file_upload' );
+		do_action( $action );
 
 		$this->expectOutputString( 'Failed to verify nonce.' );
 		$this->assertFalse( isset( WC()->session->cffu_file_uploads ) );
 	}
 
-	public function test_single_file() {
+	/**
+	 * @dataProvider action_provider
+	 * @param string $action The action to call.
+	 */
+	public function test_single_file( $action ) {
 		$tmp_dir = ini_get( 'upload_tmp_dir' ) ?: sys_get_temp_dir();
 
 		$this->assertTrue(
@@ -127,7 +146,7 @@ class Upload_API_Tests extends Unit_Test_Case {
 			],
 		];
 
-		do_action( 'wp_ajax_cffu_file_upload' );
+		do_action( $action );
 
 		$this->assertTrue( isset( WC()->session->cffu_file_uploads ) );
 		$this->assertFileExists( ABSPATH . '/wp-content/uploads/cffu_file_uploads/index.html' );
@@ -135,22 +154,34 @@ class Upload_API_Tests extends Unit_Test_Case {
 		$this->assert_tracked_file( 'foo', 'example-image.png', WC()->session->cffu_file_uploads );
 	}
 
-	public function test_preexisting_folder() {
+	/**
+	 * @dataProvider action_provider
+	 * @param string $action The action to call.
+	 */
+	public function test_preexisting_folder( $action ) {
 		WP_Filesystem();
 		global $wp_filesystem;
 
 		$wp_filesystem->mkdir( ABSPATH . '/wp-content/uploads/cffu_file_uploads' );
 
-		$this->test_single_file();
+		$this->test_single_file( $action );
 	}
 
-	public function test_double_submit() {
-		$this->test_single_file();
-		$this->test_single_file();
+	/**
+	 * @dataProvider action_provider
+	 * @param string $action The action to call.
+	 */
+	public function test_double_submit( $action ) {
+		$this->test_single_file( $action );
+		$this->test_single_file( $action );
 	}
 
-	public function test_overwride_submit() {
-		$this->test_single_file();
+	/**
+	 * @dataProvider action_provider
+	 * @param string $action The action to call.
+	 */
+	public function test_overwride_submit( $action ) {
+		$this->test_single_file( $action );
 
 		$_POST = [
 			'name'  => 'foo',
@@ -159,12 +190,16 @@ class Upload_API_Tests extends Unit_Test_Case {
 
 		$_FILES = [];
 
-		do_action( 'wp_ajax_cffu_file_upload' );
+		do_action( $action );
 
 		$this->assert_file_count( 'foo', 0, WC()->session->cffu_file_uploads );
 	}
 
-	public function test_multiple_files() {
+	/**
+	 * @dataProvider action_provider
+	 * @param string $action The action to call.
+	 */
+	public function test_multiple_files( $action ) {
 		$tmp_dir = ini_get( 'upload_tmp_dir' ) ?: sys_get_temp_dir();
 
 		$this->assertTrue(
@@ -202,7 +237,7 @@ class Upload_API_Tests extends Unit_Test_Case {
 			],
 		];
 
-		do_action( 'wp_ajax_cffu_file_upload' );
+		do_action( $action );
 
 		$this->assertTrue( isset( WC()->session->cffu_file_uploads ) );
 		$this->assertFileExists( ABSPATH . '/wp-content/uploads/cffu_file_uploads/index.html' );
@@ -211,7 +246,11 @@ class Upload_API_Tests extends Unit_Test_Case {
 		$this->assert_tracked_file( 'foo', 'example-image2.png', WC()->session->cffu_file_uploads, 1 );
 	}
 
-	public function test_allowed_file_ext() {
+	/**
+	 * @dataProvider action_provider
+	 * @param string $action The action to call.
+	 */
+	public function test_allowed_file_ext( $action ) {
 		$tmp_dir = ini_get( 'upload_tmp_dir' ) ?: sys_get_temp_dir();
 
 		$this->assertTrue(
@@ -251,7 +290,7 @@ class Upload_API_Tests extends Unit_Test_Case {
 			]
 		);
 
-		do_action( 'wp_ajax_cffu_file_upload' );
+		do_action( $action );
 
 		$this->assertTrue( isset( WC()->session->cffu_file_uploads ) );
 		$this->assertFileExists( ABSPATH . '/wp-content/uploads/cffu_file_uploads/index.html' );
@@ -259,7 +298,11 @@ class Upload_API_Tests extends Unit_Test_Case {
 		$this->assert_tracked_file( 'foo', 'example-image.png', WC()->session->cffu_file_uploads );
 	}
 
-	public function test_allowed_type() {
+	/**
+	 * @dataProvider action_provider
+	 * @param string $action The action to call.
+	 */
+	public function test_allowed_type( $action ) {
 		$tmp_dir = ini_get( 'upload_tmp_dir' ) ?: sys_get_temp_dir();
 
 		$this->assertTrue(
@@ -299,7 +342,7 @@ class Upload_API_Tests extends Unit_Test_Case {
 			]
 		);
 
-		do_action( 'wp_ajax_cffu_file_upload' );
+		do_action( $action );
 
 		$this->assertTrue( isset( WC()->session->cffu_file_uploads ) );
 		$this->assertFileExists( ABSPATH . '/wp-content/uploads/cffu_file_uploads/index.html' );
@@ -307,7 +350,11 @@ class Upload_API_Tests extends Unit_Test_Case {
 		$this->assert_tracked_file( 'foo', 'example-image.png', WC()->session->cffu_file_uploads );
 	}
 
-	public function test_not_allowed_type() {
+	/**
+	 * @dataProvider action_provider
+	 * @param string $action The action to call.
+	 */
+	public function test_not_allowed_type( $action ) {
 		$tmp_dir = ini_get( 'upload_tmp_dir' ) ?: sys_get_temp_dir();
 
 		$this->assertTrue(
@@ -347,14 +394,18 @@ class Upload_API_Tests extends Unit_Test_Case {
 			]
 		);
 
-		do_action( 'wp_ajax_cffu_file_upload' );
+		do_action( $action );
 
 		$this->expectOutputString( 'Sorry, you are not allowed to upload this file type.' );
 		$this->assertFalse( isset( WC()->session->cffu_file_uploads ) );
 		$this->assert_file_count( 'foo', 0, WC()->session->cffu_file_uploads );
 	}
 
-	public function test_wp_unknown_type() {
+	/**
+	 * @dataProvider action_provider
+	 * @param string $action The action to call.
+	 */
+	public function test_wp_unknown_type( $action ) {
 		$tmp_dir = ini_get( 'upload_tmp_dir' ) ?: sys_get_temp_dir();
 
 		$this->assertTrue(
@@ -394,7 +445,7 @@ class Upload_API_Tests extends Unit_Test_Case {
 			]
 		);
 
-		do_action( 'wp_ajax_cffu_file_upload' );
+		do_action( $action );
 
 		$this->assertTrue( isset( WC()->session->cffu_file_uploads ) );
 		$this->assertFileExists( ABSPATH . '/wp-content/uploads/cffu_file_uploads/index.html' );
