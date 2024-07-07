@@ -8,6 +8,7 @@ wp-min: '4.6'
 php-min: '7.0'
 php-rec: '8.0'
 wp-tested: '6.5.5'
+required: 'woocommerce'
 long-description:
   - title: ''
     text: >

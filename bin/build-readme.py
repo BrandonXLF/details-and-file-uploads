@@ -155,6 +155,10 @@ def generate_comment():
     out += ' * Author URI: https://www.brandonfowler.me/\n'
     out += ' * License: GPLv2 or later\n'
     out += ' * License URI: https://www.gnu.org/licenses/gpl-2.0.html\n'
+
+    if template['required']:
+        out += ' * Requires Plugins: ' + template['required'] + '\n'
+
     out += ' **/'
 
     const_out = 'define( \'CFFU_PLUGIN_VERSION\', \'' + template['version'] + '\' );'
