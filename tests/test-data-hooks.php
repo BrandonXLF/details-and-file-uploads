@@ -199,7 +199,24 @@ class Data_Hooks_Tests extends Unit_Test_Case {
 		$this->assertEquals( 0, $count );
 	}
 
-	public function test_some_empty() {
+	public function provide_create_uploads_array() {
+		return [
+			[ true ],
+			[ false ],
+		];
+	}
+
+	/**
+	 * @dataProvider provide_create_uploads_array
+	 * @param boolean $create_upload_array Weather to create the upload array.
+	 */
+	public function test_some_empty( $create_upload_array ) {
+		if ( $create_upload_array ) {
+			WC()->session->cffu_file_uploads = [ 'bar' => [] ];
+		} else {
+			unset( WC()->session->cffu_file_uploads );
+		}
+
 		update_option(
 			'cffu_fields',
 			[
@@ -258,7 +275,17 @@ class Data_Hooks_Tests extends Unit_Test_Case {
 		);
 	}
 
-	public function test_all_empty_responses() {
+	/**
+	 * @dataProvider provide_create_uploads_array
+	 * @param boolean $create_upload_array Weather to create the upload array.
+	 */
+	public function test_all_empty_responses( $create_upload_array ) {
+		if ( $create_upload_array ) {
+			WC()->session->cffu_file_uploads = [ 'bar' => [] ];
+		} else {
+			unset( WC()->session->cffu_file_uploads );
+		}
+
 		update_option(
 			'cffu_fields',
 			[

@@ -43,7 +43,8 @@ class Data_Hooks {
 
 			if (
 				isset( WC()->session->cffu_file_uploads ) &&
-				array_key_exists( $id, WC()->session->cffu_file_uploads )
+				array_key_exists( $id, WC()->session->cffu_file_uploads ) &&
+				! empty( WC()->session->cffu_file_uploads[ $id ] )
 			) {
 				$meta_data[ $id ] = [
 					'type' => 'file',
