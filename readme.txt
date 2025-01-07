@@ -29,10 +29,16 @@ Files are uploaded to a secure directory and are given a randomly generated name
 
 == Installation ==
 
-PHP 7.0 or greater is required (PHP 8.0 or greater is recommended)
+= Requirements =
 
-1. Upload the `fields-and-file-upload` folder to your plugin directory
-2. Activate the plugin through the \'Plugins\' menu in WordPress
+* WordPress 4.6 or newer
+* PHP 7.0 or greater is required (PHP 8.0 or greater is recommended)
+
+= Steps =
+
+1. Navigate to the "Add New Plugin" menu item
+2. Click "Upload Plugin" and upload the zip file
+3. Activate the plugin through the "Plugins" menu in WordPress
 
 == Screenshots ==
 
