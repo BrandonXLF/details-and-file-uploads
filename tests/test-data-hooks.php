@@ -369,15 +369,15 @@ class Data_Hooks_Tests extends Unit_Test_Case {
 
 		$file1 = [
 			'name' => 'example-image.png',
-			'path' => $tmp_dir . '/example-image1.tmp.png',
-			'url'  => 'https://localhost/whatever/example-image1.tmp.png',
+			'path' => $tmp_dir . '/example-image3.tmp.png',
+			'url'  => 'https://localhost/whatever/example-image3.tmp.png',
 			'type' => 'image/png',
 		];
 
 		$file2 = [
 			'name' => 'example-image.png',
-			'path' => $tmp_dir . '/example-image2.tmp.png',
-			'url'  => 'https://localhost/whatever/example-image2.tmp.png',
+			'path' => $tmp_dir . '/example-image4.tmp.png',
+			'url'  => 'https://localhost/whatever/example-image4.tmp.png',
 			'type' => 'image/png',
 		];
 
