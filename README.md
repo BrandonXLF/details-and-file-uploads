@@ -42,7 +42,7 @@ Composer is used to install dependencies. Once it is installed run `composer ins
 
 ### Running tests
 
-Tests are run with a installation of WordPress, WooCommerce, and the WordPress test tools. These can be installed with `bin/install-wp-tests.sh [DATABASE NAME] [DATABASE USER] [DATABASE PASSWORD]`. This script requires Subversion to be installed. Once installed, run `composer run tests` to run tests.
+Tests are run with a installation of WordPress, WooCommerce, and the WordPress test tools. These can be installed with `bin/install-wp-tests.sh [DATABASE NAME] [DATABASE USER] [DATABASE PASSWORD]`. This script requires Subversion to be installed. Once installed, run `composer run test` to run tests.
 
 ### Code sniffing
 
