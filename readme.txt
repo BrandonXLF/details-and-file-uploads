@@ -50,7 +50,7 @@ Files are uploaded to a secure directory and are given a randomly generated name
 
 = 1.2.2 =
 
-- Updated plugin information
+Updated plugin information
 
 = 1.2.1 =
 
