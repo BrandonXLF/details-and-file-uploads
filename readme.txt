@@ -5,7 +5,7 @@ Donate link: https://www.brandonfowler.me/donate/
 Requires at least: 4.6
 Tested up to: 6.7.1
 Requires PHP: 7.0
-Stable tag: 1.2.1
+Stable tag: 1.2.2
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -47,6 +47,10 @@ Files are uploaded to a secure directory and are given a randomly generated name
 3. The settings page to manage custom fields.
 
 == Changelog ==
+
+= 1.2.2 =
+
+- Updated plugin information
 
 = 1.2.1 =
 
