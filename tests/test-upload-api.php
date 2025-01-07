@@ -9,6 +9,8 @@ namespace CFFU_Plugin;
 
 /**
  * Tests for the API class.
+ *
+ * @runTestsInSeparateProcesses - Avoid "Cannot set response code - headers already sent"
  */
 class Upload_API_Tests extends Unit_Test_Case {
 	public function set_up(): void {
