@@ -112,6 +112,9 @@ class Settings_Tests extends Unit_Test_Case {
 				'.key'     => '.key',
 				'.numbers' => '.numbers',
 				'.pages'   => '.pages',
+				'.heif'    => '.heif',
+				'.heics'   => '.heics',
+				'.heifs'   => '.heifs',
 			],
 			Settings::get_types()
 		);
