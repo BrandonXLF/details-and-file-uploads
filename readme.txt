@@ -25,6 +25,10 @@ You can add custom input fields of a multitude of different types include text, 
 
 Files are uploaded to a secure directory and are given a randomly generated name to prevent unauthorized access.
 
+== Contribute ==
+
+Check out [the GitHub repository](https://github.com/BrandonXLF/fields-and-file-upload) to learn more about how you can contribute to the plugin's development.
+
 == Installation ==
 
 = Requirements =
