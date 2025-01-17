@@ -6,3 +6,5 @@ LICENSE                         -export-ignore
 readme.txt                      -export-ignore
 fields-and-file-upload.php      -export-ignore
 uninstall.php                   -export-ignore
+
+*.sh                            text eol=lf
