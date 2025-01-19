@@ -8,7 +8,7 @@
 namespace CFFU_Plugin;
 
 /**
- * Tests for uninstall.php
+ * Tests for the Settings class.
  */
 class Settings_Tests extends Unit_Test_Case {
 	public function test_get_types() {
